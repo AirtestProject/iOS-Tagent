@@ -8,7 +8,8 @@ WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/fa
 
 这个项目基于Xcode9 + ios 11 平台进行开发和测试，其他版本的xcode和ios未经完整测试，可能会出现非预期的错误情况。
 
-    现在这个项目在公开测试状态，会存在一些问题，如果对于这个项目有问题和反馈建议，可以到Issues里进行提出，
+
+>现在这个项目在公开测试状态，会存在一些问题，如果对于这个项目有问题和反馈建议，可以到 [Issues](https://github.com/AirtestProject/iOS-Tagent/issues)里进行提出.
 
 
 ## 开始部署
@@ -36,7 +37,7 @@ WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/fa
 
 ![FailID](/IntroductionPhoto/FailID.png "set up id Fail")
 
-可以通过修改 'Build Settings' ->"Product Bundle Identifier" , 将Product Bundle Identifier修改成xcode可以接受的名字即可
+可以通过修改 'Build Settings' ->"Product Bundle Identifier" , 将Product Bundle Identifier修改成xcode可以接受的名字即可如('com.xxx.webDriverAgent-test123')
 
 ![bundleId](/IntroductionPhoto/bundleId.png "set up bundleId")
 
@@ -93,6 +94,7 @@ WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/fa
 
 ## Known Issues
 
+https://github.com/AirtestProject/iOS-Tagent/issues
 
 ## License
 这个项目基于[WebDriverAgent](https://github.com/facebook/WebDriverAgent) 进行了定制化的开发和优化:

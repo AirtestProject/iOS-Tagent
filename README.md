@@ -8,7 +8,7 @@ To use airtest and airtestIDE on ios, this project is required
 
 This Project is worked well in xcode 9 + ios 11, other version of xcode and ios version is not fully tested
 
-    this project is open beta status now, if you have problem with this project please goto Issues
+>this project is open beta status now, if you have problem with this project please goto [Issues](https://github.com/AirtestProject/iOS-Tagent/issues)
 
 ## Getting Started
 
@@ -34,7 +34,7 @@ and start do what you want with [Airtest](http://airtest.netease.com/)
 
 ![FailID](/IntroductionPhoto/FailID.png "set up id Fail")
 
- please change 'Build Settings' ->"Product Bundle Identifier" into somethings else
+ please change 'Build Settings' ->"Product Bundle Identifier" into somethings else. like 'com.xxx.webDriverAgent-test123'
 
 ![bundleId](/IntroductionPhoto/bundleId.png "set up bundleId")
 
@@ -90,7 +90,8 @@ then try to access http://127.0.0.1:8100/status in mac browser, is a json string
 you can use ios device in airtest with http://127.0.0.1:8100
 
 ## Known Issues
-???
+
+https://github.com/AirtestProject/iOS-Tagent/issues
 
 ## License
 This project is based on [WebDriverAgent](https://github.com/facebook/WebDriverAgent) :
