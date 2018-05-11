@@ -3,28 +3,58 @@ iOS-Tagent 介绍
 
 .. image:: ./IntroductionPhoto/ios-airtestIDE.gif
 
-iOS-Tagent 是基于 facebook 的 `WebDriverAgent <https://github.com/facebook/WebDriverAgent>`_ . ,
-项目上进行开发的 , 目的是为了对 `AirtestProject <http://airtest.netease.com/>`_. 提供IOS平台的测试支持，在原项目的基础上进行了定制化的优化和功能调整。
+iOS-Tagent 是基于 facebook 的 `WebDriverAgent <https://github.com/facebook/WebDriverAgent>`_ .
+项目上进行开发的 , 目的是为了对 `AirtestProject <http://airtest.netease.com/>`_. 提供iOS平台的测试支持，在原项目的基础上进行了定制化的优化和功能调整。
 
-如果需要使用airtest项目对ios平台进行测试，需要部署此项目来完成对ios手机的操作
+如果需要使用airtest项目对iOS平台进行测试，需要部署此项目来完成对iOS手机的操作
 
-这个项目基于**Xcode9** + **ios 11** 平台进行开发和测试，其他版本的xcode和ios未经完整测试，可能会出现非预期的错误情况。
+这个项目基于**Xcode9** + **iOS 11** 平台进行开发和测试，其他版本的xcode和iOS未经完整测试，可能会出现非预期的错误情况。
 ::
 
     现在这个项目在公开测试状态，会存在一些问题
     如果对于这个项目有问题和反馈建议，可以到 Issues 里进行提出。
+
+Api 支持状况
+------------------------------------
+这个项目被设计可以 与 `airtest-ide <http://airtest.netease.com/>`_ 和 `airtest项目 <https://github.com/AirtestProject/Airtest>`_ 协同工作
+
+通用的 airtest 的 iOS Api 都是支持的
+
+    - start_app: OK
+    - stop_app: OK
+    - snapshot: OK
+    - home:     OK
+    - touch:    OK
+    - swipe:    OK
+    - text:     OK
+    - wait:     OK
+    - exists:   OK
+    - find_all: OK
+    - assert_exists: OK
+    - assert_not_exists: OK
+
+
+除了一些例外：
+
+    - wake: 暂未支持 (考虑用'home'方法替代)
+    - keyevent: 只支持 'home' 事件
+    - clear_app:  暂未支持
+    - install:  暂未支持
+    - uninstall: 暂未支持
+
+
 
 开始部署
 ------------------------------------
 
 前置要求
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    | 1. 需要IOS的开发者证书，付费的免费的均可。
+    | 1. 需要iOS的开发者证书，付费的免费的均可。
     | 2. 需要了解xcode的基础操作和用法
 
 总体上，可以就直接打开`WebDriverAgent.xcodeproj`，并且使用 'test' 模式在设备上启动`WebDriverAgentRunner` 即可。
 
-之后可以利用 `Airtest <http://airtest.netease.com/>`_ 项目对ios平台的应用程序进行测试(使用ios对应的url方式)。
+之后可以利用 `Airtest <http://airtest.netease.com/>`_ 项目对iOS平台的应用程序进行测试(使用iOS对应的url方式)。
 
 部署教程
 ------------------------------------
@@ -112,7 +142,7 @@ and `another <https://github.com/appium/appium/blob/master/docs/en/drivers/ios-x
 
 3. 最后，使用
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-you can use ios device in airtest with http://127.0.0.1:8100
+you can use iOS device in airtest with http://127.0.0.1:8100
 
 Known Issues
 -----------------------------------

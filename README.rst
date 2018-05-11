@@ -3,19 +3,48 @@ iOS-Tagent Introduction
 
 .. image:: ./IntroductionPhoto/ios-airtestIDE.gif
 
-iOS-Tagent is a project based on facebook `WebDriverAgent <https://github.com/facebook/WebDriverAgent>`_ . ,
+iOS-Tagent is a project based on facebook `WebDriverAgent <https://github.com/facebook/WebDriverAgent>`_ .
 and intend to fit `AirtestProject <http://airtest.netease.com/>`_.
 
 `中文文档 <./README_chs.rst>`_
 
-To use airtest and airtestIDE on ios, this project is required
+To use airtest and airtestIDE on iOS, this project is required
 
-This Project is worked well in **xcode 9** + **ios 11**, other version of xcode and ios version is not fully tested
+This Project is worked well in **xcode 9** + **iOS 11**, other version of xcode and iOS version is not fully tested
 
 ::
 
     this project is open beta status now
     if you have problem with this project please goto `Issues <https://github.com/AirtestProject/iOS-Tagent/issues>`_
+
+Api status
+------------------------------------
+This project intend to work with `airtest-ide <http://airtest.netease.com/>`_ and `Airtest Framework <https://github.com/AirtestProject/Airtest>`_
+
+Common Api in airtest is supported
+
+    - start_app: OK
+    - stop_app: OK
+    - snapshot: OK
+    - home:     OK
+    - touch:    OK
+    - swipe:    OK
+    - text:     OK
+    - wait:     OK
+    - exists:   OK
+    - find_all: OK
+    - assert_exists: OK
+    - assert_not_exists: OK
+
+
+except:
+
+    - wake: Now supported now (may use 'home' instead)
+    - keyevent: Only support 'home' event
+    - clear_app:  Not supported now
+    - install:  Not supported now
+    - uninstall: Not supported now
+
 
 Getting Started
 ------------------------------------
@@ -28,7 +57,7 @@ prerequisite
 You can simply open `WebDriverAgent.xcodeproj` and start `WebDriverAgentRunner` test
 
 and start do what you want with `Airtest <http://airtest.netease.com/>`_
-(with ios http url)
+(with iOS http url)
 
 Start manual
 ------------------------------------
@@ -115,7 +144,7 @@ then try to access http://127.0.0.1:8100/status in mac browser, is a json string
 
 3. Finally
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-you can use ios device in airtest with http://127.0.0.1:8100
+you can use iOS device in airtest with http://127.0.0.1:8100
 
 Known Issues
 -----------------------------------

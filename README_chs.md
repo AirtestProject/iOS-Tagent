@@ -2,11 +2,11 @@
 
 ![ios-airtestIDE](/IntroductionPhoto/ios-airtestIDE.gif "ios-airtestIDE")
 
-WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/facebook/WebDriverAgent) 项目上进行开发的 , 目的是为了对 [AirtestProject](http://airtest.netease.com/) 提供IOS平台的测试支持，在原项目的基础上进行了定制化的优化和功能调整。
+WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/facebook/WebDriverAgent) 项目上进行开发的 , 目的是为了对 [AirtestProject](http://airtest.netease.com/) 提供iOS平台的测试支持，在原项目的基础上进行了定制化的优化和功能调整。
 
-如果需要使用airtest项目对ios平台进行测试，需要部署此项目来完成对ios手机的操作
+如果需要使用airtest项目对iOS平台进行测试，需要部署此项目来完成对iOS手机的操作
 
-这个项目基于Xcode9 + ios 11 平台进行开发和测试，其他版本的xcode和ios未经完整测试，可能会出现非预期的错误情况。
+这个项目基于Xcode9 + iOS 11 平台进行开发和测试，其他版本的xcode和iOS未经完整测试，可能会出现非预期的错误情况。
 
 
 >现在这个项目在公开测试状态，会存在一些问题，如果对于这个项目有问题和反馈建议，可以到 [Issues](https://github.com/AirtestProject/iOS-Tagent/issues)里进行提出.
@@ -15,12 +15,12 @@ WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/fa
 ## 开始部署
 
 ### 前置要求
-    1. 需要IOS的开发者证书，付费的免费的均可。
+    1. 需要iOS的开发者证书，付费的免费的均可。
     2. 需要了解xcode的基础操作和用法
 
 总体上，可以就直接打开`WebDriverAgent.xcodeproj`，并且使用 'test' 模式在设备上启动`WebDriverAgentRunner` 即可。
 
-之后可以利用[Airtest](http://airtest.netease.com/)项目对ios平台的应用程序进行测试(使用ios对应的url方式)。
+之后可以利用[Airtest](http://airtest.netease.com/)项目对iOS平台的应用程序进行测试(使用iOS对应的url方式)。
 
 
 ## 部署教程
@@ -90,7 +90,7 @@ WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/fa
 
 
 ### 3. 最后，使用
-在启动成功之后可以通过 http://127.0.0.1:8100 这个地址， 填入Airtest或者Airtest-ide栏目中的方式，使用 Airtest 或者 Airtest-ide 对IOS设备上的应用程序进行测试
+在启动成功之后可以通过 http://127.0.0.1:8100 这个地址， 填入Airtest或者Airtest-ide栏目中的方式，使用 Airtest 或者 Airtest-ide 对iOS设备上的应用程序进行测试
 
 ## Known Issues
 
