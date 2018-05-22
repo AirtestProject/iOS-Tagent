@@ -22776,6 +22776,16 @@
 	  }
 
 	  _createClass(Screen, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      document.addEventListener('keydown', this.onKeyDown.bind(this), false);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      document.removeEventListener('keydown', this.onKeyDown.bind(this), false);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this = this;
@@ -22829,6 +22839,9 @@
 	          },
 	          onDrag: function onDrag(params) {
 	            _this2.onScreenShotDrag(params);
+	          },
+	          onKeyDown: function onKeyDown(key) {
+	            _this2.onScreenShotKeyDown(key);
 	          }
 	        });
 	      }
@@ -22904,6 +22917,20 @@
 	      });
 	    }
 	  }, {
+	    key: 'onScreenShotKeyDown',
+	    value: function onScreenShotKeyDown(key) {
+	      var _this5 = this;
+
+	      _jsHttp2['default'].get('status', function (status_result) {
+	        var session_id = status_result.sessionId;
+	        _jsHttp2['default'].post('session/' + session_id + '/wda/keys', JSON.stringify({
+	          'value': [key]
+	        }), function (tap_result) {
+	          _this5.props.refreshApp();
+	        });
+	      });
+	    }
+	  }, {
 	    key: 'onMouseDown',
 	    value: function onMouseDown(ev) {
 	      this.gestureRecognizer().onMouseDown(ev);
@@ -22919,31 +22946,36 @@
 	      this.gestureRecognizer().onMouseUp(ev);
 	    }
 	  }, {
+	    key: 'onKeyDown',
+	    value: function onKeyDown(ev) {
+	      this.gestureRecognizer().onKeyDown(ev);
+	    }
+	  }, {
 	    key: 'home',
 	    value: function home(ev) {
-	      var _this5 = this;
+	      var _this6 = this;
 
 	      _jsHttp2['default'].post('/wda/homescreen', JSON.stringify({}), function (result) {
-	        _this5.props.refreshApp();
+	        _this6.props.refreshApp();
 	      });
 	    }
 	  }, {
 	    key: 'renderScreenshot',
 	    value: function renderScreenshot() {
-	      var _this6 = this;
+	      var _this7 = this;
 
 	      return _react2['default'].createElement('img', {
 	        className: 'screen-screenshot',
 	        src: this.screenshot().source,
 	        style: this.styleWithScreenSize(),
 	        onMouseDown: function (ev) {
-	          return _this6.onMouseDown(ev);
+	          return _this7.onMouseDown(ev);
 	        },
 	        onMouseMove: function (ev) {
-	          return _this6.onMouseMove(ev);
+	          return _this7.onMouseMove(ev);
 	        },
 	        onMouseUp: function (ev) {
-	          return _this6.onMouseUp(ev);
+	          return _this7.onMouseUp(ev);
 	        },
 	        draggable: 'false',
 	        id: 'screenshot'
@@ -23126,6 +23158,7 @@
 
 	    this._onClick = params.onClick;
 	    this._onDrag = params.onDrag;
+	    this._onKeyDown = params.onKeyDown;
 	    this._state = {
 	      value: IDLE,
 	      params: {}
@@ -23174,6 +23207,21 @@
 	        value: IDLE,
 	        params: {}
 	      };
+	    }
+	  }, {
+	    key: 'onKeyDown',
+	    value: function onKeyDown(ev) {
+	      if (ev.target !== document.body) {
+	        return;
+	      }
+	      var key = ev.key;
+	      if (key === 'Backspace') {
+	        this._onKeyDown('');
+	      } else if (key === 'Enter') {
+	        this._onKeyDown('\r');
+	      } else if (key && key.length === 1) {
+	        this._onKeyDown(key);
+	      }
 	    }
 	  }, {
 	    key: '_triggerClick',
@@ -25059,7 +25107,7 @@
 
 
 	// module
-	exports.push([module.id, "/**\n * Copyright (c) 2015-present, Facebook, Inc.\n * All rights reserved.\n *\n * This source code is licensed under the BSD-style license found in the\n * LICENSE file in the root directory of this source tree. An additional grant\n * of patent rights can be found in the PATENTS file in the same directory.\n */\n\n.section.second .section-content-container {\n  padding-top: 0px;\n}\n\n.tree-container {\n  overflow-y: auto;\n  max-height: 600px;\n}\n\n.tree-header {\n  height: 25px;\n}\n\n.tree-node {\n  cursor: pointer;\n}\n\n.tree-node.selected {\n  background-color: #D690A0;\n}\n", ""]);
+	exports.push([module.id, "/**\n * Copyright (c) 2015-present, Facebook, Inc.\n * All rights reserved.\n *\n * This source code is licensed under the BSD-style license found in the\n * LICENSE file in the root directory of this source tree. An additional grant\n * of patent rights can be found in the PATENTS file in the same directory.\n */\n\n.section.second .section-content-container {\n  padding-top: 0px;\n}\n\n.tree-container {\n  overflow-y: auto;\n  max-height: 600px;\n}\n\n.tree-header {\n  height: 25px;\n}\n\n.tree-node {\n  font-family: monospace;\n  cursor: pointer;\n}\n\n.tree-node.selected {\n  background-color: #D690A0;\n}\n", ""]);
 
 	// exports
 
@@ -25436,7 +25484,7 @@
 
 
 	// module
-	exports.push([module.id, "/**\n * Copyright (c) 2015-present, Facebook, Inc.\n * All rights reserved.\n *\n * This source code is licensed under the BSD-style license found in the\n * LICENSE file in the root directory of this source tree. An additional grant\n * of patent rights can be found in the PATENTS file in the same directory.\n */\n\n.inspector-field {  \n  margin-bottom: 5px;\n}\n\n.inspector-field-caption {\n  font-weight: bold;\n}\n\n.inspector-field-value {\n}\n", ""]);
+	exports.push([module.id, "/**\n * Copyright (c) 2015-present, Facebook, Inc.\n * All rights reserved.\n *\n * This source code is licensed under the BSD-style license found in the\n * LICENSE file in the root directory of this source tree. An additional grant\n * of patent rights can be found in the PATENTS file in the same directory.\n */\n\n.inspector-field {\n  margin-bottom: 5px;\n}\n\n.inspector-field-caption {\n  font-weight: bold;\n}\n\n.inspector-field-value {\n  font-family: monospace;\n}\n", ""]);
 
 	// exports
 
@@ -25476,7 +25524,7 @@
 
 
 	// module
-	exports.push([module.id, "/**\n * Copyright (c) 2015-present, Facebook, Inc.\n * All rights reserved.\n *\n * This source code is licensed under the BSD-style license found in the\n * LICENSE file in the root directory of this source tree. An additional grant\n * of patent rights can be found in the PATENTS file in the same directory.\n */\n \nhtml, body, #app {\n  width: 100%;\n  height: 100%;\n  margin: 0px;\n  padding: 0px;\n}\n\n.section {\n  position: absolute;\n  width: 33%;\n  height: 100%;\n  padding: 0px;\n  border: 1px solid #D5DCDE;\n  border-right: 0;\n}\n\n.section.first {\n}\n\n.section.second {\n  margin-left: 33%;\n}\n\n.section.third {\n  margin-left: 66%;\n}\n\n.section-caption {\n  display: block;  \n  text-align: center;\n  padding: 20px;\n  font-size: 200%;\n  font-weight: bold;\n  border-bottom: 1px solid #D5DCDE;\n}\n\n.section-content-container {\n  padding: 10px;\n  padding-top: 25px;\n}\n\n.section-content {\n}\n", ""]);
+	exports.push([module.id, "/**\n * Copyright (c) 2015-present, Facebook, Inc.\n * All rights reserved.\n *\n * This source code is licensed under the BSD-style license found in the\n * LICENSE file in the root directory of this source tree. An additional grant\n * of patent rights can be found in the PATENTS file in the same directory.\n */\n\nhtml, body, #app {\n  font-family: sans-serif;\n  width: 100%;\n  height: 100%;\n  margin: 0px;\n  padding: 0px;\n}\n\n.section {\n  position: absolute;\n  width: 33%;\n  height: 100%;\n  padding: 0px;\n  border: 1px solid #D5DCDE;\n  border-right: 0;\n}\n\n.section.first {\n}\n\n.section.second {\n  margin-left: 33%;\n}\n\n.section.third {\n  margin-left: 66%;\n}\n\n.section-caption {\n  display: block;\n  text-align: center;\n  padding: 20px;\n  font-size: 200%;\n  font-weight: bold;\n  border-bottom: 1px solid #D5DCDE;\n}\n\n.section-content-container {\n  padding: 10px;\n  padding-top: 25px;\n}\n\n.section-content {\n}\n", ""]);
 
 	// exports
 

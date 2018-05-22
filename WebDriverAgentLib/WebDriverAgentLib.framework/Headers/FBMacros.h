@@ -25,6 +25,8 @@
 
 /*! Returns 'value' or NSNull if 'value' is nil */
 #define FBValueOrNull(value) ((value) ?: [NSNull null])
+#define FBValueOrEmptyStr(value) ((value) ?: @"")
+
 
 /*!
   Returns name of class property as a string
