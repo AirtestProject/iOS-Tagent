@@ -43,6 +43,15 @@ Api 支持状况
     - uninstall: 暂未支持
 
 
+快速查看窗口视图
+------------------------------------
+现在已经支持查看窗口视图功能，可以看下面图片的效果
+
+.. image:: ./IntroductionPhoto/ios-inspector.gif
+
+
+这个功能可以与  `Poco <https://github.com/AirtestProject/Poco>`_ 和 airtest-ide 一同使用达到最好的效果。
+
 
 开始部署
 ------------------------------------

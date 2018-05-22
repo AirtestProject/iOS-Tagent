@@ -45,6 +45,15 @@ except:
     - install:  Not supported now
     - uninstall: Not supported now
 
+Fast Hierarchy view
+------------------------------------
+now it can view device Hierarchy really fast
+
+.. image:: ./IntroductionPhoto/ios-inspector.gif
+
+
+this feature work with  `Poco <https://github.com/AirtestProject/Poco>`_
+and airtest-ide.
 
 Getting Started
 ------------------------------------
