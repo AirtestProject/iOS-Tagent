@@ -70,6 +70,11 @@
             value = "$(USE_PORT)"
             isEnabled = "YES">
          </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "WDA_PRODUCT_BUNDLE_IDENTIFIER"
+            value = "$(WDA_PRODUCT_BUNDLE_IDENTIFIER)"
+            isEnabled = "YES">
+         </EnvironmentVariable>
       </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
