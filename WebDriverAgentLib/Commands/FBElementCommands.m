@@ -486,7 +486,7 @@ static const CGFloat DEFAULT_OFFSET = (CGFloat)0.2;
   if (shouldApplyOrientationWorkaround) {
     point = FBInvertPointForApplication(coordinate, application.frame.size, application.interfaceOrientation);
   }
-  
+
   /**
    If SDK >= 11, the tap coordinate based on application is not correct when
    the application orientation is landscape and
@@ -503,14 +503,18 @@ static const CGFloat DEFAULT_OFFSET = (CGFloat)0.2;
   XCUIElement *element = application;
   if (isSDKVersionGreaterThanOrEqualTo(@"11.0")) {
     XCUIElement *window = application.windows.fb_firstMatch;
-    if (window) element = window;
+    if (window) {
+      element = window;
+      point.x -= element.frame.origin.x;
+      point.y -= element.frame.origin.y;
+    }
   }
   return [self gestureCoordinateWithCoordinate:point element:element];
 }
 
 /**
  Returns gesture coordinate based on the specified element.
- 
+
  @param coordinate absolute coordinates based on the element
  @param element the element in the current application under test
  @return translated gesture coordinates ready to be passed to XCUICoordinate methods
