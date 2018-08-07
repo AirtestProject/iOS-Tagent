@@ -71,6 +71,11 @@
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
+            key = "COMMIT_HASH"
+            value = "$(COMMIT_HASH)"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
             key = "WDA_PRODUCT_BUNDLE_IDENTIFIER"
             value = "$(WDA_PRODUCT_BUNDLE_IDENTIFIER)"
             isEnabled = "YES">
