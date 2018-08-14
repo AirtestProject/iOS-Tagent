@@ -48,6 +48,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSRange)bindingPortRange;
 
 /**
+ The port number where the background screenshots broadcaster is supposed to run
+ */
++ (NSInteger)mjpegServerPort;
+
+/**
  YES if verbose logging is enabled. NO otherwise.
  */
 + (BOOL)verboseLoggingEnabled;
