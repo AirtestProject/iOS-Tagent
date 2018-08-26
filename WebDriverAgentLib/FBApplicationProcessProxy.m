@@ -54,9 +54,9 @@
 
 #pragma mark - Forward not implemented methods to applicationProcess
 
-- (void)forwardInvocation:(NSInvocation *)invocation
+- (id)forwardingTargetForSelector:(SEL)aSelector
 {
-  [invocation invokeWithTarget:self.applicationProcess];
+  return self.applicationProcess;
 }
 
 - (nullable NSMethodSignature *)methodSignatureForSelector:(SEL)sel
