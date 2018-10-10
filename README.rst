@@ -10,7 +10,16 @@ and intend to fit `AirtestProject <http://airtest.netease.com/>`_.
 
 To use airtest and airtestIDE on iOS, this project is required
 
-This Project is worked well in **xcode 9** + **iOS 11**, other version of xcode and iOS version is not fully tested
+This Project is worked well in:
+
+=====  =====
+Xcode  iOS
+=====  =====
+10     12
+9      11
+=====  =====
+
+other version of xcode and iOS version is not fully tested
 
 ::
 

@@ -6,7 +6,14 @@ WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/fa
 
 如果需要使用airtest项目对iOS平台进行测试，需要部署此项目来完成对iOS手机的操作
 
-这个项目基于Xcode9 + iOS 11 平台进行开发和测试，其他版本的xcode和iOS未经完整测试，可能会出现非预期的错误情况。
+这个项目在如下版本上进行了开发和测试：
+
+|Xcode|iOS |
+|:---:|:---- :|
+| 10 | 12 |
+| 9  | 11 |
+
+其他版本的xcode和iOS未经完整测试，可能会出现非预期的错误情况。
 
 
 >现在这个项目在公开测试状态，会存在一些问题，如果对于这个项目有问题和反馈建议，可以到 [Issues](https://github.com/AirtestProject/iOS-Tagent/issues)里进行提出.
