@@ -76,4 +76,18 @@
   XCTAssertNil(error);
 }
 
+- (void)testPressingUnsupportedButton
+{
+  NSError *error;
+  XCTAssertFalse([XCUIDevice.sharedDevice fb_pressButton:@"volumeUpp" error:&error]);
+  XCTAssertNotNil(error);
+}
+
+- (void)testPressingSupportedButton
+{
+  NSError *error;
+  XCTAssertTrue([XCUIDevice.sharedDevice fb_pressButton:@"home" error:&error]);
+  XCTAssertNil(error);
+}
+
 @end

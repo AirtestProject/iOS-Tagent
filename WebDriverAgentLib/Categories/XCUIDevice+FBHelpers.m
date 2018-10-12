@@ -198,4 +198,31 @@ static bool fb_isLocked;
   return YES;
 }
 
+- (BOOL)fb_pressButton:(NSString *)buttonName error:(NSError **)error
+{
+  NSMutableArray<NSString *> *supportedButtonNames = [NSMutableArray array];
+  XCUIDeviceButton dstButton = 0;
+  if ([buttonName.lowercaseString isEqualToString:@"home"]) {
+    dstButton = XCUIDeviceButtonHome;
+  }
+  [supportedButtonNames addObject:@"home"];
+#if !TARGET_OS_SIMULATOR
+  if ([buttonName.lowercaseString isEqualToString:@"volumeup"]) {
+    dstButton = XCUIDeviceButtonVolumeUp;
+  }
+  if ([buttonName.lowercaseString isEqualToString:@"volumedown"]) {
+    dstButton = XCUIDeviceButtonVolumeDown;
+  }
+  [supportedButtonNames addObject:@"volumeUp"];
+  [supportedButtonNames addObject:@"volumeDown"];
+#endif
+  if (dstButton == 0) {
+    return [[[FBErrorBuilder builder]
+             withDescriptionFormat:@"The button '%@' is unknown. Only the following button names are supported: %@", buttonName, supportedButtonNames]
+            buildError:error];
+  }
+  [self pressButton:dstButton];
+  return YES;
+}
+
 @end

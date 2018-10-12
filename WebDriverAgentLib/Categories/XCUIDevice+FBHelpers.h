@@ -84,6 +84,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)fb_openUrl:(NSString *)url error:(NSError **)error;
 
+/**
+ Presses the corresponding hardware button on the device
+
+ @param buttonName One of the supported button names: volumeUp (real devices only), volumeDown (real device only), home
+ @return YES if the button has been pressed
+ */
+- (BOOL)fb_pressButton:(NSString *)buttonName error:(NSError **)error;
+
 @end
 
 NS_ASSUME_NONNULL_END
