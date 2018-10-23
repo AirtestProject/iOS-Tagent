@@ -44,7 +44,7 @@ static const char *QUEUE_NAME = "JPEG Screenshots Provider Queue";
     _screenRect = CGRectZero;
     _backgroundQueue = dispatch_queue_create(QUEUE_NAME, DISPATCH_QUEUE_SERIAL);
     if (![self.class canStreamScreenshots]) {
-      [FBLogger log:@"MJPEG server cannot start because the current iOS version is not supoprted"];
+      [FBLogger log:@"MJPEG server cannot start because the current iOS version is not supported"];
       return self;
     }
     _mainTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 / FPS repeats:YES block:^(NSTimer * _Nonnull timer) {
@@ -105,8 +105,6 @@ static const char *QUEUE_NAME = "JPEG Screenshots Provider Queue";
   }
 
   dispatch_async(self.backgroundQueue, ^{
-    NSString *chunkHeader = [NSString stringWithFormat:@"--BoundaryString\r\nContent-type: image/jpg\r\nContent-Length: %@\r\n\r\n", @(screenshotData.length)];
-    NSMutableData *chunk = [[chunkHeader dataUsingEncoding:NSUTF8StringEncoding] mutableCopy];
     NSData *jpegData;
     // Sometimes XCTest might still return PNG screenshots
     if ([self.class isJPEGData:screenshotData]) {
@@ -121,6 +119,8 @@ static const char *QUEUE_NAME = "JPEG Screenshots Provider Queue";
         return;
       }
     }
+    NSString *chunkHeader = [NSString stringWithFormat:@"--BoundaryString\r\nContent-type: image/jpg\r\nContent-Length: %@\r\n\r\n", @(jpegData.length)];
+    NSMutableData *chunk = [[chunkHeader dataUsingEncoding:NSUTF8StringEncoding] mutableCopy];
     [chunk appendData:jpegData];
     [chunk appendData:(id)[@"\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     @synchronized (self.activeClients) {
