@@ -92,6 +92,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)fb_pressButton:(NSString *)buttonName error:(NSError **)error;
 
+/**
+ Activates Siri service voice recognition with the given text to parse
+
+ @param text The actual string to parse
+ @param error If there is an error, upon return contains an NSError object that describes the problem.
+ @return YES the command has been successfully executed by Siri voice recognition service
+ */
+- (BOOL)fb_activateSiriVoiceRecognitionWithText:(NSString *)text error:(NSError **)error;
+
 @end
 
 NS_ASSUME_NONNULL_END

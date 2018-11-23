@@ -169,12 +169,7 @@ static bool fb_isLocked;
   
   id siriService = [self valueForKey:@"siriService"];
   if (nil != siriService) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    [siriService performSelector:NSSelectorFromString(@"activateWithVoiceRecognitionText:")
-                      withObject:[NSString stringWithFormat:@"Open {%@}", url]];
-#pragma clang diagnostic pop
-    return YES;
+    return [self fb_activateSiriVoiceRecognitionWithText:[NSString stringWithFormat:@"Open {%@}", url] error:error];
   }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -186,6 +181,28 @@ static bool fb_isLocked;
             buildError:error];
   }
   return YES;
+}
+
+- (BOOL)fb_activateSiriVoiceRecognitionWithText:(NSString *)text error:(NSError **)error
+{
+  id siriService = [self valueForKey:@"siriService"];
+  if (nil == siriService) {
+    return [[[FBErrorBuilder builder]
+             withDescription:@"Siri service is not available on the device under test"]
+            buildError:error];
+  }
+  @try {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    [siriService performSelector:NSSelectorFromString(@"activateWithVoiceRecognitionText:")
+                      withObject:text];
+#pragma clang diagnostic pop
+    return YES;
+  } @catch (NSException *e) {
+    return [[[FBErrorBuilder builder]
+             withDescriptionFormat:@"%@", e.reason]
+            buildError:error];
+  }
 }
 
 - (BOOL)fb_pressButton:(NSString *)buttonName error:(NSError **)error
