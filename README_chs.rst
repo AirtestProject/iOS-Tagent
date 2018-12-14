@@ -163,6 +163,10 @@ and `another <https://github.com/appium/appium/blob/master/docs/en/drivers/ios-x
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 you can use iOS device in airtest with http://127.0.0.1:8100
 
+ps:如果启动IDE不行的话，使用命令行启动
+    ➜  ~ cd /Applications/AirtestIDE.app/Contents/MacOS
+    ➜  MacOS ./AirtestIDE
+    
 Known Issues
 -----------------------------------
 https://github.com/AirtestProject/iOS-Tagent/issues
