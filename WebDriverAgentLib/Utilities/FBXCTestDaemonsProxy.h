@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (BOOL)synthesizeEventWithRecord:(XCSynthesizedEventRecord *)record error:(NSError *__autoreleasing*)error;
 
++ (void)tryToSetAxTimeout:(double)timeout forProxy:(id<XCTestManager_ManagerInterface>)proxy withHandler:(void (^)(int res))handler;
+
 @end
 
 NS_ASSUME_NONNULL_END

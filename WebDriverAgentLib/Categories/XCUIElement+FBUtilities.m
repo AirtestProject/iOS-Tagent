@@ -119,19 +119,21 @@ static const NSTimeInterval AX_TIMEOUT = 15.;
   __block NSError *innerError = nil;
   id<XCTestManager_ManagerInterface> proxy = [FBXCTestDaemonsProxy testRunnerProxy];
   dispatch_semaphore_t sem = dispatch_semaphore_create(0);
-  [proxy _XCT_setAXTimeout:AX_TIMEOUT reply:^(int res) {
-    [proxy _XCT_snapshotForElement:self.lastSnapshot.accessibilityElement
-                        attributes:axAttributes
-                        parameters:defaultParameters
-                             reply:^(XCElementSnapshot *snapshot, NSError *error) {
-                               if (nil == error) {
-                                 snapshotWithAttributes = snapshot;
-                               } else {
-                                 innerError = error;
-                               }
-                               dispatch_semaphore_signal(sem);
-                             }];
-  }];
+  [FBXCTestDaemonsProxy tryToSetAxTimeout:AX_TIMEOUT
+                                 forProxy:proxy
+                              withHandler:^(int res) {
+                                [proxy _XCT_snapshotForElement:self.lastSnapshot.accessibilityElement
+                                                    attributes:axAttributes
+                                                    parameters:defaultParameters
+                                                         reply:^(XCElementSnapshot *snapshot, NSError *error) {
+                                                           if (nil == error) {
+                                                             snapshotWithAttributes = snapshot;
+                                                           } else {
+                                                             innerError = error;
+                                                           }
+                                                           dispatch_semaphore_signal(sem);
+                                                         }];
+                              }];
   dispatch_semaphore_wait(sem, dispatch_time(DISPATCH_TIME_NOW, (int64_t)(AX_TIMEOUT * NSEC_PER_SEC)));
   if (nil == snapshotWithAttributes) {
     [FBLogger logFmt:@"Getting the snapshot timed out after %@ seconds", @(AX_TIMEOUT)];

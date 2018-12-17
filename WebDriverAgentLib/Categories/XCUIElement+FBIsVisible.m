@@ -147,17 +147,19 @@ static NSMutableDictionary<NSNumber *, NSMutableDictionary<NSString *, NSNumber 
   __block NSError *innerError = nil;
   id<XCTestManager_ManagerInterface> proxy = [FBXCTestDaemonsProxy testRunnerProxy];
   dispatch_semaphore_t sem = dispatch_semaphore_create(0);
-  [proxy _XCT_setAXTimeout:AX_TIMEOUT reply:^(int res) {
-    [proxy _XCT_requestElementAtPoint:point
-                                reply:^(XCAccessibilityElement *element, NSError *error) {
-      if (nil == error) {
-        result = element;
-      } else {
-        innerError = error;
-      }
-      dispatch_semaphore_signal(sem);
-    }];
-  }];
+  [FBXCTestDaemonsProxy tryToSetAxTimeout:AX_TIMEOUT
+                                 forProxy:proxy
+                              withHandler:^(int res) {
+                                [proxy _XCT_requestElementAtPoint:point
+                                                            reply:^(XCAccessibilityElement *element, NSError *error) {
+                                                              if (nil == error) {
+                                                                result = element;
+                                                              } else {
+                                                                innerError = error;
+                                                              }
+                                                              dispatch_semaphore_signal(sem);
+                                                            }];
+                              }];
   dispatch_semaphore_wait(sem, dispatch_time(DISPATCH_TIME_NOW, (int64_t)(AX_TIMEOUT * NSEC_PER_SEC)));
   if (nil != innerError) {
     [FBLogger logFmt:@"Cannot get the accessibility element for the point where %@ snapshot is located. Original error: '%@'", innerError.description, self.description];
