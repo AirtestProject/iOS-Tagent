@@ -93,6 +93,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSInteger)mjpegServerPort;
 
 /**
+ The scaling factor for frames of the mjpeg stream (Default values is 100 and does not perform scaling).
+ */
++ (NSUInteger)mjpegScalingFactor;
++ (void)setMjpegScalingFactor:(NSUInteger)scalingFactor;
+
+/**
  YES if verbose logging is enabled. NO otherwise.
  */
 + (BOOL)verboseLoggingEnabled;

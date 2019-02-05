@@ -115,6 +115,7 @@ static NSString *const FBServerURLEndMarker = @"<-ServerURLHere";
 
 - (void)initScreenshotsBroadcaster
 {
+  [self readMjpegSettingsFromEnv];
   self.screenshotsBroadcaster = [[FBTCPSocket alloc]
                                  initWithPort:(uint16_t)FBConfiguration.mjpegServerPort];
   self.screenshotsBroadcaster.delegate = [[FBMjpegServer alloc] init];
@@ -132,6 +133,19 @@ static NSString *const FBServerURLEndMarker = @"<-ServerURLHere";
   }
 
   [self.screenshotsBroadcaster stop];
+}
+
+- (void)readMjpegSettingsFromEnv
+{
+  NSDictionary *env = NSProcessInfo.processInfo.environment;
+  NSString *scalingFactor = [env objectForKey:@"MJPEG_SCALING_FACTOR"];
+  if (scalingFactor != nil && [scalingFactor length] > 0) {
+    [FBConfiguration setMjpegScalingFactor:[scalingFactor integerValue]];
+  }
+  NSString *screenshotQuality = [env objectForKey:@"MJPEG_SERVER_SCREENSHOT_QUALITY"];
+  if (screenshotQuality != nil && [screenshotQuality length] > 0) {
+    [FBConfiguration setMjpegServerScreenshotQuality:[screenshotQuality integerValue]];
+  }
 }
 
 - (void)stopServing

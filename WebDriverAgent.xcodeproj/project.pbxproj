@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		1FC3B2E32121ECF600B61EE0 /* FBApplicationProcessProxyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FC3B2E12121EC8C00B61EE0 /* FBApplicationProcessProxyTests.m */; };
+		63CCF91221ECE4C700E94ABD /* FBImageIOScaler.h in Headers */ = {isa = PBXBuildFile; fileRef = 63CCF91021ECE4C700E94ABD /* FBImageIOScaler.h */; };
+		63CCF91321ECE4C700E94ABD /* FBImageIOScaler.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CCF91121ECE4C700E94ABD /* FBImageIOScaler.m */; };
+		63FD950221F9D06100A3E356 /* FBImageIOScalerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 631B523421F6174300625362 /* FBImageIOScalerTests.m */; };
+		63FD950321F9D06100A3E356 /* FBImageIOScalerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 631B523421F6174300625362 /* FBImageIOScalerTests.m */; };
+		63FD950421F9D06200A3E356 /* FBImageIOScalerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 631B523421F6174300625362 /* FBImageIOScalerTests.m */; };
 		710181F8211DF584002FD3A8 /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 710181F7211DF584002FD3A8 /* CocoaAsyncSocket.framework */; };
 		71018201211DF62C002FD3A8 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 71018200211DF62C002FD3A8 /* libxml2.tbd */; };
 		7101820D211E026B002FD3A8 /* libAccessibility.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7101820C211E026B002FD3A8 /* libAccessibility.tbd */; };
@@ -453,6 +458,9 @@
 		1BA7DD8C206D694B007C7C26 /* XCTElementSetTransformer-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCTElementSetTransformer-Protocol.h"; sourceTree = "<group>"; };
 		1FC3B2E12121EC8C00B61EE0 /* FBApplicationProcessProxyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBApplicationProcessProxyTests.m; sourceTree = "<group>"; };
 		44757A831D42CE8300ECF35E /* XCUIDeviceRotationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCUIDeviceRotationTests.m; sourceTree = "<group>"; };
+		631B523421F6174300625362 /* FBImageIOScalerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBImageIOScalerTests.m; sourceTree = "<group>"; };
+		63CCF91021ECE4C700E94ABD /* FBImageIOScaler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBImageIOScaler.h; sourceTree = "<group>"; };
+		63CCF91121ECE4C700E94ABD /* FBImageIOScaler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBImageIOScaler.m; sourceTree = "<group>"; };
 		710181F7211DF584002FD3A8 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaAsyncSocket.framework; path = Carthage/Build/iOS/CocoaAsyncSocket.framework; sourceTree = "<group>"; };
 		71018200211DF62C002FD3A8 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		7101820C211E026B002FD3A8 /* libAccessibility.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libAccessibility.tbd; path = usr/lib/libAccessibility.tbd; sourceTree = SDKROOT; };
@@ -1154,6 +1162,8 @@
 				711084431DA3AA7500F913D6 /* FBXPath.m */,
 				EE6B64FB1D0F86EF00E85F5D /* XCTestPrivateSymbols.h */,
 				EE6B64FC1D0F86EF00E85F5D /* XCTestPrivateSymbols.m */,
+				63CCF91021ECE4C700E94ABD /* FBImageIOScaler.h */,
+				63CCF91121ECE4C700E94ABD /* FBImageIOScaler.m */,
 			);
 			name = Utilities;
 			path = WebDriverAgentLib/Utilities;
@@ -1213,6 +1223,7 @@
 				71E504941DF59BAD0020C32A /* XCUIElementAttributesTests.m */,
 				EEBBD48D1D4785FC00656A81 /* XCUIElementFBFindTests.m */,
 				EE1E06E11D181CC9007CF043 /* XCUIElementHelperIntegrationTests.m */,
+				631B523421F6174300625362 /* FBImageIOScalerTests.m */,
 			);
 			path = IntegrationTests;
 			sourceTree = "<group>";
@@ -1560,6 +1571,7 @@
 				71BD20731F86116100B36EC2 /* XCUIApplication+FBTouchAction.h in Headers */,
 				EE158ACE1CBD456F00A3E3F0 /* FBCommandHandler.h in Headers */,
 				EE158AC81CBD456F00A3E3F0 /* FBSessionCommands.h in Headers */,
+				63CCF91221ECE4C700E94ABD /* FBImageIOScaler.h in Headers */,
 				EE158AE31CBD456F00A3E3F0 /* FBSession-Private.h in Headers */,
 				716E0BCE1E917E810087A825 /* NSString+FBXMLSafeString.h in Headers */,
 				EE158ACF1CBD456F00A3E3F0 /* FBCommandStatus.h in Headers */,
@@ -1921,6 +1933,7 @@
 				EEE3764A1D59FAE900ED88DD /* XCUIElement+FBWebDriverAttributes.m in Sources */,
 				EE8DDD7E20C5733C004D4925 /* XCUIElement+FBForceTouch.m in Sources */,
 				71241D7C1FAE3D2500B9559F /* FBTouchActionCommands.m in Sources */,
+				63CCF91321ECE4C700E94ABD /* FBImageIOScaler.m in Sources */,
 				EE158ACB1CBD456F00A3E3F0 /* FBTouchIDCommands.m in Sources */,
 				EE158ABD1CBD456F00A3E3F0 /* FBDebugCommands.m in Sources */,
 				716E0BCF1E917E810087A825 /* NSString+FBXMLSafeString.m in Sources */,
@@ -1967,6 +1980,7 @@
 			files = (
 				71241D801FAF087500B9559F /* FBW3CMultiTouchActionsIntegrationTests.m in Sources */,
 				71241D7E1FAF084E00B9559F /* FBW3CTouchActionsIntegrationTests.m in Sources */,
+				63FD950221F9D06100A3E356 /* FBImageIOScalerTests.m in Sources */,
 				719CD8FF2126C90200C7D0C2 /* FBAutoAlertsHandlerTests.m in Sources */,
 				EE2202131ECC612200A29571 /* FBIntegrationTestCase.m in Sources */,
 				71BD20781F869E0F00B36EC2 /* FBAppiumTouchActionsIntegrationTests.m in Sources */,
@@ -1983,6 +1997,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE5095E51EBCC9090028E2FE /* FBTypingTest.m in Sources */,
+				63FD950321F9D06100A3E356 /* FBImageIOScalerTests.m in Sources */,
 				EE5095EB1EBCC9090028E2FE /* XCElementSnapshotHitPointTests.m in Sources */,
 				EE5095EC1EBCC9090028E2FE /* XCUIApplicationHelperTests.m in Sources */,
 				EE5095ED1EBCC9090028E2FE /* XCElementSnapshotHelperTests.m in Sources */,
@@ -2046,6 +2061,7 @@
 				EE26409D1D0EBA25009BE6B0 /* FBElementAttributeTests.m in Sources */,
 				7119E1EC1E891F8600D0B125 /* FBPickerWheelSelectTests.m in Sources */,
 				EE1E06DA1D1808C2007CF043 /* FBIntegrationTestCase.m in Sources */,
+				63FD950421F9D06200A3E356 /* FBImageIOScalerTests.m in Sources */,
 				EE05BAFA1D13003C00A3EB00 /* FBKeyboardTests.m in Sources */,
 				EE55B3271D1D54CF003AAAEC /* FBScrollingTests.m in Sources */,
 				EE6A89371D0B35920083E92B /* FBFailureProofTestCaseTests.m in Sources */,

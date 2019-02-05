@@ -29,6 +29,7 @@ static NSUInteger FBMaxTypingFrequency = 60;
 static NSUInteger FBMjpegServerScreenshotQuality = 25;
 static NSUInteger FBMjpegServerFramerate = 10;
 static NSUInteger FBScreenshotQuality = 1;
+static NSUInteger FBMjpegScalingFactor = 100;
 
 @implementation FBConfiguration
 
@@ -72,6 +73,15 @@ static NSUInteger FBScreenshotQuality = 1;
   }
 
   return DefaultMjpegServerPort;
+}
+
++ (NSUInteger)mjpegScalingFactor
+{
+  return FBMjpegScalingFactor;
+}
+
++ (void)setMjpegScalingFactor:(NSUInteger)scalingFactor {
+  FBMjpegScalingFactor = scalingFactor;
 }
 
 + (BOOL)verboseLoggingEnabled
