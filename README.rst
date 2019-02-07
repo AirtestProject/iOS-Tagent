@@ -48,7 +48,7 @@ Common Api in airtest is supported
 
 except:
 
-    - wake: Now supported now (may use 'home' instead)
+    - wake: Not supported now (may use 'home' instead)
     - keyevent: Only support 'home' event
     - clear_app:  Not supported now
     - install:  Not supported now
