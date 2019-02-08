@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1FC3B2E32121ECF600B61EE0 /* FBApplicationProcessProxyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FC3B2E12121EC8C00B61EE0 /* FBApplicationProcessProxyTests.m */; };
+		6385F4A7220A40760095BBDB /* XCUIApplicationProcessDelay.m in Sources */ = {isa = PBXBuildFile; fileRef = 6385F4A5220A40760095BBDB /* XCUIApplicationProcessDelay.m */; };
 		63CCF91221ECE4C700E94ABD /* FBImageIOScaler.h in Headers */ = {isa = PBXBuildFile; fileRef = 63CCF91021ECE4C700E94ABD /* FBImageIOScaler.h */; };
 		63CCF91321ECE4C700E94ABD /* FBImageIOScaler.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CCF91121ECE4C700E94ABD /* FBImageIOScaler.m */; };
 		63FD950221F9D06100A3E356 /* FBImageIOScalerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 631B523421F6174300625362 /* FBImageIOScalerTests.m */; };
@@ -459,6 +460,7 @@
 		1FC3B2E12121EC8C00B61EE0 /* FBApplicationProcessProxyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBApplicationProcessProxyTests.m; sourceTree = "<group>"; };
 		44757A831D42CE8300ECF35E /* XCUIDeviceRotationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCUIDeviceRotationTests.m; sourceTree = "<group>"; };
 		631B523421F6174300625362 /* FBImageIOScalerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBImageIOScalerTests.m; sourceTree = "<group>"; };
+		6385F4A5220A40760095BBDB /* XCUIApplicationProcessDelay.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XCUIApplicationProcessDelay.m; sourceTree = "<group>"; };
 		63CCF91021ECE4C700E94ABD /* FBImageIOScaler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBImageIOScaler.h; sourceTree = "<group>"; };
 		63CCF91121ECE4C700E94ABD /* FBImageIOScaler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBImageIOScaler.m; sourceTree = "<group>"; };
 		710181F7211DF584002FD3A8 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaAsyncSocket.framework; path = Carthage/Build/iOS/CocoaAsyncSocket.framework; sourceTree = "<group>"; };
@@ -1164,6 +1166,7 @@
 				EE6B64FC1D0F86EF00E85F5D /* XCTestPrivateSymbols.m */,
 				63CCF91021ECE4C700E94ABD /* FBImageIOScaler.h */,
 				63CCF91121ECE4C700E94ABD /* FBImageIOScaler.m */,
+				6385F4A5220A40760095BBDB /* XCUIApplicationProcessDelay.m */,
 			);
 			name = Utilities;
 			path = WebDriverAgentLib/Utilities;
@@ -1895,6 +1898,7 @@
 				EE158AC71CBD456F00A3E3F0 /* FBScreenshotCommands.m in Sources */,
 				EEEC7C931F21F27A0053426C /* FBPredicate.m in Sources */,
 				7136A47A1E8918E60024FC3D /* XCUIElement+FBPickerWheel.m in Sources */,
+				6385F4A7220A40760095BBDB /* XCUIApplicationProcessDelay.m in Sources */,
 				711084451DA3AA7500F913D6 /* FBXPath.m in Sources */,
 				719CD8FD2126C88B00C7D0C2 /* XCUIApplication+FBAlert.m in Sources */,
 				71241D781FAE31F100B9559F /* FBAppiumActionsSynthesizer.m in Sources */,
