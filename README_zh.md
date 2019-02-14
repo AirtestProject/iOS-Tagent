@@ -2,21 +2,22 @@
 
 ![ios-airtestIDE](/IntroductionPhoto/ios-airtestIDE.gif "ios-airtestIDE")
 
-WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/facebook/WebDriverAgent) 项目上进行开发的 , 目的是为了对 [AirtestProject](http://airtest.netease.com/) 提供iOS平台的测试支持，在原项目的基础上进行了定制化的优化和功能调整。
+WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/facebook/WebDriverAgent) 项目上进行开发的 , 目的是为了对 [Airtest Project](http://airtest.netease.com/) 提供iOS平台的测试支持，在原项目的基础上进行了定制化的优化和功能调整。
 
-如果需要使用airtest项目对iOS平台进行测试，需要部署此项目来完成对iOS手机的操作
+如果需要使用Airtest项目对iOS平台进行测试，需要部署此项目来完成对iOS手机的操作
 
 这个项目在如下版本上进行了开发和测试：
 
-|Xcode|iOS |
-|:---:|:---- :|
-| 10 | 12 |
-| 9  | 11 |
+| iOS       	| Xcode 	|
+|-----------	|-------	|
+| 10.x-12.x 	| 10.x  	|
+| 9.x       	| 9.x   	|
 
 其他版本的xcode和iOS未经完整测试，可能会出现非预期的错误情况。
 
 
->现在这个项目在公开测试状态，会存在一些问题，如果对于这个项目有问题和反馈建议，可以到 [Issues](https://github.com/AirtestProject/iOS-Tagent/issues)里进行提出.
+如果对于这个项目有问题和反馈建议，可以到 [Issues](https://github.com/AirtestProject/iOS-Tagent/issues)里进行提出.
+如果对于这个项目有问题和反馈建议，可以到 [Issues](https://github.com/AirtestProject/iOS-Tagent/issues)里进行提出.
 
 
 ## 开始部署
@@ -97,7 +98,7 @@ WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/fa
 
 
 ### 3. 最后，使用
-在启动成功之后可以通过 http://127.0.0.1:8100 这个地址， 填入Airtest或者Airtest-ide栏目中的方式，使用 Airtest 或者 Airtest-ide 对iOS设备上的应用程序进行测试
+在启动成功之后可以通过 http://127.0.0.1:8100 这个地址， 填入Airtest或者AirtestIDE栏目中的方式，使用 Airtest 或者 AirtestIDE 对iOS设备上的应用程序进行测试
 
 ## Known Issues
 
