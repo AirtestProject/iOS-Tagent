@@ -62,8 +62,8 @@ Getting Started
 
 ### prerequisite
 
-> ​1. iOS Provisioning Profile(Certificate) (free or paid)
-> 2. basic experience with xcode
+1. iOS Provisioning Profile(Certificate) (free or paid)
+2. basic experience with xcode
 
 You can simply open WebDriverAgent.xcodeproj and start WebDriverAgentRunner to test
 
@@ -92,19 +92,18 @@ Start manual
 
 #### choose device first
 
-> ![image](./IntroductionPhoto/chooseDevice.png)
+![image](./IntroductionPhoto/chooseDevice.png)
 
 #### choose schema next
 
-> ![image](./IntroductionPhoto/chooseScheme.png)
+![image](./IntroductionPhoto/chooseScheme.png)
 
 #### finally: Product -\> Test
 
-> ![image](./IntroductionPhoto/runTest.png)
->
-> or
->
-> ![image](./IntroductionPhoto/ProductTest.jpg)
+![image](./IntroductionPhoto/runTest.png)
+or
+
+![image](./IntroductionPhoto/ProductTest.jpg)
 
 4.  also you need trust the application. You can go to Settings => General => Device Management on the device to trust the developer and allow the app to be run (see [Apple documentation for mor information](https://support.apple.com/en-us/HT204460) ) after that run 'test' again
 

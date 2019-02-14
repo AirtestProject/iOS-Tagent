@@ -23,8 +23,9 @@ WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/fa
 ## 开始部署
 
 ### 前置要求
-    1. 需要iOS的开发者证书，付费的免费的均可。
-    2. 需要了解xcode的基础操作和用法
+
+1. 需要iOS的开发者证书，付费的免费的均可。
+2. 需要了解xcode的基础操作和用法
 
 总体上，可以就直接打开`WebDriverAgent.xcodeproj`，并且使用 'test' 模式在设备上启动`WebDriverAgentRunner` 即可。
 
