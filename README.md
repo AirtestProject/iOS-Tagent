@@ -74,40 +74,41 @@ Start manual
 
 ### 1. run the agent
 
-1.  set up an signing in WebDriverAgent -\> WebDriverAgent-Runner-\> General -\> signing.   
+1.1  set up an signing in WebDriverAgent -> WebDriverAgent-Runner-> General -> signing.   
 
-2.  if a free personal certificate used
+1.2  if a free personal certificate used
 
     > This will manifest as something like an error that Xcode failed to
     > create provisioning profile:
     >
     > ![image](./IntroductionPhoto/FailID.png)
     >
-    > please change 'Build Settings' -\>"Product Bundle Identifier" into
+    > please change 'Build Settings' ->"Product Bundle Identifier" into
     > somethings else. like 'com.xxx.webDriverAgent-test123'
     >
     > ![image](./IntroductionPhoto/bundleId.png)
 
-3.  perform test in a selected device
+### 2. perform test in a selected device
 
-#### choose device first
+2.1 choose device first
 
 ![image](./IntroductionPhoto/chooseDevice.png)
 
-#### choose schema next
+2.2 choose schema next
 
 ![image](./IntroductionPhoto/chooseScheme.png)
 
-#### finally: Product -\> Test
+2.3 finally: Product -> Test
 
 ![image](./IntroductionPhoto/runTest.png)
+
 or
 
 ![image](./IntroductionPhoto/ProductTest.jpg)
 
-4.  also you need trust the application. You can go to Settings => General => Device Management on the device to trust the developer and allow the app to be run (see [Apple documentation for mor information](https://support.apple.com/en-us/HT204460) ) after that run 'test' again
+2.4 also you need trust the application. You can go to Settings => General => Device Management on the device to trust the developer and allow the app to be run (see [Apple documentation for mor information](https://support.apple.com/en-us/HT204460) ) after that run 'test' again
 
-5.  start Success
+2.5 start success
 
     > when something like this show in log, it means webDricerAgent
     > start success :
@@ -121,7 +122,7 @@ or
 
 More about how to start WebDriverAgent [here](https://github.com/facebook/WebDriverAgent/wiki/Starting-WebDriverAgent) and [another](https://github.com/appium/appium/blob/master/docs/en/drivers/ios-xcuitest-real-devices.md)
 
-### 2. set up proxy
+### 3. Set up proxy
 
 You need to set up proxy to forward request to real device via usb-forwarding as this may have something wrong, known [Issues](https://github.com/facebook/WebDriverAgent/wiki/Common-Issues) and [detail](https://github.com/facebook/WebDriverAgent/issues/288)
 
@@ -132,7 +133,7 @@ You can use [iproxy](https://github.com/libimobiledevice/libimobiledevice)
 
 Then try to access <http://127.0.0.1:8100/status> in mac browser, is a json string shown, mean all start success
 
-### 3. Finally
+### 4. Finally
 
 You can use iOS device in airtest with <http://127.0.0.1:8100>
 

@@ -36,11 +36,11 @@ WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/fa
 
 ### 1. 启动客户端
 
-1. 需要设置开发者证书，可以通过  WebDriverAgent -> WebDriverAgent-Runner-> General -> signing 选择自己的开发者证书
+1.1 需要设置开发者证书，可以通过  WebDriverAgent -> WebDriverAgent-Runner-> General -> signing 选择自己的开发者证书
 ![set up signing](/IntroductionPhoto/signing.png "set up signing")
 
 
-2. 如果使用了免费的开发者证书
+1.2 如果使用了免费的开发者证书
 
     可能会出现，比如 'Xcode failed to create provisioning profile' 这样的错误
 
@@ -50,29 +50,29 @@ WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/fa
 
 ![bundleId](/IntroductionPhoto/bundleId.png "set up bundleId")
 
-3. 在选定设备上启动项目
+### 2. 在选定设备上启动项目
 
-#### 首先选择需要启动的设备
+2.1 首先选择需要启动的设备
 
 ![chooseDevice](/IntroductionPhoto/chooseDevice.png "chooseDevice")
 
-#### 选择启动的Scheme，选择WebDriverAgentRunner
+2.2 选择启动的Scheme，选择WebDriverAgentRunner
 
 ![chooseScheme](/IntroductionPhoto/chooseScheme.png "chooseScheme")
 
-#### 最后，选择Product->Test 启动项目
+2.3 最后，选择Product->Test 启动项目
 ![runTest](/IntroductionPhoto/runTest.png "runTest")
 
-点击启动或从菜单里选择启动
+2.4 点击启动或从菜单里选择启动
 
 ![ProductTest](/IntroductionPhoto/ProductTest.jpg "ProductTest")
 
 
-4. 第一次安装的时候，你需要信任应用程序才可以进行启动，可以选择 Settings -> General -> Device Management 从而对应用程序进行信任，才可以进行运行 (可以查看 [Apple documentation](https://support.apple.com/en-us/HT204460)). 之后重新启动'test'即可，会黑屏一下接着返回。
+2.5 第一次安装的时候，你需要信任应用程序才可以进行启动，可以选择 Settings -> General -> Device Management 从而对应用程序进行信任，才可以进行运行 (可以查看 [Apple documentation](https://support.apple.com/en-us/HT204460)). 之后重新启动'test'即可，会黑屏一下接着返回。
 
 ![untrustedDev](/IntroductionPhoto/untrustedDev.png "untrustedDev")
 
-5. 启动成功
+2.6 启动成功
 
     当你看到这样的日志的时候代表项目已经启动成功了
 
@@ -87,7 +87,7 @@ WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/fa
 可以从以下了解更多的关于如何成功启动这个项目的方法 [here](https://github.com/facebook/WebDriverAgent/wiki/Starting-WebDriverAgent).
 和 [here](https://github.com/appium/appium/blob/master/docs/en/drivers/ios-xcuitest-real-devices.md)
 
-### 2. 设置代理
+### 3. 设置代理
 一般情况下，需要通过设置usb代理的方式访问手机上的Agent，直接通过wifi对手机进行访问可能会出现问题，具体的原因可以参考 [Issues](https://github.com/facebook/WebDriverAgent/wiki/Common-Issues) 和 [detail](https://github.com/facebook/WebDriverAgent/issues/288)
 
 可以使用 [iproxy](https://github.com/libimobiledevice/libimobiledevice) 进行usb代理
@@ -98,7 +98,7 @@ WebDriverAgent-Evo 是基于 facebook 的 [WebDriverAgent](https://github.com/fa
 启动成功后，可以试着访问http://127.0.0.1:8100/status 在mac电脑的xcode上，如果访问成功并且可以看到一些json格式的手机信息，即表示启动成功。
 
 
-### 3. 最后，使用
+### 4. 最后，使用
 在启动成功之后可以通过 http://127.0.0.1:8100 这个地址， 填入Airtest或者AirtestIDE栏目中的方式，使用 Airtest 或者 AirtestIDE 对iOS设备上的应用程序进行测试
 
 ## Known Issues
