@@ -85,11 +85,6 @@
             value = "$(WDA_PRODUCT_BUNDLE_IDENTIFIER)"
             isEnabled = "YES">
          </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "EVENTLOOP_IDLE_DELAY_SEC"
-            value = "0"
-            isEnabled = "YES">
-         </EnvironmentVariable>
       </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>

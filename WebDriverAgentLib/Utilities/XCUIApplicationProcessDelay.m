@@ -7,44 +7,49 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
+#import "XCUIApplicationProcessDelay.h"
 #import <objc/runtime.h>
 #import "XCUIApplicationProcess.h"
 #import "FBLogger.h"
 
-/**
- In certain cases WebDriverAgent fails to create a session because -[XCUIApplication launch] doesn't return
- since it waits for the target app to be quiescenced.
- The reason for this seems to be that 'testmanagerd' doesn't send the events WebDriverAgent is waiting for.
- The expected events would trigger calls to '-[XCUIApplicationProcess setEventLoopHasIdled:]' and
- '-[XCUIApplicationProcess setAnimationsHaveFinished:]', which are the properties that are checked to
- determine whether an app has quiescenced or not.
- Delaying the call to on of the setters can fix this issue. Setting the environment variable
- 'EVENTLOOP_IDLE_DELAY_SEC' will swizzle the method '-[XCUIApplicationProcess setEventLoopHasIdled:]'
- and add a thread sleep of the value specified in the environment variable in seconds.
- */
-@interface XCUIApplicationProcessDelay : NSObject
-
-@end
-
-static NSString *const EVENTLOOP_IDLE_DELAY_SEC = @"EVENTLOOP_IDLE_DELAY_SEC";
 static void (*orig_set_event_loop_has_idled)(id, SEL, BOOL);
-static NSTimeInterval delay = 0;
+static NSTimeInterval eventloopIdleDelay = 0;
+static BOOL isSwizzled = NO;
+// '-[XCUIApplicationProcess setEventLoopHasIdled:]' can be called from different queues.
+// Lets lock the setup and access to the 'eventloopIdleDelay' variable
+static NSLock * lock = nil;
 
 @implementation XCUIApplicationProcessDelay
 
 + (void)load {
-  NSDictionary *env = [[NSProcessInfo processInfo] environment];
-  NSString *setEventLoopIdleDelay = [env objectForKey:EVENTLOOP_IDLE_DELAY_SEC];
-  if (!setEventLoopIdleDelay || [setEventLoopIdleDelay length] == 0) {
-    [FBLogger verboseLog:@"don't delay -[XCUIApplicationProcess setEventLoopHasIdled:]"];
+  lock = [[NSLock alloc] init];
+}
+
++ (void)setEventLoopHasIdledDelay:(NSTimeInterval)delay
+{
+  [lock lock];
+  if (!isSwizzled && delay < DBL_EPSILON) {
+    // don't swizzle methods until we need to
+    [lock unlock];
     return;
   }
-  delay = [setEventLoopIdleDelay doubleValue];
-  if (delay < DBL_EPSILON) {
-    [FBLogger log:[NSString stringWithFormat:@"Value of '%@' has to be greater than zero to delay -[XCUIApplicationProcess setEventLoopHasIdled:]",
-                   EVENTLOOP_IDLE_DELAY_SEC]];
+  eventloopIdleDelay = delay;
+  if (isSwizzled) {
+    [lock unlock];
     return;
   }
+  [self swizzleSetEventLoopHasIdled];
+  [lock unlock];
+}
+
++ (void)disableEventLoopDelay
+{
+  // Once the methods were swizzled they stay like that since the only change in the implementation
+  // is the thread sleep, which is skipped on setting it to zero.
+  [self setEventLoopHasIdledDelay:0];
+}
+
++ (void)swizzleSetEventLoopHasIdled {
   Method original = class_getInstanceMethod([XCUIApplicationProcess class], @selector(setEventLoopHasIdled:));
   if (original == nil) {
     [FBLogger log:@"Could not find method -[XCUIApplicationProcess setEventLoopHasIdled:]"];
@@ -53,11 +58,17 @@ static NSTimeInterval delay = 0;
   orig_set_event_loop_has_idled = (void(*)(id, SEL, BOOL)) method_getImplementation(original);
   Method replace = class_getClassMethod([XCUIApplicationProcessDelay class], @selector(setEventLoopHasIdled:));
   method_setImplementation(original, method_getImplementation(replace));
+  isSwizzled = YES;
 }
 
 + (void)setEventLoopHasIdled:(BOOL)idled {
-  [FBLogger verboseLog:[NSString stringWithFormat:@"Delaying -[XCUIApplicationProcess setEventLoopHasIdled:] by %.2f seconds", delay]];
-  [NSThread sleepForTimeInterval:delay];
+  [lock lock];
+  NSTimeInterval delay = eventloopIdleDelay;
+  [lock unlock];
+  if (delay > 0.0) {
+    [FBLogger verboseLog:[NSString stringWithFormat:@"Delaying -[XCUIApplicationProcess setEventLoopHasIdled:] by %.2f seconds", delay]];
+    [NSThread sleepForTimeInterval:delay];
+  }
   orig_set_event_loop_has_idled(self, _cmd, idled);
 }
 

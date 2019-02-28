@@ -18,6 +18,7 @@
 #import "XCUIDevice.h"
 #import "XCUIDevice+FBHealthCheck.h"
 #import "XCUIDevice+FBHelpers.h"
+#import "XCUIApplicationProcessDelay.h"
 
 static NSString* const USE_COMPACT_RESPONSES = @"shouldUseCompactResponses";
 static NSString* const ELEMENT_RESPONSE_ATTRIBUTES = @"elementResponseAttributes";
@@ -91,6 +92,12 @@ static NSString* const SCREENSHOT_QUALITY = @"screenshotQuality";
   }
   if (requirements[@"shouldUseSingletonTestManager"]) {
     [FBConfiguration setShouldUseSingletonTestManager:[requirements[@"shouldUseSingletonTestManager"] boolValue]];
+  }
+  NSNumber *delay = requirements[@"eventloopIdleDelaySec"];
+  if ([delay doubleValue] > 0.0) {
+    [XCUIApplicationProcessDelay setEventLoopHasIdledDelay:[delay doubleValue]];
+  } else {
+    [XCUIApplicationProcessDelay disableEventLoopDelay];
   }
 
   [FBConfiguration setShouldWaitForQuiescence:[requirements[@"shouldWaitForQuiescence"] boolValue]];

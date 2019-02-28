@@ -462,6 +462,7 @@
 		1FC3B2E12121EC8C00B61EE0 /* FBApplicationProcessProxyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBApplicationProcessProxyTests.m; sourceTree = "<group>"; };
 		44757A831D42CE8300ECF35E /* XCUIDeviceRotationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCUIDeviceRotationTests.m; sourceTree = "<group>"; };
 		631B523421F6174300625362 /* FBImageIOScalerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBImageIOScalerTests.m; sourceTree = "<group>"; };
+		633E904A220DEE7F007CADF9 /* XCUIApplicationProcessDelay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XCUIApplicationProcessDelay.h; sourceTree = "<group>"; };
 		6385F4A5220A40760095BBDB /* XCUIApplicationProcessDelay.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XCUIApplicationProcessDelay.m; sourceTree = "<group>"; };
 		63CCF91021ECE4C700E94ABD /* FBImageIOScaler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBImageIOScaler.h; sourceTree = "<group>"; };
 		63CCF91121ECE4C700E94ABD /* FBImageIOScaler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBImageIOScaler.m; sourceTree = "<group>"; };
@@ -1172,6 +1173,7 @@
 				EE6B64FC1D0F86EF00E85F5D /* XCTestPrivateSymbols.m */,
 				63CCF91021ECE4C700E94ABD /* FBImageIOScaler.h */,
 				63CCF91121ECE4C700E94ABD /* FBImageIOScaler.m */,
+				633E904A220DEE7F007CADF9 /* XCUIApplicationProcessDelay.h */,
 				6385F4A5220A40760095BBDB /* XCUIApplicationProcessDelay.m */,
 			);
 			name = Utilities;
