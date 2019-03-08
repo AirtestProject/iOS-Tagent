@@ -74,7 +74,7 @@ static id FBAXClient = nil;
   static BOOL hasTracker;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    hasTracker = [FBAXClient valueForKey:@"applicationProcessTracker"] != nil;
+    hasTracker = [FBAXClient respondsToSelector:@selector(applicationProcessTracker)];
   });
   return hasTracker;
 }
