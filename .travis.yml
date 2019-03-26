@@ -6,6 +6,14 @@ cache:
   - Carthage
   - Inspector/node_modules
 
+before_install:
+- |
+  if [[ $ACTION == int_test* ]]; then
+    rvm install 2.6.2
+    rvm use 2.6.2
+    bundle install
+  fi
+
 script: ./Scripts/build.sh
 
 branches:
@@ -18,9 +26,6 @@ matrix:
     - os: osx
       osx_image: xcode9.2
       env: IPHONE_MODEL="iPhone SE" IPAD_MODEL="iPad Air 2" IOS_VERSION="11.2" ACTION=build TARGET=runner SDK=sim
-    - os: osx
-      osx_image: xcode9.2
-      env: IPHONE_MODEL="iPhone SE" IPAD_MODEL="iPad Air 2" IOS_VERSION="11.2" ACTION=build TARGET=runner SDK=device
     # Analyze
     - os: osx
       osx_image: xcode9.2
@@ -60,10 +65,6 @@ matrix:
     - os: osx
       osx_image: xcode10.2
       env: IPHONE_MODEL="iPhone X" IPAD_MODEL="iPad Air 2" IOS_VERSION="12.2" ACTION=build TARGET=runner SDK=sim
-    # Fails to build because of a missing signature
-    # - os: osx
-    #   osx_image: xcode10.2
-    #   env: IPHONE_MODEL="iPhone X" IPAD_MODEL="iPad Air 2" IOS_VERSION="12.2" ACTION=build TARGET=runner SDK=device
     # Analyze
     - os: osx
       osx_image: xcode10.2

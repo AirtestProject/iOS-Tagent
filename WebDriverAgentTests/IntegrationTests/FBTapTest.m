@@ -11,7 +11,6 @@
 
 #import "FBIntegrationTestCase.h"
 
-#import "FBAlert.h"
 #import "FBElementCache.h"
 #import "FBTestMacros.h"
 #import "XCUIDevice+FBRotation.h"
@@ -29,7 +28,6 @@
 {
   [[XCUIDevice sharedDevice] fb_setDeviceInterfaceOrientation:orientation];
   NSError *error;
-  XCTAssertTrue(self.testedApplication.alerts.count == 0);
   [self.testedApplication.buttons[FBShowAlertButtonName] fb_tapWithError:&error];
   FBAssertWaitTillBecomesTrue(self.testedApplication.alerts.count > 0);
 }
@@ -42,12 +40,14 @@
     [self launchApplication];
     [self goToAlertsPage];
   });
+  [self clearAlert];
 }
 
 - (void)tearDown
 {
+  [self clearAlert];
+  [self resetOrientation];
   [super tearDown];
-  [[FBAlert alertWithApplication:self.testedApplication] dismissWithError:nil];
 }
 
 - (void)testTap
@@ -77,7 +77,6 @@
 {
   [[XCUIDevice sharedDevice] fb_setDeviceInterfaceOrientation:orientation];
   NSError *error;
-  XCTAssertTrue(self.testedApplication.alerts.count == 0);
   XCUIElement *dstButton = self.testedApplication.buttons[FBShowAlertButtonName];
   [dstButton fb_tapCoordinate:CGPointMake(dstButton.frame.size.width / 2, dstButton.frame.size.height / 2) error:&error];
   FBAssertWaitTillBecomesTrue(self.testedApplication.alerts.count > 0);

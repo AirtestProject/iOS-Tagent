@@ -13,7 +13,6 @@
 
 #import "XCUIElement.h"
 #import "XCUIApplication+FBTouchAction.h"
-#import "FBAlert.h"
 #import "FBTestMacros.h"
 #import "XCUIDevice+FBRotation.h"
 #import "FBRunLoopSpinner.h"
@@ -28,7 +27,6 @@
 {
   [[XCUIDevice sharedDevice] fb_setDeviceInterfaceOrientation:orientation];
   NSError *error;
-  XCTAssertTrue(self.testedApplication.alerts.count == 0);
   XCTAssertTrue([self.testedApplication fb_performAppiumTouchActions:gesture elementCache:nil error:&error]);
   FBAssertWaitTillBecomesTrue(self.testedApplication.alerts.count > 0);
 }
@@ -41,12 +39,14 @@
     [self launchApplication];
     [self goToAlertsPage];
   });
+  [self clearAlert];
 }
 
 - (void)tearDown
 {
+  [self clearAlert];
+  [self resetOrientation];
   [super tearDown];
-  [[FBAlert alertWithApplication:self.testedApplication] dismissWithError:nil];
 }
 
 - (void)testErroneousGestures
