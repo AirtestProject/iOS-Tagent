@@ -67,7 +67,10 @@
     [[FBRoute GET:@"/screenshot/:uuid"] respondWithTarget:self action:@selector(handleElementScreenshot:)],
     [[FBRoute GET:@"/wda/element/:uuid/accessible"] respondWithTarget:self action:@selector(handleGetAccessible:)],
     [[FBRoute GET:@"/wda/element/:uuid/accessibilityContainer"] respondWithTarget:self action:@selector(handleGetIsAccessibilityContainer:)],
-#if !TARGET_OS_TV
+#if TARGET_OS_TV
+    [[FBRoute GET:@"/element/:uuid/attribute/focused"] respondWithTarget:self action:@selector(handleGetFocused:)],
+    [[FBRoute POST:@"/wda/element/:uuid/focuse"] respondWithTarget:self action:@selector(handleFocuse:)],
+#else
     [[FBRoute POST:@"/wda/element/:uuid/swipe"] respondWithTarget:self action:@selector(handleSwipe:)],
     [[FBRoute POST:@"/wda/element/:uuid/pinch"] respondWithTarget:self action:@selector(handlePinch:)],
     [[FBRoute POST:@"/wda/element/:uuid/doubleTap"] respondWithTarget:self action:@selector(handleDoubleTap:)],
@@ -193,7 +196,11 @@
   NSString *elementUUID = request.parameters[@"uuid"];
   XCUIElement *element = [elementCache elementForUUID:elementUUID];
   NSError *error = nil;
+#if TARGET_OS_IOS
   if (![element fb_tapWithError:&error]) {
+#elif TARGET_OS_TV
+  if (![element fb_selectWithError:&error]) {
+#endif
     return FBResponseWithError(error);
   }
   return FBResponseWithElementUUID(elementUUID);
@@ -211,7 +218,43 @@
   return FBResponseWithElementUUID(elementUUID);
 }
 
-#if !TARGET_OS_TV
+#if TARGET_OS_TV
++ (id<FBResponsePayload>)handleGetFocused:(FBRouteRequest *)request
+{
+  // `BOOL isFocused = [elementCache elementForUUID:request.parameters[@"uuid"]];`
+  // returns wrong true/false after moving focus by key up/down, for example.
+  // Thus, ensure the focus compares the status with `fb_focusedElement`.
+  BOOL isFocused = NO;
+  XCUIElement *focusedElement = request.session.activeApplication.fb_focusedElement;
+  if (focusedElement != nil) {
+    FBElementCache *elementCache = request.session.elementCache;
+    NSString *focusedUUID = [elementCache storeElement:focusedElement];
+    if ([focusedUUID isEqualToString:request.parameters[@"uuid"]]) {
+      isFocused = YES;
+    }
+  }
+
+  return FBResponseWithStatus(FBCommandStatusNoError, isFocused ? @YES : @NO);
+}
+
++ (id<FBResponsePayload>)handleFocuse:(FBRouteRequest *)request
+{
+  NSString *elementUUID = request.parameters[@"uuid"];
+  FBElementCache *elementCache = request.session.elementCache;
+  XCUIElement *element = [elementCache elementForUUID:elementUUID];
+  NSError *error;
+
+  if (!element) {
+    return FBResponseWithErrorFormat(@"'%@' element uuid didn't match any elements. Try find the element again.",
+                                     elementUUID);
+  }
+
+  if (![element fb_setFocusWithError:&error]) {
+    return FBResponseWithError(error);
+  }
+  return FBResponseWithElementUUID(elementUUID);
+}
+#else
 + (id<FBResponsePayload>)handleDoubleTap:(FBRouteRequest *)request
 {
   FBElementCache *elementCache = request.session.elementCache;
@@ -251,29 +294,7 @@
   [pressCoordinate pressForDuration:[request.arguments[@"duration"] doubleValue]];
   return FBResponseWithOK();
 }
-#endif
 
-+ (id<FBResponsePayload>)handleForceTouch:(FBRouteRequest *)request
-{
-  FBElementCache *elementCache = request.session.elementCache;
-  XCUIElement *element = [elementCache elementForUUID:request.parameters[@"uuid"]];
-  double pressure = [request.arguments[@"pressure"] doubleValue];
-  double duration = [request.arguments[@"duration"] doubleValue];
-  NSError *error;
-  if (nil != request.arguments[@"x"] && nil != request.arguments[@"y"]) {
-    CGPoint forceTouchPoint = CGPointMake((CGFloat)[request.arguments[@"x"] doubleValue], (CGFloat)[request.arguments[@"y"] doubleValue]);
-    if (![element fb_forceTouchCoordinate:forceTouchPoint pressure:pressure duration:duration error:&error]) {
-      return FBResponseWithError(error);
-    }
-  } else {
-    if (![element fb_forceTouchWithPressure:pressure duration:duration error:&error]) {
-      return FBResponseWithError(error);
-    }
-  }
-  return FBResponseWithOK();
-}
-
-#if !TARGET_OS_TV
 + (id<FBResponsePayload>)handleScroll:(FBRouteRequest *)request
 {
   FBElementCache *elementCache = request.session.elementCache;
@@ -399,6 +420,26 @@
 }
 #endif
 
++ (id<FBResponsePayload>)handleForceTouch:(FBRouteRequest *)request
+{
+  FBElementCache *elementCache = request.session.elementCache;
+  XCUIElement *element = [elementCache elementForUUID:request.parameters[@"uuid"]];
+  double pressure = [request.arguments[@"pressure"] doubleValue];
+  double duration = [request.arguments[@"duration"] doubleValue];
+  NSError *error;
+  if (nil != request.arguments[@"x"] && nil != request.arguments[@"y"]) {
+    CGPoint forceTouchPoint = CGPointMake((CGFloat)[request.arguments[@"x"] doubleValue], (CGFloat)[request.arguments[@"y"] doubleValue]);
+    if (![element fb_forceTouchCoordinate:forceTouchPoint pressure:pressure duration:duration error:&error]) {
+      return FBResponseWithError(error);
+    }
+  } else {
+    if (![element fb_forceTouchWithPressure:pressure duration:duration error:&error]) {
+      return FBResponseWithError(error);
+    }
+  }
+  return FBResponseWithOK();
+}
+
 + (id<FBResponsePayload>)handleKeys:(FBRouteRequest *)request
 {
   NSString *textToType = [request.arguments[@"value"] componentsJoinedByString:@""];
@@ -437,9 +478,9 @@
   return FBResponseWithObject(screenshot);
 }
 
-static const CGFloat DEFAULT_OFFSET = (CGFloat)0.2;
 
 #if !TARGET_OS_TV
+static const CGFloat DEFAULT_OFFSET = (CGFloat)0.2;
 
 + (id<FBResponsePayload>)handleWheelSelect:(FBRouteRequest *)request
 {
@@ -471,11 +512,7 @@ static const CGFloat DEFAULT_OFFSET = (CGFloat)0.2;
   return FBResponseWithOK();
 }
 
-#endif
-
 #pragma mark - Helpers
-
-#if !TARGET_OS_TV
 
 + (id<FBResponsePayload>)handleScrollElementToVisible:(XCUIElement *)element withRequest:(FBRouteRequest *)request
 {

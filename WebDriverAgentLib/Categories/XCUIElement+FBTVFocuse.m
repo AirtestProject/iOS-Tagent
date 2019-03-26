@@ -24,7 +24,7 @@ int const MAX_ITERATIONS_COUNT = 100;
 
 - (BOOL)fb_setFocusWithError:(NSError**) error
 {
-  [[FBApplication fb_activeApplication] fb_waitUntilSnapshotIsStable];
+  [FBApplication.fb_activeApplication fb_waitUntilSnapshotIsStable];
 
   if (!self.wdEnabled) {
     if (error) {
@@ -36,6 +36,7 @@ int const MAX_ITERATIONS_COUNT = 100;
 
   FBTVNavigationTracker *tracker = [FBTVNavigationTracker trackerWithTargetElement:self];
   for (int i = 0; i < MAX_ITERATIONS_COUNT; i++) {
+    // Here hasFocus works so far. Maybe, it is because it is handled by `XCUIRemote`...
     if (self.hasFocus) {
       return YES;
     }

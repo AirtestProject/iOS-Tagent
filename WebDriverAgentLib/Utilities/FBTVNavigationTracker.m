@@ -11,9 +11,9 @@
 
 #import "FBApplication.h"
 #import "FBMathUtils.h"
-#import "XCUIApplication+FBFocused.h"
 #import "XCUIElement+FBUtilities.h"
 #import "XCUIElement+FBWebDriverAttributes.h"
+#import "XCUIApplication+FBHelpers.h"
 
 #if TARGET_OS_TV
 
@@ -44,21 +44,21 @@
 @end
 
 @interface FBTVNavigationTracker ()
-@property (nonatomic, strong) id<FBElement> targetElement;
+@property (nonatomic, strong) XCUIElement *targetElement;
 @property (nonatomic, assign) CGPoint targetCenter;
 @property (nonatomic, strong) NSMutableDictionary<NSNumber *, FBTVNavigationItem* >* navigationItems;
 @end
 
 @implementation FBTVNavigationTracker
 
-+ (instancetype)trackerWithTargetElement:(id<FBElement>)targetElement
++ (instancetype)trackerWithTargetElement:(XCUIElement *)targetElement
 {
   FBTVNavigationTracker *tracker = [[FBTVNavigationTracker alloc] initWithTargetElement:targetElement];
   tracker.targetElement = targetElement;
   return tracker;
 }
 
-- (instancetype)initWithTargetElement:(id<FBElement>)targetElement
+- (instancetype)initWithTargetElement:(XCUIElement *)targetElement
 {
   self = [super init];
   if(self) {
@@ -71,7 +71,8 @@
 
 - (FBTVDirection)directionToFocusedElement
 {
-  id<FBElement> focused = self.focusedElement;
+  XCUIElement *focused = FBApplication.fb_activeApplication.fb_focusedElement;
+
   CGPoint focusedCenter = FBRectGetCenter(focused.wdFrame);
   FBTVNavigationItem *item = [self navigationItemWithElement:focused];
   CGFloat yDelta = self.targetCenter.y - focusedCenter.y;
@@ -93,11 +94,6 @@
 }
 
 #pragma mark - Utilities
-- (id<FBElement>)focusedElement
-{
-  return [FBApplication fb_activeApplication].fb_focusedElement;
-}
-
 - (FBTVNavigationItem*)navigationItemWithElement:(id<FBElement>)element
 {
   NSNumber *key = [NSNumber numberWithUnsignedInteger:element.wdUID];

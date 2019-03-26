@@ -91,7 +91,9 @@ const static NSTimeInterval FBMinimumAppSwitchWait = 3.0;
   info[@"frame"] = NSStringFromCGRect(snapshot.wdFrame);
   info[@"isEnabled"] = [@([snapshot isWDEnabled]) stringValue];
   info[@"isVisible"] = [@([snapshot isWDVisible]) stringValue];
+#if TARGET_OS_TV
   info[@"isFocused"] = [@([snapshot isWDFocused]) stringValue];
+#endif
 
   if (!recursive) {
     return info.copy;
@@ -164,5 +166,14 @@ const static NSTimeInterval FBMinimumAppSwitchWait = 3.0;
            matchingPredicate:[NSPredicate predicateWithFormat:@"hasKeyboardFocus == YES"]]
           fb_firstMatch];
 }
+
+#if TARGET_OS_TV
+- (XCUIElement *)fb_focusedElement
+{
+  return [[[self descendantsMatchingType:XCUIElementTypeAny]
+           matchingPredicate:[NSPredicate predicateWithFormat:@"hasFocus == true"]]
+          fb_firstMatch];
+}
+#endif
 
 @end
