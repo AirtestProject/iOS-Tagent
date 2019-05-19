@@ -25,6 +25,9 @@ typedef NS_ENUM(NSUInteger, FBTVDirection) {
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface FBTVNavigationItem : NSObject
+@end
+
 @interface FBTVNavigationTracker : NSObject
 
 /**

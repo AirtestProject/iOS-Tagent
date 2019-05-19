@@ -28,7 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "64B264F8228C50E0002A5025"
+               BuildableName = "UnitTests_tvOS.xctest"
+               BlueprintName = "UnitTests_tvOS"
+               ReferencedContainer = "container:WebDriverAgent.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "641EE5D52240C5CA00173FCB"
+            BuildableName = "WebDriverAgentLib_tvOS.framework"
+            BlueprintName = "WebDriverAgentLib_tvOS"
+            ReferencedContainer = "container:WebDriverAgent.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
