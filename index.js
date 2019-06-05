@@ -104,7 +104,10 @@ async function fetchDependencies (useSsl = false) {
     args.push('--use-ssl');
   }
   args.push('--platform', platforms.join(','));
-  await exec (CARTHAGE_CMD, args, {logger: execLogger});
+  await exec (CARTHAGE_CMD, args, {
+    logger: execLogger,
+    cwd: path.resolve(__dirname, __dirname.endsWith('build') ? '..' : '.'),
+  });
 
   // put the resolved cartfile into the Carthage directory
   await fs.copyFile(cartfile, installedCartfile);
