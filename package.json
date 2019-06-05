@@ -56,9 +56,12 @@
     "build/index.js",
     "Cartfile",
     "Cartfile.resolved",
+    "Configurations",
     "PrivateHeaders",
     "WebDriverAgent.xcodeproj",
     "WebDriverAgentLib",
-    "WebDriverAgentTests"
+    "WebDriverAgentRunner",
+    "WebDriverAgentTests",
+    "XCTWebDriverAgentLib"
   ]
 }
