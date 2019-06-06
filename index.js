@@ -87,7 +87,7 @@ async function fetchDependencies (useSsl = false) {
   if (!await needsUpdate(cartfile, installedCartfile)) {
     // files are identical
     log.info('Dependencies up-to-date');
-    return;
+    return false;
   }
 
   let platforms = [IOS];
@@ -113,6 +113,7 @@ async function fetchDependencies (useSsl = false) {
   await fs.copyFile(cartfile, installedCartfile);
 
   log.debug(`Finished fetching dependencies`);
+  return true;
 }
 
 if (require.main === module) {
