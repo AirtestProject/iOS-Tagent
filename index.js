@@ -35,6 +35,13 @@ const CARTHAGE_CMD = 'carthage';
 const CARTFILE = 'Cartfile.resolved';
 const CARTHAGE_ROOT = 'Carthage';
 
+const BOOTSTRAP_PATH = __dirname.endsWith('build')
+  ? path.resolve(__dirname, '..')
+  : __dirname;
+const WDA_BUNDLE_ID = 'com.apple.test.WebDriverAgentRunner-Runner';
+const WDA_RUNNER_BUNDLE_ID = 'com.facebook.WebDriverAgentRunner';
+const PROJECT_FILE = 'project.pbxproj';
+
 async function hasTvOSSims () {
   const devices = _.flatten(Object.values(await getDevices(null, TVOS)));
   return !_.isEmpty(devices);
@@ -70,6 +77,22 @@ async function needsUpdate (cartfile, installedCartfile) {
       reject(err);
     }
   });
+}
+
+async function adjustFileSystem () {
+  const resourceDirs = [
+    `${BOOTSTRAP_PATH}/Resources`,
+    `${BOOTSTRAP_PATH}/Resources/WebDriverAgent.bundle`,
+  ];
+  let areDependenciesUpdated = false;
+  for (const dir of resourceDirs) {
+    if (!await fs.hasAccess(dir)) {
+      log.debug(`Creating WebDriverAgent resources directory: '${dir}'`);
+      await fs.mkdir(dir);
+      areDependenciesUpdated = true;
+    }
+  }
+  return areDependenciesUpdated;
 }
 
 async function fetchDependencies (useSsl = false) {
@@ -116,19 +139,16 @@ async function fetchDependencies (useSsl = false) {
   return true;
 }
 
+async function checkForDependencies (opts = {}) {
+  return await fetchDependencies(opts.useSsl) && await adjustFileSystem();
+}
+
 if (require.main === module) {
-  asyncify(fetchDependencies);
+  asyncify(checkForDependencies);
 }
 
 
-const BOOTSTRAP_PATH = __dirname.endsWith('build')
-  ? path.resolve(__dirname, '..')
-  : __dirname;
-const WDA_BUNDLE_ID = 'com.apple.test.WebDriverAgentRunner-Runner';
-const WDA_RUNNER_BUNDLE_ID = 'com.facebook.WebDriverAgentRunner';
-const PROJECT_FILE = 'project.pbxproj';
-
 export {
-  fetchDependencies, BOOTSTRAP_PATH, WDA_BUNDLE_ID, WDA_RUNNER_BUNDLE_ID,
+  checkForDependencies, BOOTSTRAP_PATH, WDA_BUNDLE_ID, WDA_RUNNER_BUNDLE_ID,
   PROJECT_FILE,
 };
