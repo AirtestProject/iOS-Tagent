@@ -7,7 +7,6 @@ WebDriverAgent is a [WebDriver server](https://w3c.github.io/webdriver/webdriver
  * Implements most of [WebDriver Spec](https://w3c.github.io/webdriver/webdriver-spec.html)
  * Implements part of [Mobile JSON Wire Protocol Spec](https://github.com/SeleniumHQ/mobile-spec/blob/master/spec-draft.md)
  * [USB support](https://github.com/facebook/WebDriverAgent/wiki/USB-support) for devices
- * Inspector [endpoint](http://localhost:8100/inspector) with friendly user interface to inspect current device state
  * Easy development cycle as it can be launched & debugged directly via Xcode
  * Unsupported yet, but works with tvOS & OSX
 
@@ -20,7 +19,6 @@ To get the project set up just run bootstrap script:
 ```
 It will:
 * fetch all dependencies with [Carthage](https://github.com/Carthage/Carthage)
-* build Inspector bundle using [npm](https://www.npmjs.com)
 
 After it is finished you can simply open `WebDriverAgent.xcodeproj` and start `WebDriverAgentRunner` test
 and start sending [requests](https://github.com/facebook/WebDriverAgent/wiki/Queries).
