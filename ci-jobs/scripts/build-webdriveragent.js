@@ -29,7 +29,17 @@ async function buildWebDriverAgent (xcodeVersion) {
   await mkdirp(uncompressedDir);
   log.info('Creating tarball');
 
-  // Moved DerivedData/WebDriverAgent-* from Library to folder
+  // Move contents of this folder to uncompressed folder
+  await exec('rsync', [
+    '-av', rootDir, uncompressedDir,
+    '--exclude', path.resolve(rootDir, 'node_modules'),
+    '--exclude', path.resolve(rootDir, 'build'),
+    '--exclude', path.resolve(rootDir, 'ci-jobs'),
+    '--exclude', path.resolve(rootDir, 'lib'),
+    '--exclude', path.resolve(rootDir, 'test'),
+  ], {cwd: rootDir});
+
+  // Moved DerivedData/WebDriverAgent-* from Library to uncompressed folder
   const derivedDataPath = path.resolve(os.homedir(), 'Library', 'Developer', 'Xcode', 'DerivedData');
   const wdaPath = (await fs.glob(`${derivedDataPath}/WebDriverAgent-*`))[0];
   await mkdirp(path.resolve(uncompressedDir, 'DerivedData'));
