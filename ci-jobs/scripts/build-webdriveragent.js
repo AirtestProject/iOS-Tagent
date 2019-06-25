@@ -32,12 +32,12 @@ async function buildWebDriverAgent (xcodeVersion) {
   // Move contents of this folder to uncompressed folder
   await exec('rsync', [
     '-av', rootDir, uncompressedDir,
-    '--exclude', path.resolve(rootDir, 'node_modules'),
-    '--exclude', path.resolve(rootDir, 'build'),
-    '--exclude', path.resolve(rootDir, 'ci-jobs'),
-    '--exclude', path.resolve(rootDir, 'lib'),
-    '--exclude', path.resolve(rootDir, 'test'),
-    '--exclude', path.resolve(rootDir, 'bundles'),
+    '--exclude', 'node_modules',
+    '--exclude', 'build',
+    '--exclude', 'ci-jobs',
+    '--exclude', 'lib',
+    '--exclude', 'test',
+    '--exclude', 'bundles',
   ], {cwd: rootDir});
 
   // Moved DerivedData/WebDriverAgent-* from Library to uncompressed folder
