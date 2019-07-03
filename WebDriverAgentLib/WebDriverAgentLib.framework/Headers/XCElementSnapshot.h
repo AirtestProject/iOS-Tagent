@@ -94,4 +94,7 @@
 @property(readonly) struct CGPoint hitPoint;
 - (XCUIHitPointResult *)hitPoint:(NSError **)error;
 
+// Since Xcode 10.2
++ (id)axAttributesForElementSnapshotKeyPaths:(id)arg1 isMacOS:(_Bool)arg2;
+
 @end

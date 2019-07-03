@@ -42,6 +42,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (XCElementSnapshot *)fb_lastSnapshot;
 
 /**
+ Return recent snapshot of the element directly
+ */
+- (XCElementSnapshot *)fb_fast_lastSnapshot;
+
+/**
  Filters elements by matching them to snapshots from the corresponding array
  
  @param snapshots Array of snapshots to be matched with

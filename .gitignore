@@ -50,3 +50,4 @@ Modules/module.modulemap
 
 # test run
 *.trace
+.vscode
