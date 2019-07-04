@@ -179,6 +179,13 @@ static NSString* const SNAPSHOT_TIMEOUT = @"snapshotTimeout";
     [buildInfo setObject:upgradeTimestamp forKey:@"upgradedAt"];
   }
 
+  // Returns locale like ja_EN and zh-Hant_US. The format depends on OS
+  // Developers should use this locale by default
+  // https://developer.apple.com/documentation/foundation/nslocale/1414388-autoupdatingcurrentlocale
+  NSString *currentLocale = [[NSLocale autoupdatingCurrentLocale] localeIdentifier];
+  // TZ database Time Zones format like "US/Pacific"
+  NSString *timeZone = [[NSTimeZone localTimeZone] name];
+
   return
   FBResponseWithStatus(
     FBCommandStatusNoError,
@@ -194,6 +201,8 @@ static NSString* const SNAPSHOT_TIMEOUT = @"snapshotTimeout";
         @{
           @"simulatorVersion" : [[UIDevice currentDevice] systemVersion],
           @"ip" : [XCUIDevice sharedDevice].fb_wifiIPAddress ?: [NSNull null],
+          @"currentLocale": currentLocale,
+          @"timeZone": timeZone,
         },
       @"build" : buildInfo.copy
     }
