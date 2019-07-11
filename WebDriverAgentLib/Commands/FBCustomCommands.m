@@ -28,6 +28,7 @@
 #import "XCUIElement.h"
 #import "XCUIElement+FBIsVisible.h"
 #import "XCUIElementQuery.h"
+#import "FBUnattachedAppLauncher.h"
 
 @implementation FBCustomCommands
 
@@ -55,6 +56,7 @@
 #endif
     [[FBRoute POST:@"/wda/pressButton"] respondWithTarget:self action:@selector(handlePressButtonCommand:)],
     [[FBRoute POST:@"/wda/siri/activate"] respondWithTarget:self action:@selector(handleActivateSiri:)],
+    [[FBRoute POST:@"/wda/apps/launchUnattached"].withoutSession respondWithTarget:self action:@selector(handleLaunchUnattachedApp:)],
     [[FBRoute GET:@"/wda/device/info"] respondWithTarget:self action:@selector(handleGetDeviceInfo:)],
   ];
 }
@@ -226,6 +228,16 @@
     return FBResponseWithError(error);
   }
   return FBResponseWithOK();
+}
+
++ (id <FBResponsePayload>)handleLaunchUnattachedApp:(FBRouteRequest *)request
+{
+  NSString *bundle = (NSString *)request.arguments[@"bundleId"];
+  if ([FBUnattachedAppLauncher launchAppWithBundleId:bundle])
+    return FBResponseWithOK();
+  return FBResponseWithError([[[FBErrorBuilder builder]
+                               withDescription:@"LSApplicationWorkspace failed to launch app"]
+                              build]);
 }
 
 + (id<FBResponsePayload>)handleGetDeviceInfo:(FBRouteRequest *)request
