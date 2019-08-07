@@ -94,18 +94,16 @@ static const char *QUEUE_NAME = "JPEG Screenshots Provider Queue";
   BOOL usesScaling = fabs(FBMaxScalingFactor - scalingFactor) > DBL_EPSILON;
 
   CGFloat compressionQuality = FBConfiguration.mjpegServerScreenshotQuality / 100.0f;
-
   // If scaling is applied we perform another JPEG compression after scaling
   // To get the desired compressionQuality we need to do a lossless compression here
-  if (usesScaling) {
-    compressionQuality = FBMaxScalingFactor;
-  }
+  CGFloat screenshotCompressionQuality = usesScaling ? FBMaxCompressionQuality : compressionQuality;
+
   id<XCTestManager_ManagerInterface> proxy = [FBXCTestDaemonsProxy testRunnerProxy];
   dispatch_semaphore_t sem = dispatch_semaphore_create(0);
   [proxy _XCT_requestScreenshotOfScreenWithID:[[XCUIScreen mainScreen] displayID]
                                        withRect:CGRectNull
                                             uti:(__bridge id)kUTTypeJPEG
-                             compressionQuality:compressionQuality
+                             compressionQuality:screenshotCompressionQuality
                                       withReply:^(NSData *data, NSError *error) {
     if (error != nil) {
       [FBLogger logFmt:@"Error taking screenshot: %@", [error description]];
