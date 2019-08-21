@@ -37,7 +37,7 @@
   NSArray *actions = (NSArray *)request.arguments[@"actions"];
   NSError *error;
   if (![application fb_performAppiumTouchActions:actions elementCache:request.session.elementCache error:&error]) {
-    return FBResponseWithError(error);
+    return FBResponseWithUnknownError(error);
   }
   return FBResponseWithOK();
 }
@@ -48,7 +48,7 @@
   NSArray *actions = (NSArray *)request.arguments[@"actions"];
   NSError *error;
   if (![application fb_performW3CTouchActions:actions elementCache:request.session.elementCache error:&error]) {
-    return FBResponseWithError(error);
+    return FBResponseWithUnknownError(error);
   }
   return FBResponseWithOK();
 }

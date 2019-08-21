@@ -9,7 +9,7 @@
 
 #import "XCUIElement+FBForceTouch.h"
 
-#import "XCUIApplication+FBTouchAction.m"
+#import "XCUIApplication+FBTouchAction.h"
 
 @implementation XCUIElement (FBForceTouch)
 

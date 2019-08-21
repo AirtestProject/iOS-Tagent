@@ -14,6 +14,7 @@
 #import "FBLogger.h"
 #import "FBMacros.h"
 #import "FBMathUtils.h"
+#import "FBProtocolHelpers.h"
 #import "FBXCTestDaemonsProxy.h"
 #import "XCElementSnapshot+FBHelpers.h"
 #import "XCUIApplication+FBHelpers.h"
@@ -351,11 +352,9 @@ static NSString *const FB_KEY_ACTIONS = @"actions";
     // if isinstance(origin, WebElement):
     //    action["origin"] = {"element-6066-11e4-a52e-4f735466cecf": origin.id}
     if ([origin isKindOfClass:NSDictionary.class]) {
-      for (NSString* key in [origin copy]) {
-        if ([[key lowercaseString] containsString:@"element"]) {
-          origin = [origin objectForKey:key];
-          break;
-        }
+      id element = FBExtractElement(origin);
+      if (nil != element) {
+        origin = element;
       }
     }
     XCUIElement *instance = [self.elementCache elementForUUID:origin];

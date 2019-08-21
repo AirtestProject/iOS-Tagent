@@ -75,7 +75,7 @@
     @[@{
         @"action": @"moveTo",
         @"options": @{
-            @"element": dstButton,
+            @"ELEMENT": dstButton,
             }
         },
       @{
@@ -87,7 +87,7 @@
     @[@{
         @"action": @"tapP",
         @"options": @{
-            @"element": dstButton,
+            @"ELEMENT": dstButton,
             }
         },
       ],
@@ -168,7 +168,7 @@
   @[@{
       @"action": @"tap",
       @"options": @{
-          @"element": self.testedApplication.buttons[FBShowAlertButtonName]
+          @"ELEMENT": self.testedApplication.buttons[FBShowAlertButtonName]
           }
       }
   ];
@@ -198,7 +198,7 @@
   @[@{
       @"action": @"tap",
       @"options": @{
-          @"element": self.testedApplication.buttons[FBShowAlertButtonName],
+          @"ELEMENT": self.testedApplication.buttons[FBShowAlertButtonName],
           @"count": @2
           }
       },
@@ -212,7 +212,7 @@
   @[@{
       @"action": @"press",
       @"options": @{
-          @"element": self.testedApplication.buttons[FBShowAlertButtonName],
+          @"ELEMENT": self.testedApplication.buttons[FBShowAlertButtonName],
           @"x": @1,
           @"y": @1
           }
@@ -275,7 +275,7 @@
   @[@{
       @"action": @"press",
       @"options": @{
-          @"element": self.testedApplication.buttons[FBShowAlertForceTouchButtonName],
+          @"ELEMENT": self.testedApplication.buttons[FBShowAlertForceTouchButtonName],
           @"x": @1,
           @"y": @1,
           @"pressure": @1
@@ -340,7 +340,7 @@
   @[@{
       @"action": @"press",
       @"options": @{
-          @"element": self.pickerWheel,
+          @"ELEMENT": self.pickerWheel,
           @"x": @(pickerFrame.size.width / 2),
           @"y": @(pickerFrame.size.height / 2),
           }
@@ -354,7 +354,7 @@
     @{
       @"action": @"moveTo",
       @"options": @{
-          @"element": self.pickerWheel,
+          @"ELEMENT": self.pickerWheel,
           @"x": @(pickerFrame.size.width / 2),
           @"y": @(pickerFrame.size.height),
           }
@@ -373,7 +373,7 @@
   @[@{
       @"action": @"press",
       @"options": @{
-          @"element": self.pickerWheel,
+          @"ELEMENT": self.pickerWheel,
           @"x": @(pickerFrame.size.width / 2),
           @"y": @(pickerFrame.size.height / 2),
           }

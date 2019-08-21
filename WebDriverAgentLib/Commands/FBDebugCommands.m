@@ -50,14 +50,11 @@ static NSString *const SOURCE_FORMAT_DESCRIPTION = @"description";
   } else if ([sourceType caseInsensitiveCompare:SOURCE_FORMAT_DESCRIPTION] == NSOrderedSame) {
     result = application.fb_descriptionRepresentation;
   } else {
-    return FBResponseWithStatus(
-      FBCommandStatusUnsupported,
-      [NSString stringWithFormat:@"Unknown source format '%@'. Only %@ source formats are supported.",
-       sourceType, @[SOURCE_FORMAT_XML, SOURCE_FORMAT_JSON, SOURCE_FORMAT_DESCRIPTION]]
-    );
+    return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:[NSString stringWithFormat:@"Unknown source format '%@'. Only %@ source formats are supported.",
+                                                                                  sourceType, @[SOURCE_FORMAT_XML, SOURCE_FORMAT_JSON, SOURCE_FORMAT_DESCRIPTION]] traceback:nil]);
   }
   if (nil == result) {
-    return FBResponseWithErrorFormat(@"Cannot get '%@' source of the current application", sourceType);
+    return FBResponseWithUnknownErrorFormat(@"Cannot get '%@' source of the current application", sourceType);
   }
   return FBResponseWithObject(result);
 }

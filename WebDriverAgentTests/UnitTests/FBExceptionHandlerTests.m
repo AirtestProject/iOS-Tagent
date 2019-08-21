@@ -15,11 +15,13 @@
 
 @interface RouteResponseDouble : NSObject
 - (void)setHeader:(NSString *)field value:(NSString *)value;
+- (void)setStatusCode:(NSUInteger)code;
 - (void)respondWithData:(NSData *)data;
 @end
 
 @implementation RouteResponseDouble
 - (void)setHeader:(NSString *)field value:(NSString *)value {}
+- (void)setStatusCode:(NSUInteger)code {}
 - (void)respondWithData:(NSData *)data {}
 @end
 
@@ -40,8 +42,8 @@
   NSException *exception = [NSException exceptionWithName:FBElementNotVisibleException
                                                    reason:@"reason"
                                                  userInfo:@{}];
-  XCTAssertTrue([self.exceptionHandler handleException:exception
-                                       forResponse:(RouteResponse *)[RouteResponseDouble new]]);
+  [self.exceptionHandler handleException:exception
+                             forResponse:(RouteResponse *)[RouteResponseDouble new]];
 }
 
 - (void)testMatchingErrorHandlingWithCustomDescription
@@ -49,8 +51,8 @@
   NSException *exception = [NSException exceptionWithName:FBAlertObstructingElementException
                                                    reason:@"reason"
                                                  userInfo:@{}];
-  XCTAssertTrue([self.exceptionHandler handleException:exception
-                                           forResponse:(RouteResponse *)[RouteResponseDouble new]]);
+  [self.exceptionHandler handleException:exception
+                             forResponse:(RouteResponse *)[RouteResponseDouble new]];
 }
 
 - (void)testNonMatchingErrorHandling
@@ -58,8 +60,8 @@
   NSException *exception = [NSException exceptionWithName:@"something"
                                                    reason:@"reason"
                                                  userInfo:@{}];
-  XCTAssertFalse([self.exceptionHandler handleException:exception
-                                            forResponse:(RouteResponse *)[RouteResponseDouble new]]);
+  [self.exceptionHandler handleException:exception
+                             forResponse:(RouteResponse *)[RouteResponseDouble new]];
 }
 
 

@@ -41,9 +41,10 @@
   FBSession *session = request.session;
   NSString *alertText = [FBAlert alertWithApplication:session.activeApplication].text;
   if (!alertText) {
-    return FBResponseWithStatus(FBCommandStatusNoAlertPresent, nil);
+    return FBResponseWithStatus([FBCommandStatus noAlertOpenErrorWithMessage:nil
+                                                                   traceback:nil]);
   }
-  return FBResponseWithStatus(FBCommandStatusNoError, alertText);
+  return FBResponseWithObject(alertText);
 }
 
 + (id<FBResponsePayload>)handleAlertSetTextCommand:(FBRouteRequest *)request
@@ -51,11 +52,12 @@
   FBSession *session = request.session;
   id value = request.arguments[@"value"];
   if (!value) {
-    return FBResponseWithErrorFormat(@"Missing 'value' parameter");
+    return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:@"Missing 'value' parameter" traceback:nil]);
   }
   FBAlert *alert = [FBAlert alertWithApplication:session.activeApplication];
   if (!alert.isPresent) {
-    return FBResponseWithStatus(FBCommandStatusNoAlertPresent, nil);
+    return FBResponseWithStatus([FBCommandStatus noAlertOpenErrorWithMessage:nil
+                                                                   traceback:nil]);
   }
   NSString *textToType = value;
   if ([value isKindOfClass:[NSArray class]]) {
@@ -63,7 +65,8 @@
   }
   NSError *error;
   if (![alert typeText:textToType error:&error]) {
-    return FBResponseWithError(error);
+    return FBResponseWithStatus([FBCommandStatus unknownErrorWithMessage:error.description
+                                                               traceback:[NSString stringWithFormat:@"%@", NSThread.callStackSymbols]]);
   }
   return FBResponseWithOK();
 }
@@ -76,14 +79,17 @@
   NSError *error;
 
   if (!alert.isPresent) {
-    return FBResponseWithStatus(FBCommandStatusNoAlertPresent, nil);
+    return FBResponseWithStatus([FBCommandStatus noAlertOpenErrorWithMessage:nil
+                                                                   traceback:nil]);
   }
   if (name) {
     if (![alert clickAlertButton:name error:&error]) {
-      return FBResponseWithError(error);
+      return FBResponseWithStatus([FBCommandStatus invalidElementStateErrorWithMessage:error.description
+                                                                             traceback:[NSString stringWithFormat:@"%@", NSThread.callStackSymbols]]);
     }
   } else if (![alert acceptWithError:&error]) {
-    return FBResponseWithError(error);
+    return FBResponseWithStatus([FBCommandStatus invalidElementStateErrorWithMessage:error.description
+                                                                            traceback:[NSString stringWithFormat:@"%@", NSThread.callStackSymbols]]);
   }
   return FBResponseWithOK();
 }
@@ -96,14 +102,17 @@
   NSError *error;
     
   if (!alert.isPresent) {
-    return FBResponseWithStatus(FBCommandStatusNoAlertPresent, nil);
+    return FBResponseWithStatus([FBCommandStatus noAlertOpenErrorWithMessage:nil
+                                                                   traceback:nil]);
   }
   if (name) {
     if (![alert clickAlertButton:name error:&error]) {
-      return FBResponseWithError(error);
+      return FBResponseWithStatus([FBCommandStatus invalidElementStateErrorWithMessage:error.description
+                                                                            traceback:[NSString stringWithFormat:@"%@", NSThread.callStackSymbols]]);
     }
   } else if (![alert dismissWithError:&error]) {
-    return FBResponseWithError(error);
+    return FBResponseWithStatus([FBCommandStatus invalidElementStateErrorWithMessage:error.description
+                                                                            traceback:[NSString stringWithFormat:@"%@", NSThread.callStackSymbols]]);
   }
   return FBResponseWithOK();
 }
@@ -113,9 +122,10 @@
   FBAlert *alert = [FBAlert alertWithApplication:session.activeApplication];
 
   if (!alert.isPresent) {
-    return FBResponseWithStatus(FBCommandStatusNoAlertPresent, nil);
+    return FBResponseWithStatus([FBCommandStatus noAlertOpenErrorWithMessage:nil
+                                                                   traceback:nil]);
   }
   NSArray *labels = alert.buttonLabels;
-  return FBResponseWithStatus(FBCommandStatusNoError, labels);
+  return FBResponseWithObject(labels);
 }
 @end

@@ -58,7 +58,7 @@
       @[],
       @[@{@"action": @"tap",
           @"options": @{
-              @"element": self.testedApplication.buttons[FBShowAlertButtonName],
+              @"ELEMENT": self.testedApplication.buttons[FBShowAlertButtonName],
               }
           }
       ],
@@ -81,14 +81,14 @@
     @[@{
       @"action": @"tap",
       @"options": @{
-          @"element": element
+          @"ELEMENT": element
           }
       }
     ],
     @[@{
         @"action": @"tap",
         @"options": @{
-            @"element": element
+            @"ELEMENT": element
             }
         }
     ],

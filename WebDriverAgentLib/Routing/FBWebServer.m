@@ -209,11 +209,7 @@ static NSString *const FBServerURLEndMarker = @"<-ServerURLHere";
 
 - (void)handleException:(NSException *)exception forResponse:(RouteResponse *)response
 {
-  if ([self.exceptionHandler handleException:exception forResponse:response]) {
-    return;
-  }
-  id<FBResponsePayload> payload = FBResponseWithErrorFormat(@"%@\n\n%@", exception.description, exception.callStackSymbols);
-  [payload dispatchWithResponse:response];
+  [self.exceptionHandler handleException:exception forResponse:response];
 }
 
 - (void)registerServerKeyRouteHandlers

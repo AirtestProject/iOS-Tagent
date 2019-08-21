@@ -25,12 +25,8 @@
 
 static id<FBResponsePayload> FBNoSuchElementErrorResponseForRequest(FBRouteRequest *request)
 {
-  NSDictionary *errorDetails = @{
-    @"description": @"unable to find an element",
-    @"using": request.arguments[@"using"] ?: @"",
-    @"value": request.arguments[@"value"] ?: @"",
-  };
-  return FBResponseWithStatus(FBCommandStatusNoSuchElement, errorDetails);
+  return FBResponseWithStatus([FBCommandStatus noSuchElementErrorWithMessage:[NSString stringWithFormat:@"unable to find an element using '%@', value '%@'", request.arguments[@"using"], request.arguments[@"value"]]
+                                                                   traceback:[NSString stringWithFormat:@"%@", NSThread.callStackSymbols]]);
 }
 
 @implementation FBFindElementCommands
@@ -83,6 +79,10 @@ static id<FBResponsePayload> FBNoSuchElementErrorResponseForRequest(FBRouteReque
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *collection = [elementCache elementForUUID:request.parameters[@"uuid"]];
+  if (nil == collection) {
+    return FBResponseWithStatus([FBCommandStatus staleElementReferenceErrorWithMessage:nil
+                                                                             traceback:nil]);
+  }
   NSPredicate *predicate = [FBPredicate predicateWithFormat:@"%K == YES", FBStringify(XCUIElement, fb_isVisible)];
   NSArray *elements = [collection.cells matchingPredicate:predicate].allElementsBoundByAccessibilityElement;
   return FBResponseWithCachedElements(elements, request.session.elementCache, FBConfiguration.shouldUseCompactResponses);
@@ -92,6 +92,10 @@ static id<FBResponsePayload> FBNoSuchElementErrorResponseForRequest(FBRouteReque
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:request.parameters[@"uuid"]];
+  if (nil == element) {
+    return FBResponseWithStatus([FBCommandStatus staleElementReferenceErrorWithMessage:nil
+                                                                             traceback:nil]);
+  }
   XCUIElement *foundElement = [self.class elementUsing:request.arguments[@"using"]
                                              withValue:request.arguments[@"value"]
                                                  under:element];
@@ -105,6 +109,10 @@ static id<FBResponsePayload> FBNoSuchElementErrorResponseForRequest(FBRouteReque
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:request.parameters[@"uuid"]];
+  if (nil == element) {
+    return FBResponseWithStatus([FBCommandStatus staleElementReferenceErrorWithMessage:nil
+                                                                             traceback:nil]);
+  }
   NSArray *foundElements = [self.class elementsUsing:request.arguments[@"using"]
                                            withValue:request.arguments[@"value"]
                                                under:element

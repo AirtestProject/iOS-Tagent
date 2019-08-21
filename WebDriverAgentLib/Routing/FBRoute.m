@@ -158,7 +158,9 @@ static NSString *const FBRouteSessionPrefix = @"/session/:sessionID";
 
 - (void)mountRequest:(FBRouteRequest *)request intoResponse:(RouteResponse *)response
 {
-  [FBResponseWithErrorFormat(@"Unhandled route") dispatchWithResponse:response];
+  id<FBResponsePayload> payload = FBResponseWithStatus([FBCommandStatus unknownCommandErrorWithMessage:@"Unhandled route"
+                                                                                             traceback:[NSString stringWithFormat:@"%@", NSThread.callStackSymbols]]);
+  [payload dispatchWithResponse:response];
 }
 
 @end

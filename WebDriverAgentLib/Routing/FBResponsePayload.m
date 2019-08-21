@@ -10,12 +10,12 @@
 #import "FBResponsePayload.h"
 
 #import "FBElementCache.h"
-#import "FBResponseFilePayload.h"
 #import "FBResponseJSONPayload.h"
 #import "FBSession.h"
 #import "FBMathUtils.h"
 #import "FBConfiguration.h"
 #import "FBMacros.h"
+#import "FBProtocolHelpers.h"
 
 #import "XCUIElement+FBUtilities.h"
 #import "XCUIElement+FBWebDriverAttributes.h"
@@ -24,18 +24,18 @@ NSString *arbitraryAttrPrefix = @"attribute/";
 
 id<FBResponsePayload> FBResponseWithOK()
 {
-  return FBResponseWithStatus(FBCommandStatusNoError, nil);
+  return FBResponseWithStatus(FBCommandStatus.ok);
 }
 
 id<FBResponsePayload> FBResponseWithObject(id object)
 {
-  return FBResponseWithStatus(FBCommandStatusNoError, object);
+  return FBResponseWithStatus([FBCommandStatus okWithValue:object]);
 }
 
 id<FBResponsePayload> FBResponseWithCachedElement(XCUIElement *element, FBElementCache *elementCache, BOOL compact)
 {
   NSString *elementUUID = [elementCache storeElement:element];
-  return FBResponseWithStatus(FBCommandStatusNoError, FBDictionaryResponseWithElement(element, elementUUID, compact));
+  return FBResponseWithStatus([FBCommandStatus okWithValue: FBDictionaryResponseWithElement(element, elementUUID, compact)]);
 }
 
 id<FBResponsePayload> FBResponseWithCachedElements(NSArray<XCUIElement *> *elements, FBElementCache *elementCache, BOOL compact)
@@ -45,52 +45,47 @@ id<FBResponsePayload> FBResponseWithCachedElements(NSArray<XCUIElement *> *eleme
     NSString *elementUUID = [elementCache storeElement:element];
     [elementsResponse addObject:FBDictionaryResponseWithElement(element, elementUUID, compact)];
   }
-  return FBResponseWithStatus(FBCommandStatusNoError, elementsResponse);
+  return FBResponseWithStatus([FBCommandStatus okWithValue:elementsResponse]);
 }
 
-id<FBResponsePayload> FBResponseWithElementUUID(NSString *elementUUID)
+id<FBResponsePayload> FBResponseWithUnknownError(NSError *error)
 {
-  return [[FBResponseJSONPayload alloc] initWithDictionary:@{
-    @"id" : elementUUID,
-    @"sessionId" : [FBSession activeSession].identifier ?: NSNull.null,
-    @"value" : @"",
-    @"status" : @0,
-  }];
+  return FBResponseWithStatus([FBCommandStatus unknownErrorWithMessage:error.description traceback:nil]);
 }
 
-id<FBResponsePayload> FBResponseWithError(NSError *error)
-{
-  return FBResponseWithStatus(FBCommandStatusUnhandled, error.description);
-}
-
-id<FBResponsePayload> FBResponseWithErrorFormat(NSString *format, ...)
+id<FBResponsePayload> FBResponseWithUnknownErrorFormat(NSString *format, ...)
 {
   va_list argList;
   va_start(argList, format);
   NSString *errorMessage = [[NSString alloc] initWithFormat:format arguments:argList];
-  id<FBResponsePayload> payload = FBResponseWithStatus(FBCommandStatusUnhandled, errorMessage);
+  id<FBResponsePayload> payload = FBResponseWithStatus([FBCommandStatus unknownErrorWithMessage:errorMessage traceback:nil]);
   va_end(argList);
   return payload;
 }
 
-id<FBResponsePayload> FBResponseWithStatus(FBCommandStatus status, id object)
+id<FBResponsePayload> FBResponseWithStatus(FBCommandStatus *status)
 {
-  return [[FBResponseJSONPayload alloc] initWithDictionary:@{
-    @"value" : object ?: @{},
-    @"sessionId" : [FBSession activeSession].identifier ?: NSNull.null,
-    @"status" : @(status),
-  }];
-}
+  NSMutableDictionary* response = [NSMutableDictionary dictionary];
+  response[@"sessionId"] = [FBSession activeSession].identifier ?: NSNull.null;
+  if (nil == status.error) {
+    response[@"value"] = status.value ?: NSNull.null;
+  } else {
+    NSMutableDictionary* value = [NSMutableDictionary dictionary];
+    value[@"error"] = status.error;
+    value[@"message"] = status.message ?: @"";
+    if (nil != status.traceback) {
+      value[@"traceback"] = status.traceback;
+    }
+    response[@"value"] = value.copy;
+  }
 
-id<FBResponsePayload> FBResponseFileWithPath(NSString *path)
-{
-  return [[FBResponseFilePayload alloc] initWithFilePath:path];
+  return [[FBResponseJSONPayload alloc] initWithDictionary:response.copy
+                                            httpStatusCode:status.statusCode];
 }
 
 inline NSDictionary *FBDictionaryResponseWithElement(XCUIElement *element, NSString *elementUUID, BOOL compact)
 {
-  NSMutableDictionary *dictionary = [NSMutableDictionary new];
-  dictionary[@"ELEMENT"] = elementUUID;
+  NSMutableDictionary *dictionary = FBInsertElement(@{}, elementUUID).mutableCopy;
   if (!compact) {
     NSArray *fields = [FBConfiguration.elementResponseAttributes componentsSeparatedByString:@","];
     XCElementSnapshot *snapshot = element.fb_lastSnapshotFromQuery;
@@ -109,7 +104,7 @@ inline NSDictionary *FBDictionaryResponseWithElement(XCUIElement *element, NSStr
       } else if ([field isEqualToString:@"selected"]) {
         dictionary[field] = @(snapshot.selected);
       } else if ([field isEqualToString:@"label"]) {
-        dictionary[field] = snapshot.wdLabel ?: [NSNull null];;
+        dictionary[field] = snapshot.wdLabel ?: [NSNull null];
       } else if ([field hasPrefix:arbitraryAttrPrefix]) {
         NSString *attributeName = [field substringFromIndex:[arbitraryAttrPrefix length]];
         dictionary[field] = [snapshot fb_valueForWDAttributeName:attributeName] ?: [NSNull null];

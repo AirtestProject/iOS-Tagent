@@ -68,7 +68,8 @@
 {
   NSError *error;
   if (![[XCUIDevice sharedDevice] fb_goToHomescreenWithError:&error]) {
-    return FBResponseWithError(error);
+    return FBResponseWithStatus([FBCommandStatus unknownErrorWithMessage:error.description
+                                                               traceback:nil]);
   }
   return FBResponseWithOK();
 }
@@ -79,7 +80,7 @@
   NSTimeInterval duration = (requestedDuration ? requestedDuration.doubleValue : 3.);
   NSError *error;
   if (![request.session.activeApplication fb_deactivateWithDuration:duration error:&error]) {
-    return FBResponseWithError(error);
+    return FBResponseWithUnknownError(error);
   }
   return FBResponseWithOK();
 }
@@ -113,7 +114,7 @@
    }
    error:&error];
   if (!isKeyboardNotPresent) {
-    return FBResponseWithError(error);
+    return FBResponseWithStatus([FBCommandStatus elementNotVisibleErrorWithMessage:error.description traceback:[NSString stringWithFormat:@"%@", NSThread.callStackSymbols]]);
   }
   return FBResponseWithOK();
 }
@@ -142,7 +143,7 @@
 {
   NSError *error;
   if (![[XCUIDevice sharedDevice] fb_lockScreen:&error]) {
-    return FBResponseWithError(error);
+    return FBResponseWithUnknownError(error);
   }
   return FBResponseWithOK();
 }
@@ -150,14 +151,14 @@
 + (id<FBResponsePayload>)handleIsLocked:(FBRouteRequest *)request
 {
   BOOL isLocked = [XCUIDevice sharedDevice].fb_isScreenLocked;
-  return FBResponseWithStatus(FBCommandStatusNoError, isLocked ? @YES : @NO);
+  return FBResponseWithObject(isLocked ? @YES : @NO);
 }
 
 + (id<FBResponsePayload>)handleUnlock:(FBRouteRequest *)request
 {
   NSError *error;
   if (![[XCUIDevice sharedDevice] fb_unlockScreen:&error]) {
-    return FBResponseWithError(error);
+    return FBResponseWithUnknownError(error);
   }
   return FBResponseWithOK();
 }
@@ -165,7 +166,7 @@
 + (id<FBResponsePayload>)handleActiveAppInfo:(FBRouteRequest *)request
 {
   XCUIApplication *app = FBApplication.fb_activeApplication;
-  return FBResponseWithStatus(FBCommandStatusNoError, @{
+  return FBResponseWithObject(@{
     @"pid": @(app.processID),
     @"bundleId": app.bundleID,
     @"name": app.identifier,
@@ -216,11 +217,11 @@
   NSData *content = [[NSData alloc] initWithBase64EncodedString:(NSString *)request.arguments[@"content"]
                                                         options:NSDataBase64DecodingIgnoreUnknownCharacters];
   if (nil == content) {
-    return FBResponseWithStatus(FBCommandStatusInvalidArgument, @"Cannot decode the pasteboard content from base64");
+    return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:@"Cannot decode the pasteboard content from base64" traceback:nil]);
   }
   NSError *error;
   if (![FBPasteboard setData:content forType:contentType error:&error]) {
-    return FBResponseWithError(error);
+    return FBResponseWithUnknownError(error);
   }
   return FBResponseWithOK();
 }
@@ -231,10 +232,9 @@
   NSError *error;
   id result = [FBPasteboard dataForType:contentType error:&error];
   if (nil == result) {
-    return FBResponseWithError(error);
+    return FBResponseWithUnknownError(error);
   }
-  return FBResponseWithStatus(FBCommandStatusNoError,
-                              [result base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]);
+  return FBResponseWithObject([result base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]);
 }
 
 + (id<FBResponsePayload>)handleGetBatteryInfo:(FBRouteRequest *)request
@@ -242,7 +242,7 @@
   if (![[UIDevice currentDevice] isBatteryMonitoringEnabled]) {
     [[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
   }
-  return FBResponseWithStatus(FBCommandStatusNoError, @{
+  return FBResponseWithObject(@{
     @"level": @([UIDevice currentDevice].batteryLevel),
     @"state": @([UIDevice currentDevice].batteryState)
   });
@@ -253,7 +253,7 @@
 {
   NSError *error;
   if (![XCUIDevice.sharedDevice fb_pressButton:(id)request.arguments[@"name"] error:&error]) {
-    return FBResponseWithError(error);
+    return FBResponseWithUnknownError(error);
   }
   return FBResponseWithOK();
 }
@@ -262,7 +262,7 @@
 {
   NSError *error;
   if (![XCUIDevice.sharedDevice fb_activateSiriVoiceRecognitionWithText:(id)request.arguments[@"text"] error:&error]) {
-    return FBResponseWithError(error);
+    return FBResponseWithUnknownError(error);
   }
   return FBResponseWithOK();
 }
@@ -270,11 +270,10 @@
 + (id <FBResponsePayload>)handleLaunchUnattachedApp:(FBRouteRequest *)request
 {
   NSString *bundle = (NSString *)request.arguments[@"bundleId"];
-  if ([FBUnattachedAppLauncher launchAppWithBundleId:bundle])
+  if ([FBUnattachedAppLauncher launchAppWithBundleId:bundle]) {
     return FBResponseWithOK();
-  return FBResponseWithError([[[FBErrorBuilder builder]
-                               withDescription:@"LSApplicationWorkspace failed to launch app"]
-                              build]);
+  }
+  return FBResponseWithStatus([FBCommandStatus unknownErrorWithMessage:@"LSApplicationWorkspace failed to launch app" traceback:nil]);
 }
 
 + (id<FBResponsePayload>)handleGetDeviceInfo:(FBRouteRequest *)request
@@ -284,14 +283,10 @@
   // https://developer.apple.com/documentation/foundation/nslocale/1414388-autoupdatingcurrentlocale
   NSString *currentLocale = [[NSLocale autoupdatingCurrentLocale] localeIdentifier];
 
-  return
-  FBResponseWithStatus(
-    FBCommandStatusNoError,
-    @{
-      @"currentLocale": currentLocale,
-      @"timeZone": self.timeZone,
-      }
-    );
+  return FBResponseWithObject(@{
+    @"currentLocale": currentLocale,
+    @"timeZone": self.timeZone,
+  });
 }
 
 /**
