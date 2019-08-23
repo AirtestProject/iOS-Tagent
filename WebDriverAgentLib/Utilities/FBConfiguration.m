@@ -25,7 +25,7 @@ static char const *const controllerPrefBundlePath = "/System/Library/PrivateFram
 static NSString *const controllerClassName = @"TIPreferencesController";
 static NSString *const FBKeyboardAutocorrectionKey = @"KeyboardAutocorrection";
 static NSString *const FBKeyboardPredictionKey = @"KeyboardPrediction";
-
+static NSString *const axSettingsClassName = @"AXSettings";
 
 static BOOL FBShouldUseTestManagerForVisibilityDetection = NO;
 static BOOL FBShouldUseSingletonTestManager = YES;
@@ -346,4 +346,27 @@ static BOOL FBShouldUseFirstMatch = NO;
   return NSMakeRange(port, 1);
 }
 
++ (void)setReduceMotionEnabled:(BOOL)isEnabled
+{
+  Class settingsClass = NSClassFromString(axSettingsClassName);
+  AXSettings *settings = [settingsClass sharedInstance];
+
+  // Below does not work on real devices because of iOS security model
+  //  (lldb) po settings.reduceMotionEnabled = isEnabled
+  //  2019-08-21 22:58:19.776165+0900 WebDriverAgentRunner-Runner[322:13361] [User Defaults] Couldn't write value for key ReduceMotionEnabled in CFPrefsPlistSource<0x28111a700> (Domain: com.apple.Accessibility, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: No): setting preferences outside an application's container requires user-preference-write or file-write-data sandbox access
+  if ([settings respondsToSelector:@selector(setReduceMotionEnabled:)]) {
+    [settings setReduceMotionEnabled:isEnabled];
+  }
+}
+
++ (BOOL)reduceMotionEnabled
+{
+  Class settingsClass = NSClassFromString(axSettingsClassName);
+  AXSettings *settings = [settingsClass sharedInstance];
+
+  if ([settings respondsToSelector:@selector(reduceMotionEnabled)]) {
+    return settings.reduceMotionEnabled;
+  }
+  return NO;
+}
 @end

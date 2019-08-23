@@ -298,10 +298,13 @@
 		641EE70F2240CE4800173FCB /* FBTVNavigationTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 641EE70D2240CE4800173FCB /* FBTVNavigationTracker.m */; };
 		641EE7172240DE8C00173FCB /* RoutingHTTPServer.framework in Copy frameworks */ = {isa = PBXBuildFile; fileRef = 641EE7122240DE5E00173FCB /* RoutingHTTPServer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		641EE7192240DFC100173FCB /* RoutingHTTPServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 641EE7122240DE5E00173FCB /* RoutingHTTPServer.framework */; };
+		644D9CCE230E1F1A00C90459 /* FBConfigurationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 644D9CCD230E1F1A00C90459 /* FBConfigurationTests.m */; };
 		648C10AB22AAAD9C00B81B9A /* UIKeyboardImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 648C10AA22AAAD9C00B81B9A /* UIKeyboardImpl.h */; };
 		648C10AC22AAAD9C00B81B9A /* UIKeyboardImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 648C10AA22AAAD9C00B81B9A /* UIKeyboardImpl.h */; };
 		648C10AF22AAAE4000B81B9A /* TIPreferencesController.h in Headers */ = {isa = PBXBuildFile; fileRef = 648C10AE22AAAE4000B81B9A /* TIPreferencesController.h */; };
 		648C10B022AAAE4000B81B9A /* TIPreferencesController.h in Headers */ = {isa = PBXBuildFile; fileRef = 648C10AE22AAAE4000B81B9A /* TIPreferencesController.h */; };
+		6496A5D9230D6EB30087F8CB /* AXSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 6496A5D8230D6EB30087F8CB /* AXSettings.h */; };
+		6496A5DA230D6EB30087F8CB /* AXSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 6496A5D8230D6EB30087F8CB /* AXSettings.h */; };
 		64B264FE228C50E0002A5025 /* WebDriverAgentLib_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 641EE6F82240C5CA00173FCB /* WebDriverAgentLib_tvOS.framework */; };
 		64B26504228C5299002A5025 /* FBTVNavigationTrackerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B264F3228C5098002A5025 /* FBTVNavigationTrackerTests.m */; };
 		64B26508228C5514002A5025 /* XCUIElementDouble.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B26507228C5514002A5025 /* XCUIElementDouble.m */; };
@@ -832,8 +835,10 @@
 		641EE70D2240CE4800173FCB /* FBTVNavigationTracker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBTVNavigationTracker.m; sourceTree = "<group>"; };
 		641EE7122240DE5E00173FCB /* RoutingHTTPServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RoutingHTTPServer.framework; path = Carthage/Build/tvOS/RoutingHTTPServer.framework; sourceTree = "<group>"; };
 		641EE73A2240F49D00173FCB /* YYCache.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YYCache.framework; path = Carthage/Build/tvOS/YYCache.framework; sourceTree = "<group>"; };
+		644D9CCD230E1F1A00C90459 /* FBConfigurationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBConfigurationTests.m; sourceTree = "<group>"; };
 		648C10AA22AAAD9C00B81B9A /* UIKeyboardImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIKeyboardImpl.h; sourceTree = "<group>"; };
 		648C10AE22AAAE4000B81B9A /* TIPreferencesController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TIPreferencesController.h; sourceTree = "<group>"; };
+		6496A5D8230D6EB30087F8CB /* AXSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AXSettings.h; sourceTree = "<group>"; };
 		64B264EB228C4D54002A5025 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64B264F3228C5098002A5025 /* FBTVNavigationTrackerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBTVNavigationTrackerTests.m; sourceTree = "<group>"; };
 		64B264F9228C50E0002A5025 /* UnitTests_tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests_tvOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1337,6 +1342,14 @@
 			path = TextInput;
 			sourceTree = "<group>";
 		};
+		6496A5D7230D6E9D0087F8CB /* AccessibilityUtilities */ = {
+			isa = PBXGroup;
+			children = (
+				6496A5D8230D6EB30087F8CB /* AXSettings.h */,
+			);
+			path = AccessibilityUtilities;
+			sourceTree = "<group>";
+		};
 		64B264E8228C4D54002A5025 /* UnitTests_tvOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -1423,6 +1436,7 @@
 		91F9DB731B99DDD8001349B2 /* PrivateHeaders */ = {
 			isa = PBXGroup;
 			children = (
+				6496A5D7230D6E9D0087F8CB /* AccessibilityUtilities */,
 				C8FB547222D3948300B69954 /* MobileCoreServices */,
 				648C10AD22AAAE2400B81B9A /* TextInput */,
 				648C10A922AAAD7600B81B9A /* UIKitCore */,
@@ -1732,6 +1746,7 @@
 				EEBBD48D1D4785FC00656A81 /* XCUIElementFBFindTests.m */,
 				EE1E06E11D181CC9007CF043 /* XCUIElementHelperIntegrationTests.m */,
 				631B523421F6174300625362 /* FBImageIOScalerTests.m */,
+				644D9CCD230E1F1A00C90459 /* FBConfigurationTests.m */,
 			);
 			path = IntegrationTests;
 			sourceTree = "<group>";
@@ -2044,6 +2059,7 @@
 				641EE6792240C5CA00173FCB /* XCUIRecorderNodeFinder.h in Headers */,
 				641EE67A2240C5CA00173FCB /* XCUIElement+FBAccessibility.h in Headers */,
 				641EE67B2240C5CA00173FCB /* XCUIRecorderUtilities.h in Headers */,
+				6496A5DA230D6EB30087F8CB /* AXSettings.h in Headers */,
 				641EE67C2240C5CA00173FCB /* XCTestCaseRun.h in Headers */,
 				641EE67D2240C5CA00173FCB /* XCTestConfiguration.h in Headers */,
 				641EE67E2240C5CA00173FCB /* _XCTDarwinNotificationExpectationImplementation.h in Headers */,
@@ -2203,6 +2219,7 @@
 				71B155DF23080CA600646AFB /* FBProtocolHelpers.h in Headers */,
 				EE35AD4B1E3B77D600A02D78 /* XCTestExpectationWaiter.h in Headers */,
 				EE35AD1E1E3B77D600A02D78 /* UIGestureRecognizer-RecordingAdditions.h in Headers */,
+				6496A5D9230D6EB30087F8CB /* AXSettings.h in Headers */,
 				EE35AD301E3B77D600A02D78 /* XCKeyboardKeyMap.h in Headers */,
 				EE35AD5D1E3B77D600A02D78 /* XCTNSPredicateExpectationObject-Protocol.h in Headers */,
 				EE158B5F1CBD47A000A3E3F0 /* WebDriverAgentLib.h in Headers */,
@@ -2930,6 +2947,7 @@
 				EE5095EE1EBCC9090028E2FE /* FBXPathIntegrationTests.m in Sources */,
 				EE5095EF1EBCC9090028E2FE /* XCUIElementHelperIntegrationTests.m in Sources */,
 				EE5095F01EBCC9090028E2FE /* XCUIDeviceHelperTests.m in Sources */,
+				644D9CCE230E1F1A00C90459 /* FBConfigurationTests.m in Sources */,
 				EE5095F11EBCC9090028E2FE /* XCUIElementFBFindTests.m in Sources */,
 				EE5095F21EBCC9090028E2FE /* XCUIDeviceRotationTests.m in Sources */,
 				EE5095F41EBCC9090028E2FE /* XCUIDeviceHealthCheckTests.m in Sources */,
