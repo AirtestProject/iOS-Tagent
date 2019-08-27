@@ -36,7 +36,20 @@
      return [FBXCAXClientProxy.sharedClient activeApplications].count == 1;
    }];
 
-  XCAccessibilityElement *activeApplicationElement = [[FBXCAXClientProxy.sharedClient activeApplications] firstObject];
+  NSArray<XCAccessibilityElement *> *activeApplicationElements = [FBXCAXClientProxy.sharedClient activeApplications];
+  XCAccessibilityElement *activeApplicationElement;
+
+  if (activeApplicationElements.count > 1) {
+    // Might be situations when firstObject is a system application — i.e. SpringBoard
+    XCAccessibilityElement *systemApplicationElement = [FBXCAXClientProxy.sharedClient systemApplication];
+    NSPredicate *nonSystemApplicationPredicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary<NSString *,id> *bindings) {
+        return systemApplicationElement.processIdentifier != ((XCAccessibilityElement *)evaluatedObject).processIdentifier;
+    }];
+    activeApplicationElement = [[activeApplicationElements filteredArrayUsingPredicate:nonSystemApplicationPredicate] firstObject];
+  } else {
+    activeApplicationElement = [activeApplicationElements firstObject];
+  }
+
   if (!activeApplicationElement) {
     return nil;
   }
