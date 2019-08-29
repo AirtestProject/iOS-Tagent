@@ -31,7 +31,7 @@
       return YES;
     }
     [self fb_waitUntilSnapshotIsStable];
-    if ([FBKeyboard waitUntilVisibleForApplication:self.application timeout:1. error:error]) {
+    if ([FBKeyboard waitUntilVisibleForApplication:self.application timeout:1. error:error] && self.hasKeyboardFocus) {
       return YES;
     }
   }
