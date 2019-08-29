@@ -27,9 +27,7 @@
   
   // Sometimes the keyboard is not opened after the first tap, so we need to retry
   for (int tryNum = 0; tryNum < 2; ++tryNum) {
-    if (![self fb_tapWithError:error]) {
-      return NO;
-    }
+    [self fb_tapWithError:error];
     if (isKeyboardAlreadyVisible) {
       return YES;
     }

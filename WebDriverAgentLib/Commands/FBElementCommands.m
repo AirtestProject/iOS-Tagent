@@ -196,14 +196,13 @@
     return FBResponseWithStatus([FBCommandStatus staleElementReferenceErrorWithMessage:nil
                                                                              traceback:nil]);
   }
-  id value = request.arguments[@"value"];
+  id value = request.arguments[@"value"] ?: request.arguments[@"text"];
   if (!value) {
-    return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:@"Missing 'value' parameter" traceback:nil]);
+    return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:@"Neither 'value' nor 'text' parameter is provided" traceback:nil]);
   }
-  NSString *textToType = value;
-  if ([value isKindOfClass:[NSArray class]]) {
-    textToType = [value componentsJoinedByString:@""];
-  }
+  NSString *textToType = [value isKindOfClass:NSArray.class]
+    ? [value componentsJoinedByString:@""]
+    : value;
 #if !TARGET_OS_TV
   if (element.elementType == XCUIElementTypePickerWheel) {
     [element adjustToPickerWheelValue:textToType];
