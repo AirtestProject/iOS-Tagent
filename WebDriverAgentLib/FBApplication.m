@@ -10,17 +10,23 @@
 #import "FBApplication.h"
 
 #import "FBApplicationProcessProxy.h"
+#import "FBLogger.h"
 #import "FBRunLoopSpinner.h"
 #import "FBMacros.h"
 #import "FBXCodeCompatibility.h"
+#import "FBXCTestDaemonsProxy.h"
 #import "XCAccessibilityElement.h"
 #import "XCUIApplication.h"
+#import "XCUIApplication+FBHelpers.h"
 #import "XCUIApplicationImpl.h"
 #import "XCUIApplicationProcess.h"
 #import "XCUIElement.h"
 #import "XCUIElementQuery.h"
 #import "FBXCAXClientProxy.h"
 #import "XCUIApplicationProcessQuiescence.h"
+
+
+static const NSTimeInterval APP_STATE_CHANGE_TIMEOUT = 5.0;
 
 @interface FBApplication ()
 @property (nonatomic, assign) BOOL fb_isObservingAppImplCurrentProcess;
@@ -30,28 +36,22 @@
 
 + (instancetype)fb_activeApplication
 {
-  [[[FBRunLoopSpinner new]
-    timeout:5]
-   spinUntilTrue:^BOOL{
-     return [FBXCAXClientProxy.sharedClient activeApplications].count == 1;
-   }];
-
   NSArray<XCAccessibilityElement *> *activeApplicationElements = [FBXCAXClientProxy.sharedClient activeApplications];
-  XCAccessibilityElement *activeApplicationElement;
-
+  XCAccessibilityElement *activeApplicationElement = [activeApplicationElements firstObject];
   if (activeApplicationElements.count > 1) {
-    // Might be situations when firstObject is a system application — i.e. SpringBoard
-    XCAccessibilityElement *systemApplicationElement = [FBXCAXClientProxy.sharedClient systemApplication];
-    NSPredicate *nonSystemApplicationPredicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary<NSString *,id> *bindings) {
-        return systemApplicationElement.processIdentifier != ((XCAccessibilityElement *)evaluatedObject).processIdentifier;
-    }];
-    activeApplicationElement = [[activeApplicationElements filteredArrayUsingPredicate:nonSystemApplicationPredicate] firstObject];
-  } else {
-    activeApplicationElement = [activeApplicationElements firstObject];
+    XCAccessibilityElement *currentElement = self.class.fb_onScreenElement;
+    if (nil != currentElement) {
+      for (XCAccessibilityElement *appElement in activeApplicationElements) {
+        if (appElement.processIdentifier == currentElement.processIdentifier) {
+          activeApplicationElement = appElement;
+          break;
+        }
+      }
+    }
   }
-
-  if (!activeApplicationElement) {
-    return nil;
+  if (nil == activeApplicationElement) {
+    NSString *errMsg = @"No applications are currently active";
+    @throw [NSException exceptionWithName:FBElementNotVisibleException reason:errMsg userInfo:nil];
   }
   FBApplication *application = [FBApplication fb_applicationWithPID:activeApplicationElement.processIdentifier];
   NSAssert(nil != application, @"Active application instance is not expected to be equal to nil", nil);
@@ -101,6 +101,10 @@
   [XCUIApplicationProcessQuiescence setQuiescenceCheck:self.fb_shouldWaitForQuiescence];
   [super launch];
   [FBApplication fb_registerApplication:self withProcessID:self.processID];
+  if (![self fb_waitForAppElement:APP_STATE_CHANGE_TIMEOUT]) {
+    NSString *reason = [NSString stringWithFormat:@"The application '%@' is not running in foreground after %.2f seconds", self.bundleID, APP_STATE_CHANGE_TIMEOUT];
+    @throw [NSException exceptionWithName:FBTimeoutException reason:reason userInfo:@{}];
+  }
 }
 
 - (void)terminate
@@ -109,6 +113,9 @@
     [self.fb_appImpl removeObserver:self forKeyPath:FBStringify(XCUIApplicationImpl, currentProcess)];
   }
   [super terminate];
+  if (![self waitForState:XCUIApplicationStateNotRunning timeout:APP_STATE_CHANGE_TIMEOUT]) {
+    [FBLogger logFmt:@"The active application is still '%@' after %.2f seconds timeout", self.bundleID, APP_STATE_CHANGE_TIMEOUT];
+  }
 }
 
 
