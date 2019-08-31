@@ -36,20 +36,41 @@ static const NSTimeInterval APP_STATE_CHANGE_TIMEOUT = 5.0;
 
 + (instancetype)fb_activeApplication
 {
+  return [self fb_activeApplicationWithDefaultBundleId:nil];
+}
+
++ (instancetype)fb_activeApplicationWithDefaultBundleId:(nullable NSString *)bundleId
+{
   NSArray<XCAccessibilityElement *> *activeApplicationElements = [FBXCAXClientProxy.sharedClient activeApplications];
-  XCAccessibilityElement *activeApplicationElement = [activeApplicationElements firstObject];
+  XCAccessibilityElement *activeApplicationElement = nil;
   if (activeApplicationElements.count > 1) {
-    XCAccessibilityElement *currentElement = self.class.fb_onScreenElement;
-    if (nil != currentElement) {
-      for (XCAccessibilityElement *appElement in activeApplicationElements) {
-        if (appElement.processIdentifier == currentElement.processIdentifier) {
-          activeApplicationElement = appElement;
+    if (nil != bundleId) {
+      // Try to select the desired application first
+      NSArray<NSDictionary *> *appsInfo = [self fb_appsInfoWithAxElements:activeApplicationElements];
+      for (NSUInteger appIdx = 0; appIdx < appsInfo.count; appIdx++) {
+        if ([[[appsInfo objectAtIndex:appIdx] objectForKey:@"bundleId"] isEqualToString:(id)bundleId]) {
+          activeApplicationElement = [activeApplicationElements objectAtIndex:appIdx];
           break;
         }
       }
     }
+    // Fall back to the "normal" algorithm if the desired application is either
+    // not set or is not active
+    if (nil == activeApplicationElement) {
+      XCAccessibilityElement *currentElement = self.class.fb_onScreenElement;
+      if (nil != currentElement) {
+        for (XCAccessibilityElement *appElement in activeApplicationElements) {
+          if (appElement.processIdentifier == currentElement.processIdentifier) {
+            activeApplicationElement = appElement;
+            break;
+          }
+        }
+      }
+    }
   }
-  if (nil == activeApplicationElement) {
+  if (nil == activeApplicationElement && activeApplicationElements.count > 0) {
+    activeApplicationElement = [activeApplicationElements firstObject];
+  } else {
     NSString *errMsg = @"No applications are currently active";
     @throw [NSException exceptionWithName:FBElementNotVisibleException reason:errMsg userInfo:nil];
   }

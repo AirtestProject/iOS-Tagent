@@ -12,6 +12,7 @@
 #import "FBSpringboardApplication.h"
 #import "XCElementSnapshot.h"
 #import "FBElementTypeTransformer.h"
+#import "FBLogger.h"
 #import "FBMacros.h"
 #import "FBMathUtils.h"
 #import "FBXCodeCompatibility.h"
@@ -29,6 +30,8 @@
 #import "XCTRunnerDaemonSession.h"
 
 const static NSTimeInterval FBMinimumAppSwitchWait = 3.0;
+static NSString* const FBUnknownBundleId = @"unknown";
+
 
 @implementation XCUIApplication (FBHelpers)
 
@@ -39,7 +42,6 @@ const static NSTimeInterval FBMinimumAppSwitchWait = 3.0;
   dispatch_once(&oncePoint, ^{
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     // Consider the element, which is located close to the top left corner of the screen the on-screen one.
-    // FIXME: Improve this algorithm for split-screen automation
     CGFloat pointDistance = MIN(screenSize.width, screenSize.height) * 0.2;
     screenPoint = CGPointMake(pointDistance, pointDistance);
   });
@@ -50,6 +52,8 @@ const static NSTimeInterval FBMinimumAppSwitchWait = 3.0;
                               reply:^(XCAccessibilityElement *element, NSError *error) {
                                 if (nil == error) {
                                   onScreenElement = element;
+                                } else {
+                                  [FBLogger logFmt:@"Cannot request the screen point at %@: %@", [NSValue valueWithCGPoint:screenPoint], error.description];
                                 }
                                 dispatch_semaphore_signal(sem);
                               }];
@@ -67,6 +71,37 @@ const static NSTimeInterval FBMinimumAppSwitchWait = 3.0;
     return nil != currentAppElement
       && currentAppElement.processIdentifier == currentProcessIdentifier;
   }];
+}
+
++ (NSArray<NSDictionary<NSString *, id> *> *)fb_appsInfoWithAxElements:(NSArray<XCAccessibilityElement *> *)axElements
+{
+  NSMutableArray<NSDictionary<NSString *, id> *> *result = [NSMutableArray array];
+  id<XCTestManager_ManagerInterface> proxy = [FBXCTestDaemonsProxy testRunnerProxy];
+  for (XCAccessibilityElement *axElement in axElements) {
+    NSMutableDictionary<NSString *, id> *appInfo = [NSMutableDictionary dictionary];
+    pid_t pid = axElement.processIdentifier;
+    appInfo[@"pid"] = @(pid);
+    __block NSString *bundleId = nil;
+    dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+    [proxy _XCT_requestBundleIDForPID:pid
+                                reply:^(NSString *bundleID, NSError *error) {
+                                  if (nil == error) {
+                                    bundleId = bundleID;
+                                  } else {
+                                    [FBLogger logFmt:@"Cannot request the bundle ID for process ID %@: %@", @(pid), error.description];
+                                  }
+                                  dispatch_semaphore_signal(sem);
+                                }];
+    dispatch_semaphore_wait(sem, dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)));
+    appInfo[@"bundleId"] = bundleId ?: FBUnknownBundleId;
+    [result addObject:appInfo.copy];
+  }
+  return result.copy;
+}
+
++ (NSArray<NSDictionary<NSString *, id> *> *)fb_activeAppsInfo
+{
+  return [self fb_appsInfoWithAxElements:[FBXCAXClientProxy.sharedClient activeApplications]];
 }
 
 - (BOOL)fb_deactivateWithDuration:(NSTimeInterval)duration error:(NSError **)error
