@@ -15,6 +15,7 @@
 #import "FBLogger.h"
 #import "FBMacros.h"
 #import "FBMathUtils.h"
+#import "FBScreenPoint.h"
 #import "FBXCodeCompatibility.h"
 #import "FBXPath.h"
 #import "FBXCTestDaemonsProxy.h"
@@ -35,38 +36,12 @@ static NSString* const FBUnknownBundleId = @"unknown";
 
 @implementation XCUIApplication (FBHelpers)
 
-+ (XCAccessibilityElement *)fb_onScreenElement
-{
-  static CGPoint screenPoint;
-  static dispatch_once_t oncePoint;
-  dispatch_once(&oncePoint, ^{
-    CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    // Consider the element, which is located close to the top left corner of the screen the on-screen one.
-    CGFloat pointDistance = MIN(screenSize.width, screenSize.height) * 0.2;
-    screenPoint = CGPointMake(pointDistance, pointDistance);
-  });
-  __block XCAccessibilityElement *onScreenElement = nil;
-  id<XCTestManager_ManagerInterface> proxy = [FBXCTestDaemonsProxy testRunnerProxy];
-  dispatch_semaphore_t sem = dispatch_semaphore_create(0);
-  [proxy _XCT_requestElementAtPoint:screenPoint
-                              reply:^(XCAccessibilityElement *element, NSError *error) {
-                                if (nil == error) {
-                                  onScreenElement = element;
-                                } else {
-                                  [FBLogger logFmt:@"Cannot request the screen point at %@: %@", [NSValue valueWithCGPoint:screenPoint], error.description];
-                                }
-                                dispatch_semaphore_signal(sem);
-                              }];
-  dispatch_semaphore_wait(sem, dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)));
-  return onScreenElement;
-}
-
 - (BOOL)fb_waitForAppElement:(NSTimeInterval)timeout
 {
   return [[[FBRunLoopSpinner new]
            timeout:timeout]
           spinUntilTrue:^BOOL{
-    XCAccessibilityElement *currentAppElement = self.class.fb_onScreenElement;
+    XCAccessibilityElement *currentAppElement = FBScreenPoint.sharedInstance.axElement;
     int currentProcessIdentifier = self.accessibilityElement.processIdentifier;
     return nil != currentAppElement
       && currentAppElement.processIdentifier == currentProcessIdentifier;
