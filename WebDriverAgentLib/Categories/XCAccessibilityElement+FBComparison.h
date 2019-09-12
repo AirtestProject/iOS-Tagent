@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param other the other element instance
  @return YES if both elements are equal
  */
-- (BOOL)isEqualToElement:(nullable XCAccessibilityElement *)other;
+- (BOOL)fb_isEqualToElement:(nullable XCAccessibilityElement *)other;
 
 @end
 

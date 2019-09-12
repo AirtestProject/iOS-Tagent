@@ -20,8 +20,6 @@
 #import "XCUIElement+FBUtilities.h"
 #import "XCTestPrivateSymbols.h"
 
-static const NSTimeInterval AX_TIMEOUT = 1.0;
-
 @implementation XCUIElement (FBIsVisible)
 
 - (BOOL)fb_isVisible
@@ -186,11 +184,11 @@ static NSMutableDictionary<NSNumber *, NSMutableDictionary<NSString *, NSNumber 
 #endif
   XCAccessibilityElement *hitElement = [FBScreenPoint axElementWithPoint:midPoint];
   if (nil != hitElement) {
-    if ([self.accessibilityElement isEqualToElement:hitElement]) {
+    if ([self.accessibilityElement fb_isEqualToElement:hitElement]) {
       return [self fb_cacheVisibilityWithValue:YES forAncestors:ancestors];
     }
     for (XCElementSnapshot *ancestor in ancestors) {
-      if ([hitElement isEqualToElement:ancestor.accessibilityElement]) {
+      if ([hitElement fb_isEqualToElement:ancestor.accessibilityElement]) {
         return [self fb_cacheVisibilityWithValue:YES forAncestors:ancestors];
       }
     }
@@ -198,7 +196,7 @@ static NSMutableDictionary<NSNumber *, NSMutableDictionary<NSString *, NSNumber 
   if (self.children.count > 0) {
     if (nil != hitElement) {
       for (XCElementSnapshot *descendant in self._allDescendants) {
-        if ([hitElement isEqualToElement:descendant.accessibilityElement]) {
+        if ([hitElement fb_isEqualToElement:descendant.accessibilityElement]) {
           return [self fb_cacheVisibilityWithValue:YES forAncestors:descendant.fb_ancestors];
         }
       }
