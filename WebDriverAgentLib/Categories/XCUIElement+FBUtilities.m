@@ -133,16 +133,47 @@ static const NSTimeInterval FB_ANIMATION_TIMEOUT = 5.0;
   });
   id<XCTestManager_ManagerInterface> proxy = [FBXCTestDaemonsProxy testRunnerProxy];
   if (useNewSnapshotAPI) {
-    [proxy _XCT_requestSnapshotForElement:self.lastSnapshot.accessibilityElement
+    [proxy _XCT_requestSnapshotForElement:self.fb_accessibilityElementBySnapshot
                                attributes:axAttributes
                                parameters:defaultParameters
                                     reply:block];
   } else {
-    [proxy _XCT_snapshotForElement:self.lastSnapshot.accessibilityElement
+    [proxy _XCT_snapshotForElement:self.fb_accessibilityElementBySnapshot
                         attributes:axAttributes
                         parameters:defaultParameters
                              reply:block];
   }
+}
+
+/**
+  Whether 'includingNonModalElements' is available
+
+  @param query The query to check if it has 'includingNonModalElements'
+  @return YES if includingNonModalElements is available in the query
+ */
++ (BOOL)fb_hasIncludingNonModalElements:(XCUIElementQuery *)query
+{
+  static dispatch_once_t hasIncludingNonModalElements;
+  static BOOL result;
+  dispatch_once(&hasIncludingNonModalElements, ^{
+    result = [query respondsToSelector:@selector(includingNonModalElements)];
+  });
+  return result;
+}
+
+/**
+ Returns accessibility element as either rootElementSnapshot by includingNonModalElements or by lastSnapshot
+
+ @return The accessibility element with no modal elements snapshot
+*/
+- (XCAccessibilityElement *)fb_accessibilityElementBySnapshot
+{
+  if ([self.class fb_hasIncludingNonModalElements:self.query]) {
+    // 'self.query.includingNonModalElements.rootElementSnapshot' is faster than 'self.lastSnapshot' on Xcode 11.
+    return self.query.includingNonModalElements.rootElementSnapshot.accessibilityElement;
+  }
+
+  return self.lastSnapshot.accessibilityElement;
 }
 
 - (NSArray *)fb_createAXAttributes: (BOOL)asNumber
@@ -191,11 +222,25 @@ static const NSTimeInterval FB_ANIMATION_TIMEOUT = 5.0;
   return propertyNames;
 }
 
+/**
+ Returns root element query either with includingNonModalElements or no includingNonModalElements
+
+ @return The no modal elements query
+*/
+- (XCUIElementQuery *)fb_queryIncludingNoModalElements
+{
+  XCUIElementQuery *query = self.query;
+  if ([self.class fb_hasIncludingNonModalElements:query]) {
+    query = [query includingNonModalElements];
+  }
+  return query;
+}
+
 - (XCElementSnapshot *)fb_lastSnapshotFromQuery
 {
   XCElementSnapshot *snapshot = nil;
   @try {
-    XCUIElementQuery *rootQuery = self.query;
+    XCUIElementQuery *rootQuery = [self fb_queryIncludingNoModalElements];
     while (rootQuery != nil && rootQuery.rootElementSnapshot == nil) {
       rootQuery = rootQuery.inputQuery;
     }
