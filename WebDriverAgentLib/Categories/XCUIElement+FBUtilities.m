@@ -86,11 +86,14 @@ static const NSTimeInterval FB_ANIMATION_TIMEOUT = 5.0;
   __block XCElementSnapshot *snapshotWithAttributes = nil;
   __block NSError *innerError = nil;
   id<XCTestManager_ManagerInterface> proxy = [FBXCTestDaemonsProxy testRunnerProxy];
+  XCAccessibilityElement *axElement = FBConfiguration.includeNonModalDialogs && self.class.fb_supportsNonModalDialogsInclusion
+    ? self.query.includingNonModalElements.rootElementSnapshot.accessibilityElement
+    : self.lastSnapshot.accessibilityElement;
   dispatch_semaphore_t sem = dispatch_semaphore_create(0);
   [FBXCTestDaemonsProxy tryToSetAxTimeout:axTimeout
                                  forProxy:proxy
                               withHandler:^(int res) {
-    [self fb_requestSnapshot:self.lastSnapshot.accessibilityElement
+    [self fb_requestSnapshot:axElement
                        reply:^(XCElementSnapshot *snapshot, NSError *error) {
       if (nil == error) {
         snapshotWithAttributes = snapshot;
@@ -133,12 +136,12 @@ static const NSTimeInterval FB_ANIMATION_TIMEOUT = 5.0;
   });
   id<XCTestManager_ManagerInterface> proxy = [FBXCTestDaemonsProxy testRunnerProxy];
   if (useNewSnapshotAPI) {
-    [proxy _XCT_requestSnapshotForElement:self.fb_accessibilityElementBySnapshot
+    [proxy _XCT_requestSnapshotForElement:accessibilityElement
                                attributes:axAttributes
                                parameters:defaultParameters
                                     reply:block];
   } else {
-    [proxy _XCT_snapshotForElement:self.fb_accessibilityElementBySnapshot
+    [proxy _XCT_snapshotForElement:accessibilityElement
                         attributes:axAttributes
                         parameters:defaultParameters
                              reply:block];
@@ -148,32 +151,16 @@ static const NSTimeInterval FB_ANIMATION_TIMEOUT = 5.0;
 /**
   Whether 'includingNonModalElements' is available
 
-  @param query The query to check if it has 'includingNonModalElements'
-  @return YES if includingNonModalElements is available in the query
+  @return YES if includingNonModalElements is available for the element
  */
-+ (BOOL)fb_hasIncludingNonModalElements:(XCUIElementQuery *)query
++ (BOOL)fb_supportsNonModalDialogsInclusion
 {
   static dispatch_once_t hasIncludingNonModalElements;
   static BOOL result;
   dispatch_once(&hasIncludingNonModalElements, ^{
-    result = [query respondsToSelector:@selector(includingNonModalElements)];
+    result = [FBApplication.fb_systemApplication.query respondsToSelector:@selector(includingNonModalElements)];
   });
   return result;
-}
-
-/**
- Returns accessibility element as either rootElementSnapshot by includingNonModalElements or by lastSnapshot
-
- @return The accessibility element with no modal elements snapshot
-*/
-- (XCAccessibilityElement *)fb_accessibilityElementBySnapshot
-{
-  if ([self.class fb_hasIncludingNonModalElements:self.query]) {
-    // 'self.query.includingNonModalElements.rootElementSnapshot' is faster than 'self.lastSnapshot' on Xcode 11.
-    return self.query.includingNonModalElements.rootElementSnapshot.accessibilityElement;
-  }
-
-  return self.lastSnapshot.accessibilityElement;
 }
 
 - (NSArray *)fb_createAXAttributes: (BOOL)asNumber
@@ -222,25 +209,13 @@ static const NSTimeInterval FB_ANIMATION_TIMEOUT = 5.0;
   return propertyNames;
 }
 
-/**
- Returns root element query either with includingNonModalElements or no includingNonModalElements
-
- @return The no modal elements query
-*/
-- (XCUIElementQuery *)fb_queryIncludingNoModalElements
-{
-  XCUIElementQuery *query = self.query;
-  if ([self.class fb_hasIncludingNonModalElements:query]) {
-    query = [query includingNonModalElements];
-  }
-  return query;
-}
-
 - (XCElementSnapshot *)fb_lastSnapshotFromQuery
 {
   XCElementSnapshot *snapshot = nil;
   @try {
-    XCUIElementQuery *rootQuery = [self fb_queryIncludingNoModalElements];
+    XCUIElementQuery *rootQuery = FBConfiguration.includeNonModalDialogs && self.class.fb_supportsNonModalDialogsInclusion
+      ? self.query.includingNonModalElements
+      : self.query;
     while (rootQuery != nil && rootQuery.rootElementSnapshot == nil) {
       rootQuery = rootQuery.inputQuery;
     }

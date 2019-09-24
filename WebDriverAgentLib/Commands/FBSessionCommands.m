@@ -22,6 +22,7 @@
 #import "XCUIDevice+FBHealthCheck.h"
 #import "XCUIDevice+FBHelpers.h"
 #import "XCUIApplicationProcessDelay.h"
+#import "XCUIElement+FBUtilities.h"
 
 static NSString* const USE_COMPACT_RESPONSES = @"shouldUseCompactResponses";
 static NSString* const ELEMENT_RESPONSE_ATTRIBUTES = @"elementResponseAttributes";
@@ -37,6 +38,8 @@ static NSString* const USE_FIRST_MATCH = @"useFirstMatch";
 static NSString* const REDUCE_MOTION = @"reduceMotion";
 static NSString* const DEFAULT_ACTIVE_APPLICATION = @"defaultActiveApplication";
 static NSString* const ACTIVE_APP_DETECTION_POINT = @"activeAppDetectionPoint";
+static NSString* const INCLUDE_NON_MODAL_DIALOGS = @"includeNonModalDialogs";
+
 
 @implementation FBSessionCommands
 
@@ -247,6 +250,7 @@ static NSString* const ACTIVE_APP_DETECTION_POINT = @"activeAppDetectionPoint";
       REDUCE_MOTION: @([FBConfiguration reduceMotionEnabled]),
       DEFAULT_ACTIVE_APPLICATION: request.session.defaultActiveApplication,
       ACTIVE_APP_DETECTION_POINT: FBActiveAppDetectionPoint.sharedInstance.stringCoordinates,
+      INCLUDE_NON_MODAL_DIALOGS: @([FBConfiguration includeNonModalDialogs]),
     }
   );
 }
@@ -299,6 +303,10 @@ static NSString* const ACTIVE_APP_DETECTION_POINT = @"activeAppDetectionPoint";
                                                                       error:&error]) {
       return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:error.description traceback:nil]);
     }
+  }
+  if ([settings objectForKey:INCLUDE_NON_MODAL_DIALOGS]
+      && [XCUIElement fb_supportsNonModalDialogsInclusion]) {
+    [FBConfiguration setIncludeNonModalDialogs:[[settings objectForKey:INCLUDE_NON_MODAL_DIALOGS] boolValue]];
   }
 
   return [self handleGetSettings:request];

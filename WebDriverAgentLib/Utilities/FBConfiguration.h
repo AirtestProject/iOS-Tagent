@@ -158,6 +158,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)setReduceMotionEnabled:(BOOL)isEnabled;
 + (BOOL)reduceMotionEnabled;
 
++ (void)setIncludeNonModalDialogs:(BOOL)isEnabled;
++ (BOOL)includeNonModalDialogs;
+
 @end
 
 NS_ASSUME_NONNULL_END
