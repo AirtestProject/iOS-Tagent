@@ -25,6 +25,8 @@ function define_xc_macros() {
     "iphone" ) XC_DESTINATION="name=$IPHONE_MODEL,OS=$IOS_VERSION";;
     "ipad" ) XC_DESTINATION="name=$IPAD_MODEL,OS=$IOS_VERSION";;
     "tv" ) XC_DESTINATION="name=$TV_MODEL,OS=$TV_VERSION";;
+    "generic" ) XC_DESTINATION="generic/platform=iOS";;
+    "tv_generic" ) XC_DESTINATION="generic/platform=tvOS" XC_MACROS="${XC_MACROS} ARCHS=arm64";; # tvOS only supports arm64
   esac
 
   case "$ACTION" in
@@ -43,6 +45,10 @@ function define_xc_macros() {
     "tv_sim" ) XC_SDK="appletvsimulator";;
     "tv_device" ) XC_SDK="appletvos";;
     *) echo "Unknown SDK"; exit 1 ;;
+  esac
+
+  case "${CODE_SIGN:-}" in
+    "no" ) XC_MACROS="${XC_MACROS} CODE_SIGNING_ALLOWED=NO";;
   esac
 }
 
