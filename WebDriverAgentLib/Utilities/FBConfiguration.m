@@ -217,7 +217,7 @@ static BOOL FBIncludeNonModalElements = NO;
   if ([controller respondsToSelector:@selector(setAutocorrectionEnabled:)]) {
     // Under iOS 10.2
     controller.autocorrectionEnabled = NO;
-  } else {
+  } else if ([controller respondsToSelector:@selector(setValue:forPreferenceKey:)]) {
     // Over iOS 10.3
     [controller setValue:@NO forPreferenceKey:FBKeyboardAutocorrectionKey];
   }
@@ -225,18 +225,20 @@ static BOOL FBIncludeNonModalElements = NO;
   // Predictive in Keyboards
   if ([controller respondsToSelector:@selector(setPredictionEnabled:)]) {
     controller.predictionEnabled = NO;
-  } else {
+  } else if ([controller respondsToSelector:@selector(setValue:forPreferenceKey:)]) {
     [controller setValue:@NO forPreferenceKey:FBKeyboardPredictionKey];
   }
 
   // To dismiss keyboard tutorial on iOS 11+ (iPad)
-  if (isSDKVersionGreaterThanOrEqualTo(@"11.0")) {
-    [controller setValue:@YES forPreferenceKey:@"DidShowGestureKeyboardIntroduction"];
+  if ([controller respondsToSelector:@selector(setValue:forPreferenceKey:)]) {
+    if (isSDKVersionGreaterThanOrEqualTo(@"11.0")) {
+      [controller setValue:@YES forPreferenceKey:@"DidShowGestureKeyboardIntroduction"];
+    }
+    if (isSDKVersionGreaterThanOrEqualTo(@"13.0")) {
+      [controller setValue:@YES forPreferenceKey:@"DidShowContinuousPathIntroduction"];
+    }
+    [controller synchronizePreferences];
   }
-  if (isSDKVersionGreaterThanOrEqualTo(@"13.0")) {
-    [controller setValue:@YES forPreferenceKey:@"DidShowContinuousPathIntroduction"];
-  }
-  [controller synchronizePreferences];
 
   dlclose(handle);
 }
