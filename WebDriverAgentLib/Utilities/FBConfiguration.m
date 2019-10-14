@@ -42,6 +42,9 @@ static BOOL FBShouldUseFirstMatch = NO;
 // This is diabled by default because enabling it prevents the accessbility snapshot to be taken
 // (it always errors with kxIllegalArgument error)
 static BOOL FBIncludeNonModalElements = NO;
+static NSString *FBAcceptAlertButtonSelector = @"";
+static NSString *FBDismissAlertButtonSelector = @"";
+
 
 @implementation FBConfiguration
 
@@ -291,6 +294,26 @@ static BOOL FBIncludeNonModalElements = NO;
 + (BOOL)includeNonModalElements
 {
   return FBIncludeNonModalElements;
+}
+
++ (void)setAcceptAlertButtonSelector:(NSString *)classChainSelector
+{
+  FBAcceptAlertButtonSelector = classChainSelector;
+}
+
++ (NSString *)acceptAlertButtonSelector
+{
+  return FBAcceptAlertButtonSelector;
+}
+
++ (void)setDismissAlertButtonSelector:(NSString *)classChainSelector
+{
+  FBDismissAlertButtonSelector = classChainSelector;
+}
+
++ (NSString *)dismissAlertButtonSelector
+{
+  return FBDismissAlertButtonSelector;
 }
 
 #pragma mark Private

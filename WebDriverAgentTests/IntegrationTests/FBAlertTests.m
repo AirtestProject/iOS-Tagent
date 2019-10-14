@@ -11,6 +11,7 @@
 
 #import <WebDriverAgentLib/FBAlert.h>
 
+#import "FBConfiguration.h"
 #import "FBIntegrationTestCase.h"
 #import "FBTestMacros.h"
 #import "FBMacros.h"
@@ -100,6 +101,20 @@
   XCTAssertNil(error);
 }
 
+- (void)testAcceptingAlertWithCustomLocator
+{
+  NSError *error;
+  [self showApplicationAlert];
+  [FBConfiguration setAcceptAlertButtonSelector:@"**/XCUIElementTypeButton[-1]"];
+  @try {
+    XCTAssertTrue([[FBAlert alertWithApplication:self.testedApplication] acceptWithError:&error]);
+    FBAssertWaitTillBecomesTrue(self.testedApplication.alerts.count == 0);
+    XCTAssertNil(error);
+  } @finally {
+    [FBConfiguration setAcceptAlertButtonSelector:@""];
+  }
+}
+
 - (void)testDismissingAlert
 {
   NSError *error;
@@ -107,6 +122,20 @@
   XCTAssertTrue([[FBAlert alertWithApplication:self.testedApplication] dismissWithError:&error]);
   FBAssertWaitTillBecomesTrue(self.testedApplication.alerts.count == 0);
   XCTAssertNil(error);
+}
+
+- (void)testDismissingAlertWithCustomLocator
+{
+  NSError *error;
+  [self showApplicationAlert];
+  [FBConfiguration setDismissAlertButtonSelector:@"**/XCUIElementTypeButton[-1]"];
+  @try {
+    XCTAssertTrue([[FBAlert alertWithApplication:self.testedApplication] dismissWithError:&error]);
+    FBAssertWaitTillBecomesTrue(self.testedApplication.alerts.count == 0);
+    XCTAssertNil(error);
+  } @finally {
+    [FBConfiguration setDismissAlertButtonSelector:@""];
+  }
 }
 
 - (void)testAlertElement
