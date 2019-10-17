@@ -30,12 +30,27 @@ branches:
 
 jobs:
   include:
-    - stage: Node tests
-      osx_image: xcode10
+    - stage:
+      name: Node unit tests
       language: node_js
       node_js: "10"
       install: npm install
       script: npm run test
+
+    - stage:
+      name: Node functional tests
+      language: node_js
+      node_js: "10"
+      install: npm install
+      env:
+        - PLATFORM_VERSION=12.0
+        - DEVICE_NAME="iPhone X"
+      before_script:
+        # allowing the normal method will cause rate limiting
+        - carthage bootstrap --no-use-binaries
+        - cp Cartfile.resolved Carthage
+        - mkdir -p ./Resources/WebDriverAgent.bundle
+      script: npm run e2e-test
 
     - stage: WDA build
       name: Generic, Xcode 11
