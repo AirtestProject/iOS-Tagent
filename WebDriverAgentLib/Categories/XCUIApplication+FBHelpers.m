@@ -95,34 +95,29 @@ static NSString* const FBUnknownBundleId = @"unknown";
     [self fb_waitUntilSnapshotIsStable];
   }
 
-  // If getting the snapshot with attributes fails we use the snapshot with lazily initialized attributes
-  XCElementSnapshot *snapshot = self.fb_snapshotWithAttributes ?: self.fb_lastSnapshot;
-
-  NSMutableDictionary *snapshotTree = [[self.class dictionaryForElement:snapshot recursive:NO] mutableCopy];
-
-  NSArray<XCUIElement *> *children = [self fb_filterDescendantsWithSnapshots:snapshot.children];
-  NSMutableArray<NSDictionary *> *childrenTree = [NSMutableArray arrayWithCapacity:children.count];
-
+  XCElementSnapshot *snapshot = self.fb_lastSnapshot;
+  NSMutableDictionary *rootTree = [[self.class dictionaryForElement:snapshot recursive:NO] mutableCopy];
+  NSArray<XCUIElement *> *children = [self fb_filterDescendantsWithSnapshots:snapshot.children onlyChildren:YES];
+  NSMutableArray<NSDictionary *> *childrenTrees = [NSMutableArray arrayWithCapacity:children.count];
   for (XCUIElement* child in children) {
-    XCElementSnapshot *childSnapshot = child.fb_snapshotWithAttributes ?: child.fb_lastSnapshot;
+    XCElementSnapshot *childSnapshot = child.fb_snapshotWithAllAttributes;
     if (nil == childSnapshot) {
+      [FBLogger logFmt:@"Skipping source dump for %@ because its snapshot cannot be resolved", child.description];
       continue;
     }
-    [childrenTree addObject:[self.class dictionaryForElement:childSnapshot recursive:YES]];
+    [childrenTrees addObject:[self.class dictionaryForElement:childSnapshot recursive:YES]];
   }
+  // This is necessary because web views are not visible in the native page source otherwise
+  [rootTree setObject:childrenTrees.copy forKey:@"children"];
 
-  if (childrenTree.count > 0) {
-    [snapshotTree setObject:childrenTree.copy forKey:@"children"];
-  }
-
-  return snapshotTree.copy;
+  return rootTree.copy;
 }
 
 - (NSDictionary *)fb_accessibilityTree
 {
   [self fb_waitUntilSnapshotIsStable];
   // We ignore all elements except for the main window for accessibility tree
-  return [self.class accessibilityInfoForElement:(self.fb_snapshotWithAttributes ?: self.fb_lastSnapshot)];
+  return [self.class accessibilityInfoForElement:(self.fb_snapshotWithAllAttributes ?: self.fb_lastSnapshot)];
 }
 
 + (NSDictionary *)dictionaryForElement:(XCElementSnapshot *)snapshot recursive:(BOOL)recursive

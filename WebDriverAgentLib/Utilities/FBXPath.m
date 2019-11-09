@@ -308,26 +308,28 @@ NSString *const FBXPathQueryEvaluationException = @"FBXPathQueryEvaluationExcept
   XCElementSnapshot *currentSnapshot;
   NSArray<XCElementSnapshot *> *children;
   if ([root isKindOfClass:XCUIElement.class]) {
+    XCUIElement *element = (XCUIElement *)root;
     if ([FBConfiguration shouldUseTestManagerForVisibilityDetection]) {
-      [((XCUIElement *)root).application fb_waitUntilSnapshotIsStable];
+      [element.application fb_waitUntilSnapshotIsStable];
     }
     if ([root isKindOfClass:XCUIApplication.class]) {
-      XCUIApplication *application = (XCUIApplication *)root;
-      currentSnapshot = application.fb_snapshotWithAttributes ?: application.fb_lastSnapshot;
-      NSArray<XCUIElement *> *windows = [((XCUIElement *)root) fb_filterDescendantsWithSnapshots:currentSnapshot.children];
+      currentSnapshot = element.fb_lastSnapshot;
+      NSArray<XCUIElement *> *windows = [element fb_filterDescendantsWithSnapshots:currentSnapshot.children onlyChildren:YES];
       NSMutableArray<XCElementSnapshot *> *windowsSnapshots = [NSMutableArray array];
       for (XCUIElement* window in windows) {
-        XCElementSnapshot *windowSnapshot = window.fb_snapshotWithAttributes ?: window.fb_lastSnapshot;
+        // TODO: Only select the necessary attributes from the snapshot
+        XCElementSnapshot *windowSnapshot = window.fb_snapshotWithAllAttributes;
         if (nil == windowSnapshot) {
-          [FBLogger logFmt:@"Skipping source dumping for %@ because its snapshot cannot be resolved", window.description];
+          [FBLogger logFmt:@"Skipping source dump for %@ because its snapshot cannot be resolved", window.description];
           continue;
         }
         [windowsSnapshots addObject:windowSnapshot];
       }
+      // This is necessary because web views are not visible in the native page source otherwise
       children = windowsSnapshots.copy;
     } else {
-      XCUIElement *element = (XCUIElement *)root;
-      currentSnapshot = element.fb_snapshotWithAttributes ?: element.fb_lastSnapshot;
+      // TODO: Only select the necessary attributes from the snapshot
+      currentSnapshot = element.fb_snapshotWithAllAttributes;
       children = currentSnapshot.children;
     }
   } else {
