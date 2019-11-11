@@ -324,11 +324,15 @@ NSString *const FBXPathQueryEvaluationException = @"FBXPathQueryEvaluationExcept
     }
     if ([snapshotAttributes containsObject:FB_XCAXAIsVisibleAttributeName]
         || 0 == snapshotAttributes.count) {
+      // If the app is not idle state while we retrieve the visiblity state
+      // then the snapshot retrieval operation might freeze and time out
       [element.application fb_waitUntilSnapshotIsStable];
     }
     if ([root isKindOfClass:XCUIApplication.class]) {
       currentSnapshot = element.fb_lastSnapshot;
-      NSArray<XCUIElement *> *windows = [element fb_filterDescendantsWithSnapshots:currentSnapshot.children onlyChildren:YES];
+      NSArray<XCUIElement *> *windows = [element fb_filterDescendantsWithSnapshots:currentSnapshot.children
+                                                                           selfUID:currentSnapshot.wdUID
+                                                                      onlyChildren:YES];
       NSMutableArray<XCElementSnapshot *> *windowsSnapshots = [NSMutableArray array];
       for (XCUIElement* window in windows) {
         XCElementSnapshot *windowSnapshot = 0 == snapshotAttributes.count
