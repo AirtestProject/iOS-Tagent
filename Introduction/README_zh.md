@@ -6,6 +6,7 @@ iOS-Tagent 是基于 facebook 的 [WebDriverAgent](https://github.com/facebook/W
 
 | iOS       	| Xcode 	|
 |-----------	|-------	|
+|  ≥ 13             | 11.x      |
 | 10.x-12.x 	| 10.x  	|
 | ≥ 9.3       	| ≥ 9.3   	|
 

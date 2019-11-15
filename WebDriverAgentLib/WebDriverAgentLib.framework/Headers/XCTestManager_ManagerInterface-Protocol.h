@@ -6,7 +6,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class NSArray, NSDictionary, NSNumber, NSString, NSUUID, XCAccessibilityElement, XCDeviceEvent, XCSynthesizedEventRecord, XCTouchGesture, NSXPCListenerEndpoint;
+@class NSArray, NSDictionary, NSNumber, NSString, NSUUID, XCAccessibilityElement, XCDeviceEvent, XCSynthesizedEventRecord, XCTouchGesture, NSXPCListenerEndpoint, XCElementSnapshot;
 
 @protocol XCTestManager_ManagerInterface
 - (void)_XCT_loadAccessibilityWithTimeout:(double)arg1 reply:(void (^)(BOOL, NSError *))arg2;

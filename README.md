@@ -8,6 +8,7 @@ We make some customized optimization and adjustments to it and it works well in:
 
 | iOS       	| Xcode 	|
 |-----------	|-------	|
+|  ≥ 13             | 11.x      |
 | 10.x-12.x 	| 10.x  	|
 | ≥ 9.3       	| ≥ 9.3   	|
 
