@@ -115,6 +115,7 @@
   });
   
   NSUInteger retry = 0;
+  NSString *placeholderValue = self.placeholderValue;
   NSUInteger preClearTextLength = [currentValue fb_visualLength];
   do {
     NSString *textToType = [backspaceDeleteSequence fb_repeatTimes:preClearTextLength];
@@ -138,7 +139,6 @@
     }
 
     currentValue = self.value;
-    NSString *placeholderValue = self.placeholderValue;
     if (nil != placeholderValue && [currentValue isEqualToString:placeholderValue]) {
       // Short circuit if only the placeholder value left
       return YES;
