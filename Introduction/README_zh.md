@@ -87,13 +87,13 @@ iOS-Tagent 是基于 facebook 的 [WebDriverAgent](https://github.com/facebook/W
 
 
 # Q & A
-我们猜测你在部署过程中会遇到很多问题，所以整理了一份 [Q&A](./Introduction/question_zh.md)，你可以先看看，如果对于这个项目有问题和反馈建议，也欢迎到 [Issues](https://github.com/AirtestProject/iOS-Tagent/issues)里进行提出.
-1. [Xcode版本问题](./Introduction/question_zh.md#xcode版本)
-1. [申请开发者证书](./Introduction/question_zh.md#开发者证书)
-1. [登陆开发者账号](./Introduction/question_zh.md#登陆开发者账号)
-1. [设置开发者证书](./Introduction/question_zh.md#设置开发者证书)
-1. [Xcode failed to create provisioning profile](./Introduction/question_zh.md#buddle-identifier)
-1. [第一次安装，信任设备](./Introduction/question_zh.md#信任设备)
+我们猜测你在部署过程中会遇到很多问题，所以整理了一份 [Q&A](./question_zh.md)，你可以先看看，如果对于这个项目有问题和反馈建议，也欢迎到 [Issues](https://github.com/AirtestProject/iOS-Tagent/issues)里进行提出.
+1. [Xcode版本问题](./question_zh.md#xcode版本)
+1. [申请开发者证书](./question_zh.md#开发者证书)
+1. [登陆开发者账号](./question_zh.md#登陆开发者账号)
+1. [设置开发者证书](./question_zh.md#设置开发者证书)
+1. [Xcode failed to create provisioning profile](./question_zh.md#buddle-identifier)
+1. [第一次安装，信任设备](./question_zh.md#信任设备)
 
 
 # License

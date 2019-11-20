@@ -34,6 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)setMaxTypingFrequency:(NSUInteger)value;
 + (NSUInteger)maxTypingFrequency;
 
++ (BOOL)shouldUseSingletonTestManager;
+
 /**
  The range of ports that the HTTP Server should attempt to bind on launch
  */
