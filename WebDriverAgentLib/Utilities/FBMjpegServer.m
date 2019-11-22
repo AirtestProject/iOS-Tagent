@@ -7,12 +7,11 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-@import CocoaAsyncSocket;
-
 #import "FBMjpegServer.h"
 
 #import <mach/mach_time.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import <RoutingHTTPServer/GCDAsyncSocket.h>
 #import "FBApplication.h"
 #import "FBConfiguration.h"
 #import "FBLogger.h"
