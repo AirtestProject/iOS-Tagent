@@ -24,7 +24,7 @@ async function buildWebDriverAgent (xcodeVersion) {
     log.error(e.stdout);
     log.error(e.stderr);
     log.error(e.message);
-    throw(e);
+    throw e;
   }
 
   // Create bundles folder
