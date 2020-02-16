@@ -80,7 +80,7 @@
     "build/lib",
     "Scripts/bootstrap.sh",
     "Scripts/build.sh",
-    "Scripts/fetch-prebuilt-wda",
+    "Scripts/fetch-prebuilt-wda.js",
     "Cartfile",
     "Cartfile.resolved",
     "Configurations",
