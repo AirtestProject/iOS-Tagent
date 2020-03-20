@@ -148,6 +148,18 @@ describe('launch', function () {
   });
 });
 
+describe('use wda proxy url', function () {
+  it('should use webDriverAgentUrl wda proxy url', function () {
+    let args = Object.assign({}, fakeConstructorArgs);
+    let agent = new WebDriverAgent({}, args);
+    agent.url = 'http://127.0.0.1:8100/aabbccdd';
+
+    agent.url.port.should.eql('8100');
+    agent.url.hostname.should.eql('127.0.0.1');
+    agent.url.path.should.eql('/aabbccdd');
+  });
+});
+
 describe('get url', function () {
   it('should use default WDA listening url', function () {
     const args = Object.assign({}, fakeConstructorArgs);
