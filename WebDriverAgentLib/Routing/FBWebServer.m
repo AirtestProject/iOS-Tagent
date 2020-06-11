@@ -9,8 +9,8 @@
 
 #import "FBWebServer.h"
 
-#import <RoutingHTTPServer/RoutingConnection.h>
-#import <RoutingHTTPServer/RoutingHTTPServer.h>
+#import "RoutingConnection.h"
+#import "RoutingHTTPServer.h"
 
 #import "FBCommandHandler.h"
 #import "FBErrorBuilder.h"

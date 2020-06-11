@@ -9,7 +9,7 @@
 
 #import "FBExceptionHandler.h"
 
-#import <RoutingHTTPServer/RouteResponse.h>
+#import "RouteResponse.h"
 
 #import "FBAlert.h"
 #import "FBResponsePayload.h"
