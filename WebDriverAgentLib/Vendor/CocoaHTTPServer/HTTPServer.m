@@ -1,7 +1,8 @@
 #import "HTTPServer.h"
-#import "GCDAsyncSocket.h"
 #import "HTTPConnection.h"
 #import "HTTPLogging.h"
+
+#import <CocoaAsyncSocket/GCDAsyncSocket.h>
 
 #if ! __has_feature(objc_arc)
 #warning This file must be compiled with ARC. Use -fobjc-arc flag (or convert project to ARC).
@@ -55,8 +56,8 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
     dispatch_queue_set_specific(connectionQueue, IsOnConnectionQueueKey, nonNullUnusedPointer, NULL);
     
     // Initialize underlying GCD based tcp socket
-    asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:serverQueue];
-    
+    asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:(id<GCDAsyncSocketDelegate>)self delegateQueue:serverQueue];
+
     // Use default connection class of HTTPConnection
     connectionClass = [HTTPConnection self];
     
