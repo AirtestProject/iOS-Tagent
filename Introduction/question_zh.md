@@ -12,7 +12,12 @@
 
 
 ## 开发者证书
-部署iOS测试平台需要苹果开发者证书，现在使用个人Apple ID登陆即可，不需要另外注册付费开发者账号
+部署iOS测试平台需要苹果开发者证书，现在使用个人Apple ID登陆即可，不需要另外注册付费开发者账号  
+个人版的免费证书，每隔7天左右，要手动更新开发者证书；  
+需要手动的在iPhone中选择信任证书，通用->设备管理->选择信任；  
+最多支持3台设备；  
+~~资金富裕、且准备重点学习iOS的，可以申请苹果开发者账号，可规避一些其他异常~~
+
 
 
 ## 登陆开发者账号
@@ -43,3 +48,47 @@
 ![untrusted](/Introduction/untrusted.jpg "untrusted")
 
 ![trust_dev](/Introduction/trust_dev.png "trust_dev")
+
+## 常见异常及解决办法
+
+### 个人免费证书签注设备数超限
+
+一个免费的证书最多可签注3台设备，超过会错误提示如下：  
+
+![maxThree](/Introduction/maxThree.png "set up bundleId")
+
+解决：可申请新的个人免费苹果账号，重新操作
+
+### 未能载入软件包
+
+在运行Test文件时，控制台输出如下日志，并报错
+
+![error1](/Introduction/error1.png "set up error1")
+
+解决：手动删除手机中之前Build过的”WebDriverAgentRunner“包体，再次运行
+
+
+### 未同意苹果协议
+
+开发者账号注册新设备，弹出错误提示：  
+
+```
+ This request is forbidden for security reasons You currently don't have access to this membership resource. To resolve this issue, agree to the latest Program License Agreement in your developer account.
+```
+
+解决：登录苹果开发者账号中心，同意弹出的协议后，在回到Xcode中，注册设备。
+
+### Mac网络波动或不稳定
+
+运行着的“WebDriverAgent”会出现掉线异常  
+解决：
+网络稳定后，重新运行
+
+### 出现异常，其他可尝试的操作
+
+1、Git pull更新到最新的代码  
+2、在菜单栏 `product` -> `Clean Build Folder`，清理之前的工作目录  
+3、重新插拔iPhone  
+4、卸载iPhone上的“WebDriverAgent”包体  
+5、重启iPhone  
+6、重启Mac  

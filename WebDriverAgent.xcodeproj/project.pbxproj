@@ -329,7 +329,7 @@
 					"$(inherited)",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.netease.WebDriverAgentRunner;
+				PRODUCT_BUNDLE_IDENTIFIER = com.game.netease;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USES_XCTRUNNER = YES;
 			};
@@ -353,7 +353,7 @@
 					"$(inherited)",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.netease.WebDriverAgentRunner;
+				PRODUCT_BUNDLE_IDENTIFIER = com.game.netease;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USES_XCTRUNNER = YES;
 			};

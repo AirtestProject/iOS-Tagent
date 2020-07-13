@@ -14,8 +14,11 @@ If you try to install Xcode by downloading Xcode.zip, you could then see errors 
 
 
 ## iOS Developer Account
-Apple Developer Certificate is required to deploy iOS-Tagent. Fortunately, Apple now allows us to register with Apple ID without payment.
-
+Apple Developer Certificate is required to deploy iOS-Tagent. Fortunately, Apple now allows us to register with Apple ID without payment.  
+The free certificate of the personal version needs to be manually updated every 7 days;  
+Need to manually select the trust certificate in iPhone, General-> Device Management-> Trust;  
+Support up to 3 devices;  
+~~If you are well-funded and plan to focus on iOS, you can apply for an Apple developer account to avoid some other anomalies~~
 
 ## Login to Xcode
 Select `Xcode` -> `Preferences` -> `Accounts` -> `Manage Certificates` -> below the left column `+` -> `iOS Development` to login Xcode.
@@ -47,3 +50,33 @@ The first time you installed iOS-Tagent to your iPhone, you will get a pop up as
 ![untrusted](/Introduction/untrusted.jpg "untrusted")
 
 ![trust_dev](/Introduction/trust_dev2.png "trust_dev")
+
+
+## Error and Solutions
+
+### The number of personal free certificate devices exceeds the limit
+
+A free certificate can sign up to 3 devices. If it is exceeded, the error prompt will be as follows:  
+
+![maxThree](/Introduction/maxThree.png "set up bundleId")
+
+Solution: You can apply for a new personal free Apple account and re-operate
+
+### Failed to load the software package
+
+When running the Test file, the console outputs the following log and reports an error  
+
+![error1](/Introduction/error1.png "set up error1")
+
+Solution: Manually delete the "WebDriverAgentRunner" package previously built in the phone and run it again  
+
+
+### Did not agree to the Apple agreement
+
+The developer account registers a new device, and an error message pops up:  
+
+```
+ This request is forbidden for security reasons You currently don't have access to this membership resource. To resolve this issue, agree to the latest Program License Agreement in your developer account.
+```
+
+Solution: Log in to the Apple Developer Account Center, agree to the pop-up agreement, and then return to Xcode to register the device.  

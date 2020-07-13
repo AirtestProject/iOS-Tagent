@@ -24,6 +24,12 @@ extern NSString *const FBElementAttributeUnknownException;
 /*! Exception used to notify about invalid argument */
 extern NSString *const FBInvalidArgumentException;
 
+/*! Exception used to notify about invisibility of an element while trying to interact with it */
+extern NSString *const FBElementNotVisibleException;
+
+/*! Exception used to notify about a timeout */
+extern NSString *const FBTimeoutException;
+
 /**
  Class used to handle exceptions raised by command handlers
  */
@@ -32,12 +38,10 @@ extern NSString *const FBInvalidArgumentException;
 /**
  Handles 'exception' for 'webServer' raised while handling 'response'
 
- @param webServer server for which exception is handled
  @param exception exception that needs handling
  @param response response related to that exception
- @return YES, if exception was handled, otherwise NO
  */
-- (BOOL)webServer:(FBWebServer *)webServer handleException:(NSException *)exception forResponse:(RouteResponse *)response;
+- (void)handleException:(NSException *)exception forResponse:(RouteResponse *)response;
 
 @end
 

@@ -30,10 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)fb_tapCoordinate:(CGPoint)relativeCoordinate error:(NSError **)error;
 
-
-// a much faster method when click in the whole window
-- (BOOL)fb_fast_tapWindow:(CGPoint)relativeCoordinate window_size:(CGSize)window_size orientation:(UIInterfaceOrientation)orientation error:(NSError **)error;
-
 @end
 
 NS_ASSUME_NONNULL_END

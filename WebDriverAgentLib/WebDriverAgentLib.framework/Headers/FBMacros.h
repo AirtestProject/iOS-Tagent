@@ -25,8 +25,6 @@
 
 /*! Returns 'value' or NSNull if 'value' is nil */
 #define FBValueOrNull(value) ((value) ?: [NSNull null])
-#define FBValueOrEmptyStr(value) ((value) ?: @"")
-
 
 /*!
   Returns name of class property as a string
@@ -51,3 +49,6 @@
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+
+/*! Converts the given number of milliseconds into seconds */
+#define FBMillisToSeconds(ms) ((ms) / 1000.0)

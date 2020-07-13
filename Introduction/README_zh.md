@@ -4,11 +4,11 @@ iOS-Tagent 是基于 facebook 的 [WebDriverAgent](https://github.com/facebook/W
 
 这个项目在如下版本上进行了开发和测试：
 
-| iOS       	| Xcode 	|
-|-----------	|-------	|
-|  ≥ 13             | 11.x      |
-| 10.x-12.x 	| 10.x  	|
-| ≥ 9.3       	| ≥ 9.3   	|
+| iOS               	| Xcode         	|
+|-----------        	|-------        	|
+| 13.4.x-               | 11.4.x            |
+| 13.0.x-13.3.x         | 11.0-11.3.x       |
+| 10.x-12.x         	| 10.x          	|
 
 其他版本的Xcode和iOS未经完整测试，可能会出现非预期的错误情况。
 
@@ -26,13 +26,37 @@ iOS-Tagent 是基于 facebook 的 [WebDriverAgent](https://github.com/facebook/W
 
 * 1.2 使用Xcode打开 iOS-Tagent, 用数据线连接iPhone至Mac
 
+    >连接iPhone后，在iPhone设备上弹出的“是否信任Mac设备”，选择信任  
+
     >选择项目，在菜单栏 `product` -> `Scheme` -> `WebDriverAgentRunner` 
 
     >选择设备，在菜单栏 `product` -> `Destination` -> 选择你的真机 
 
     ![chooseScheme](/Introduction/chooseScheme.png "chooseScheme")
 
-* 1.3 启动Test，在菜单栏 `product` -> `Test`。当你看到这样的日志的时候，代表 iOS-Tagent 已经启动成功了
+* 1.3 使用苹果账号或苹果开发者账号，登录Xcode，并注册真机设备
+
+    >左侧导航栏，选择 `WebDriverAgentRunner` -> `TARGETS` -> `WebDriverAgentRunner` -> `Signing & Capabilities` -> `Team`
+
+    ![chooseTeam](/Introduction/chooseTeam.png "chooseTea,")
+
+    >选择 `Team` -> `Add an Account` -> 登录苹果账号(个人免费或开发者账号)
+
+    >选择 `TARGETS` -> `WebDriverAgentRunner` -> `Build Settings` -> `Basic`
+
+    ![changeBundleId](/Introduction/changeBundleId.png "changeBundleId")
+
+    >双击 `Product Bundle Identifier`值，填写一个属于自己独一无二的字串
+
+    >回到，上文提过的`Signing & Capabilities`界面，查看有无报错
+
+    ![checkError](/Introduction/checkError.png "checkError")
+
+    >无报错，则继续；若有报错，查看 [登陆开发者账号](./question_zh.md#登陆开发者账号)
+
+
+* 1.4 启动Test，在菜单栏 `product` -> `Test`。当你看到这样的日志的时候，代表 iOS-Tagent 已经启动成功了
+    >过程中，Xcode可能会请求密码权限或其他权限 —> 全部允许 —> 不要拒绝，拒绝可能会带来奇妙的异常
 ```
     Test Suite 'All tests' started at 2017-01-23 15:49:12.585
     Test Suite 'WebDriverAgentRunner.xctest' started at 2017-01-23 15:49:12.586
@@ -41,8 +65,12 @@ iOS-Tagent 是基于 facebook 的 [WebDriverAgent](https://github.com/facebook/W
     t =     0.00s     Start Test at 2017-01-23 15:49:12.588
     t =     0.00s     Set Up
 ```
-
-    可以从以下了解更多的关于如何成功启动这个项目的方法 [here](https://github.com/facebook/WebDriverAgent/wiki/Starting-WebDriverAgent).和 [here](https://github.com/appium/appium/blob/master/docs/en/drivers/ios-xcuitest-real-devices.md)
+* 1.5 其他  
+    如果发生异常，请查看[常见问题整理的参考文档](#jump)  
+    也可以从以下链接了解更多的关于如何成功启动这个项目的方法:  
+    [facebook-WebDriverAgent](https://github.com/facebook/WebDriverAgent/wiki/Starting-WebDriverAgent)  
+    [appium-WebDriverAgent](https://github.com/appium/appium/blob/master/docs/en/drivers/ios-xcuitest-real-devices.md)  
+    [iOS真机如何安装WebDriverAgent](https://testerhome.com/topics/7220)
 
 
 
@@ -55,7 +83,7 @@ iOS-Tagent 是基于 facebook 的 [WebDriverAgent](https://github.com/facebook/W
 
 * 2.1 通过 Homebrew 安装iproxy
 
-    `$ brew install libimobiledevice`
+    `$ brew install libimobiledevice --HEAD`
 
 * 2.2 运行iproxy
 
@@ -85,8 +113,9 @@ iOS-Tagent 是基于 facebook 的 [WebDriverAgent](https://github.com/facebook/W
 ![ios-airtestIDE](/Introduction/ios-airtestIDE.gif "ios-airtestIDE")
 
 
-
+<span id="jump"></span>
 # Q & A
+
 我们猜测你在部署过程中会遇到很多问题，所以整理了一份 [Q&A](./question_zh.md)，你可以先看看，如果对于这个项目有问题和反馈建议，也欢迎到 [Issues](https://github.com/AirtestProject/iOS-Tagent/issues)里进行提出.
 1. [Xcode版本问题](./question_zh.md#xcode版本)
 1. [申请开发者证书](./question_zh.md#开发者证书)
@@ -94,7 +123,7 @@ iOS-Tagent 是基于 facebook 的 [WebDriverAgent](https://github.com/facebook/W
 1. [设置开发者证书](./question_zh.md#设置开发者证书)
 1. [Xcode failed to create provisioning profile](./question_zh.md#buddle-identifier)
 1. [第一次安装，信任设备](./question_zh.md#信任设备)
-
+1. [其他异常](./question_zh.md#信任设备)
 
 # License
 iOS-Tagent 基于[WebDriverAgent](https://github.com/facebook/WebDriverAgent) 进行了定制化的开发和优化:

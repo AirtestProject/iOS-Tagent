@@ -23,9 +23,6 @@ typedef __nullable id (^FBRunLoopSpinnerObjectBlock)(void);
  */
 + (void)spinUntilCompletion:(void (^)(void(^completion)(void)))block;
 
-// addition custom internal avoid long over head like 100ms
-+ (void)spinUntilCompletion_withCustomInternel:(void (^)(void(^completion)(void)))block internal:(NSTimeInterval)customInternal;
-
 /**
  Updates the error message to print in the event of a timeout.
 
@@ -57,8 +54,6 @@ typedef __nullable id (^FBRunLoopSpinnerObjectBlock)(void);
  @return YES if the condition was met, NO if the timeout was reached first.
  */
 - (BOOL)spinUntilTrue:(FBRunLoopSpinnerBlock)untilTrue;
-// addition custom internal avoid long over head like 100ms
-- (BOOL)spinUntilTrue:(FBRunLoopSpinnerBlock)untilTrue internal:(NSTimeInterval)customInternal;
 
 /**
  Spins the Run Loop until `untilTrue` returns YES or a timeout is reached.
@@ -68,9 +63,6 @@ typedef __nullable id (^FBRunLoopSpinnerObjectBlock)(void);
  @return YES if the condition was met, NO if the timeout was reached first.
  */
 - (BOOL)spinUntilTrue:(FBRunLoopSpinnerBlock)untilTrue error:(NSError **)error;
-
-// addition custom internal avoid long over head like 100ms
-- (BOOL)spinUntilTrue:(FBRunLoopSpinnerBlock)untilTrue error:(NSError **)error internal:(NSTimeInterval)customInternal;
 
 /**
  Spins the Run Loop until `untilNotNil` returns non nil value or a timeout is reached.
