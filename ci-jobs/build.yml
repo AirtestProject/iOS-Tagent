@@ -11,6 +11,7 @@ jobs:
     parameters:
       vmImage: 'macOS-10.15'
       name: 'macOS_10_15'
+      excludeXcode: '11.6.0,11.5.0,11.4.0,11.1.0,11.0.0,10.3.0'
   - template: ./templates/build.yml
     parameters:
       # Exclude Xcode versions that were already covered in 10.15
