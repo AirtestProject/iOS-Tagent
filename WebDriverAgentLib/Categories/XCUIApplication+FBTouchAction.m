@@ -12,12 +12,12 @@
 
 #import "FBAppiumActionsSynthesizer.h"
 #import "FBBaseActionsSynthesizer.h"
-#import "FBExceptionHandler.h"
 #import "FBLogger.h"
 #import "FBRunLoopSpinner.h"
 #import "FBW3CActionsSynthesizer.h"
 #import "FBXCTestDaemonsProxy.h"
 #import "XCEventGenerator.h"
+#import "FBExceptions.h"
 
 #if !TARGET_OS_TV
 

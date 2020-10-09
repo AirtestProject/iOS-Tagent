@@ -13,7 +13,7 @@
 #import "FBApplication.h"
 #import "FBConfiguration.h"
 #import "FBElementCache.h"
-#import "FBExceptionHandler.h"
+#import "FBExceptions.h"
 #import "FBMacros.h"
 #import "FBPredicate.h"
 #import "FBRouteRequest.h"
@@ -79,10 +79,6 @@ static id<FBResponsePayload> FBNoSuchElementErrorResponseForRequest(FBRouteReque
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *collection = [elementCache elementForUUID:request.parameters[@"uuid"]];
-  if (nil == collection) {
-    return FBResponseWithStatus([FBCommandStatus staleElementReferenceErrorWithMessage:nil
-                                                                             traceback:nil]);
-  }
   NSPredicate *predicate = [FBPredicate predicateWithFormat:@"%K == YES", FBStringify(XCUIElement, fb_isVisible)];
   NSArray *elements = [collection.cells matchingPredicate:predicate].allElementsBoundByAccessibilityElement;
   return FBResponseWithCachedElements(elements, request.session.elementCache, FBConfiguration.shouldUseCompactResponses);
@@ -92,10 +88,6 @@ static id<FBResponsePayload> FBNoSuchElementErrorResponseForRequest(FBRouteReque
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:request.parameters[@"uuid"]];
-  if (nil == element) {
-    return FBResponseWithStatus([FBCommandStatus staleElementReferenceErrorWithMessage:nil
-                                                                             traceback:nil]);
-  }
   XCUIElement *foundElement = [self.class elementUsing:request.arguments[@"using"]
                                              withValue:request.arguments[@"value"]
                                                  under:element];
@@ -109,10 +101,6 @@ static id<FBResponsePayload> FBNoSuchElementErrorResponseForRequest(FBRouteReque
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:request.parameters[@"uuid"]];
-  if (nil == element) {
-    return FBResponseWithStatus([FBCommandStatus staleElementReferenceErrorWithMessage:nil
-                                                                             traceback:nil]);
-  }
   NSArray *foundElements = [self.class elementsUsing:request.arguments[@"using"]
                                            withValue:request.arguments[@"value"]
                                                under:element
