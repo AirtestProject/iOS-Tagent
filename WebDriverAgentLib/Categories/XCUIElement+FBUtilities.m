@@ -12,8 +12,9 @@
 #import <objc/runtime.h>
 
 #import "FBConfiguration.h"
-#import "FBLogger.h"
+#import "FBExceptions.h"
 #import "FBImageUtils.h"
+#import "FBLogger.h"
 #import "FBMacros.h"
 #import "FBMathUtils.h"
 #import "FBRunLoopSpinner.h"
@@ -49,14 +50,25 @@ static const NSTimeInterval FB_ANIMATION_TIMEOUT = 5.0;
   }];
 }
 
-- (XCElementSnapshot *)fb_lastSnapshot
+- (XCElementSnapshot *)fb_takeSnapshot
 {
-  return [self.fb_query fb_elementSnapshotForDebugDescription];
-}
-
-- (XCElementSnapshot *)fb_cachedSnapshot
-{
-  return [self.fb_query fb_cachedSnapshot];
+  NSError *error = nil;
+  self.fb_isResolvedFromCache = @(NO);
+  if (self.query.fb_isUniqueSnapshotSupported) {
+    self.lastSnapshot = [self.fb_query fb_uniqueSnapshotWithError:&error];
+  } else {
+    self.lastSnapshot = nil;
+    // TODO: Remove this branch after Xcode10 support is dropped
+    [self fb_resolveWithError:&error];
+  }
+  if (nil == self.lastSnapshot) {
+    NSString *reason = [NSString stringWithFormat:@"The previously found element \"%@\" is not present on the current page anymore. Try to find it again", self.description];
+    if (nil != error) {
+      reason = [NSString stringWithFormat:@"%@. Original error: %@", reason, error.localizedDescription];
+    }
+    @throw [NSException exceptionWithName:FBStaleElementException reason:reason userInfo:@{}];
+  }
+  return self.lastSnapshot;
 }
 
 - (nullable XCElementSnapshot *)fb_snapshotWithAllAttributes {
@@ -65,29 +77,15 @@ static const NSTimeInterval FB_ANIMATION_TIMEOUT = 5.0;
   return [self fb_snapshotWithAttributes:allNames.copy];
 }
 
-- (nullable XCAccessibilityElement *)fb_accessibilityElement
-{
-  XCElementSnapshot *lastSnapshot = self.fb_cachedSnapshot ?: self.fb_lastSnapshot;
-  if (nil == lastSnapshot) {
-    [self fb_nativeResolve];
-    lastSnapshot = self.lastSnapshot;
-  }
-  if (nil == lastSnapshot) {
-    return nil;
-  }
-  return lastSnapshot.accessibilityElement;
-}
-
 - (nullable XCElementSnapshot *)fb_snapshotWithAttributes:(NSArray<NSString *> *)attributeNames {
-  if (![FBConfiguration shouldLoadSnapshotWithAttributes]) {
+  if (![FBConfiguration canLoadSnapshotWithAttributes]) {
     return nil;
   }
 
-  XCAccessibilityElement *axElement = self.fb_accessibilityElement;
+  XCAccessibilityElement *axElement = self.fb_takeSnapshot.accessibilityElement;
   if (nil == axElement) {
     return nil;
   }
-
   NSTimeInterval axTimeout = [FBConfiguration snapshotTimeout];
   __block XCElementSnapshot *snapshotWithAttributes = nil;
   __block NSError *innerError = nil;
@@ -114,6 +112,8 @@ static const NSTimeInterval FB_ANIMATION_TIMEOUT = 5.0;
     if (nil != innerError) {
       [FBLogger logFmt:@"Internal error: %@", innerError.description];
     }
+  } else {
+    self.lastSnapshot = snapshotWithAttributes;
   }
   return snapshotWithAttributes;
 }
@@ -147,7 +147,13 @@ static const NSTimeInterval FB_ANIMATION_TIMEOUT = 5.0;
   }
   NSArray<NSString *> *sortedIds = [snapshots valueForKey:FBStringify(XCUIElement, wdUID)];
   NSMutableArray<XCUIElement *> *matchedElements = [NSMutableArray array];
-  if ([sortedIds containsObject:(selfUID ?: self.fb_uid)]) {
+  NSString *uid = selfUID;
+  if (nil == uid) {
+    uid = self.fb_isResolvedFromCache.boolValue
+      ? self.lastSnapshot.fb_uid
+      : self.fb_uid;
+  }
+  if ([sortedIds containsObject:uid]) {
     if (1 == snapshots.count) {
       return @[self];
     }
@@ -223,7 +229,9 @@ static const NSTimeInterval FB_ANIMATION_TIMEOUT = 5.0;
   UIInterfaceOrientation orientation = self.application.interfaceOrientation;
   if (orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight) {
     // Workaround XCTest bug when element frame is returned as in portrait mode even if the screenshot is rotated
-    XCElementSnapshot *selfSnapshot = self.fb_lastSnapshot;
+    XCElementSnapshot *selfSnapshot = self.fb_isResolvedFromCache.boolValue
+      ? self.lastSnapshot
+      : self.fb_takeSnapshot;
     NSArray<XCElementSnapshot *> *ancestors = selfSnapshot.fb_ancestors;
     XCElementSnapshot *parentWindow = nil;
     if (1 == ancestors.count) {
@@ -256,6 +264,20 @@ static const NSTimeInterval FB_ANIMATION_TIMEOUT = 5.0;
 #else
   return imageData;
 #endif
+}
+
+static char XCUIELEMENT_IS_RESOLVED_FROM_CACHE_KEY;
+
+@dynamic fb_isResolvedFromCache;
+
+- (void)setFb_isResolvedFromCache:(NSNumber *)isResolvedFromCache
+{
+  objc_setAssociatedObject(self, &XCUIELEMENT_IS_RESOLVED_FROM_CACHE_KEY, isResolvedFromCache, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSNumber *)fb_isResolvedFromCache
+{
+  return (NSNumber *)objc_getAssociatedObject(self, &XCUIELEMENT_IS_RESOLVED_FROM_CACHE_KEY);
 }
 
 @end

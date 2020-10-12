@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface XCUIElement (FBUtilities)
 
+/*! This property is set to YES if the given element has been resolved from the cache, so it is safe to use the `lastSnapshot` property */
+@property (nullable, nonatomic) NSNumber *fb_isResolvedFromCache;
+
 /**
  Waits for receiver's frame to become stable with the default timeout
 
@@ -24,37 +27,37 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Gets the most recent snapshot of the current element. The element will be
- automatically resolved if the snapshot is not available yet
+ automatically resolved if the snapshot is not available yet.
+ Calls to this method mutate the `lastSnapshot` instance property..
+ Calls to this method reset the `fb_isResolvedFromCache` property value to `NO`.
 
  @return The recent snapshot of the element
+ @throws FBStaleElementException if the element is not present in DOM and thus no snapshot could be made
  */
-- (XCElementSnapshot *)fb_lastSnapshot;
-
-/**
- Gets the cached snapshot of the current element. nil
- is returned if either no cached element snapshot could be retrived
- or if the feature is not supported.
-
-@return The cached snapshot of the element
-*/
-- (nullable XCElementSnapshot *)fb_cachedSnapshot;
+- (XCElementSnapshot *)fb_takeSnapshot;
 
 /**
  Gets the most recent snapshot of the current element and already resolves the accessibility attributes
  needed for creating the page source of this element. No additional calls to the accessibility layer
  are required.
- 
+ Calls to this method mutate the `lastSnapshot` instance property.
+ Calls to this method reset the `fb_isResolvedFromCache` property value to `NO`.
+
  @return The recent snapshot of the element with the attributes resolved
+ @throws FBStaleElementException if the element is not present in DOM and thus no snapshot could be made
  */
 - (nullable XCElementSnapshot *)fb_snapshotWithAllAttributes;
 
 /**
  Gets the most recent snapshot of the current element with given attributes resolved.
  No additional calls to the accessibility layer are required.
+ Calls to this method mutate the `lastSnapshot` instance property.
+ Calls to this method reset the `fb_isResolvedFromCache` property value to `NO`.
 
  @param attributeNames The list of attribute names to resolve. Must be one of
  FB_...Name values exported by XCTestPrivateSymbols.h module
  @return The recent snapshot of the element with the attributes resolved
+ @throws FBStaleElementException if the element is not present in DOM and thus no snapshot could be made
 */
 - (nullable XCElementSnapshot *)fb_snapshotWithAttributes:(NSArray<NSString *> *)attributeNames;
 

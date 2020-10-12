@@ -49,9 +49,9 @@
   return @"test";
 }
 
-- (id)fb_cachedSnapshot
+- (id)fb_takeSnapshot
 {
-  return nil;
+  return [self lastSnapshot];
 }
 
 - (void)resolve

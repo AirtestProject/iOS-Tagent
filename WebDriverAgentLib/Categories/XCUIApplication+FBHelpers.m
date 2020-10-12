@@ -98,7 +98,9 @@ static NSString* const FBUnknownBundleId = @"unknown";
 
 - (NSDictionary *)fb_tree
 {
-  XCElementSnapshot *snapshot = self.fb_cachedSnapshot ?: self.fb_lastSnapshot;
+  XCElementSnapshot *snapshot = self.fb_isResolvedFromCache.boolValue
+    ? self.lastSnapshot
+    : self.fb_takeSnapshot;
   NSMutableDictionary *rootTree = [[self.class dictionaryForElement:snapshot recursive:NO] mutableCopy];
   NSArray<XCUIElement *> *children = [self fb_filterDescendantsWithSnapshots:snapshot.children
                                                                      selfUID:snapshot.wdUID
@@ -106,9 +108,14 @@ static NSString* const FBUnknownBundleId = @"unknown";
   NSMutableArray<NSDictionary *> *childrenTrees = [NSMutableArray arrayWithCapacity:children.count];
   [self fb_waitUntilSnapshotIsStable];
   for (XCUIElement* child in children) {
-    XCElementSnapshot *childSnapshot = child.fb_snapshotWithAllAttributes;
-    if (nil == childSnapshot) {
-      [FBLogger logFmt:@"Skipping source dump for '%@' because its snapshot cannot be resolved", child.description];
+    XCElementSnapshot *childSnapshot;
+    @try {
+      childSnapshot = child.fb_snapshotWithAllAttributes;
+      if (nil == childSnapshot) {
+        [FBLogger logFmt:@"Skipping source dump for '%@' because its snapshot cannot be resolved", child.description];
+      }
+    } @catch (NSException *e) {
+      [FBLogger logFmt:@"Skipping source dump for '%@' because its snapshot cannot be resolved: %@", child.description, e.reason];
       continue;
     }
     [childrenTrees addObject:[self.class dictionaryForElement:childSnapshot recursive:YES]];
@@ -123,7 +130,7 @@ static NSString* const FBUnknownBundleId = @"unknown";
 {
   [self fb_waitUntilSnapshotIsStable];
   // We ignore all elements except for the main window for accessibility tree
-  return [self.class accessibilityInfoForElement:(self.fb_snapshotWithAllAttributes ?: self.fb_lastSnapshot)];
+  return [self.class accessibilityInfoForElement:(self.fb_snapshotWithAllAttributes ?: self.lastSnapshot)];
 }
 
 + (NSDictionary *)dictionaryForElement:(XCElementSnapshot *)snapshot recursive:(BOOL)recursive

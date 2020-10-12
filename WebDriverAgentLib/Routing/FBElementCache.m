@@ -48,6 +48,7 @@ const int ELEMENT_CACHE_SIZE = 1024;
 }
 
 - (XCUIElement *)elementForUUID:(NSString *)uuid
+ resolveForAdditionalAttributes:(BOOL)resolveForAdditionalAttributes
 {
   if (!uuid) {
     NSString *reason = [NSString stringWithFormat:@"Cannot extract cached element for UUID: %@", uuid];
@@ -55,14 +56,18 @@ const int ELEMENT_CACHE_SIZE = 1024;
   }
 
   XCUIElement *element = [self.elementCache objectForKey:uuid];
-  BOOL isStale = NO;
-  if (element.query.fb_isSnapshotsCachingSupported && nil == element.fb_cachedSnapshot && ![element fb_nativeResolve]) {
-    isStale = YES;
+  // This will throw FBStaleElementException exception if the element is stale
+  // or resolve the element and set lastSnapshot property
+  if (resolveForAdditionalAttributes) {
+    [element fb_snapshotWithAllAttributes];
+  } else {
+    [element fb_takeSnapshot];
   }
-  if (isStale || nil == element) {
-    NSString *reason = [NSString stringWithFormat:@"The previously found element \"%@\" is not present on the current page anymore", element ? element.description : uuid];
+  if (nil == element) {
+    NSString *reason = [NSString stringWithFormat:@"The element identified by \"%@\" is either not present or it has expired from the internal cache. Try to find it again", uuid];
     @throw [NSException exceptionWithName:FBStaleElementException reason:reason userInfo:@{}];
   }
+  element.fb_isResolvedFromCache = @(YES);
   return element;
 }
 

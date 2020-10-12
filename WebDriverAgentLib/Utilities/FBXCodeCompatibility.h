@@ -70,11 +70,12 @@ extern NSString *const FBApplicationMethodNotSupportedException;
 @property(readonly) NSArray<XCUIElement *> *fb_allMatches;
 
 /**
- Since Xcode11 XCTest got a feature that caches intermediate query snapshots
+ Returns single unique matching snapshot for the given query
 
- @returns The cached snapshot or nil if the feature is either not available or there's no cached snapshot
+ @param error The error instance if there was a failure while retrieveing the snapshot
+ @returns The cached unqiue snapshot or nil if the element is stale
  */
-- (nullable XCElementSnapshot *)fb_cachedSnapshot;
+- (nullable XCElementSnapshot *)fb_uniqueSnapshotWithError:(NSError **)error;
 
 /**
  Retrieves the snapshot for the given element
@@ -84,9 +85,9 @@ extern NSString *const FBApplicationMethodNotSupportedException;
 - (XCElementSnapshot *)fb_elementSnapshotForDebugDescription;
 
 /**
- @returns YES if the element supports snapshots caching
+ @returns YES if the element supports unique snapshots retrieval
  */
-- (BOOL)fb_isSnapshotsCachingSupported;
+- (BOOL)fb_isUniqueSnapshotSupported;
 
 @end
 
@@ -101,11 +102,14 @@ extern NSString *const FBApplicationMethodNotSupportedException;
 @interface XCUIElement (FBCompatibility)
 
 /**
- Enforces snapshot resolution of the destination element
+ Enforces snapshot resolution of the destination element.
+ !!! Do not cal this method on Xcode 11 or later due to performance considerations.
+ Prefer using fb_takeSnapshot instead.
 
+ @param error Contains the actual error if element resolution fails
  @returns YES if the element has been successfully resolved
  */
-- (BOOL)fb_nativeResolve;
+- (BOOL)fb_resolveWithError:(NSError **)error;
 
 /**
  Determines whether current iOS SDK supports non modal elements inlusion into snapshots

@@ -105,7 +105,7 @@ static dispatch_once_t onceAppWithPIDToken;
 
 @implementation XCUIElementQuery (FBCompatibility)
 
-- (BOOL)fb_isSnapshotsCachingSupported
+- (BOOL)fb_isUniqueSnapshotSupported
 {
   static dispatch_once_t onceToken;
   static BOOL isUniqueMatchingSnapshotAvailable;
@@ -115,17 +115,9 @@ static dispatch_once_t onceAppWithPIDToken;
   return isUniqueMatchingSnapshotAvailable;
 }
 
-- (XCElementSnapshot *)fb_cachedSnapshot
+- (XCElementSnapshot *)fb_uniqueSnapshotWithError:(NSError **)error
 {
-  if (![self fb_isSnapshotsCachingSupported]) {
-    return nil;
-  }
-  NSError *error;
-  XCElementSnapshot *result = [self uniqueMatchingSnapshotWithError:&error];
-  if (nil == result && nil != error) {
-    [FBLogger logFmt:@"%@", error.description];
-  }
-  return result;
+  return [self uniqueMatchingSnapshotWithError:error];
 }
 
 - (XCUIElement *)fb_firstMatch
@@ -160,22 +152,21 @@ static dispatch_once_t onceAppWithPIDToken;
 
 @implementation XCUIElement (FBCompatibility)
 
-- (BOOL)fb_nativeResolve
+- (BOOL)fb_resolveWithError:(NSError **)error
 {
   if ([self respondsToSelector:@selector(resolve)]) {
     [self resolve];
-    return YES;
+    return nil != self.lastSnapshot;
   }
   if ([self respondsToSelector:@selector(resolveOrRaiseTestFailure)]) {
     @try {
       [self resolveOrRaiseTestFailure];
+      return YES;
     } @catch (NSException *e) {
-      [FBLogger logFmt:@"Failure while resolving '%@': %@", self.description, e.reason];
-      return NO;
+      return [[FBErrorBuilder.builder withDescription:(NSString *)e.reason] buildError:error];
     }
-    return YES;
   }
-  @throw [[FBErrorBuilder.builder withDescription:@"Cannot resolve elements. Please contact Appium developers"] build];
+  return [[FBErrorBuilder.builder withDescription:@"Cannot find a matching method to resolve elements. Please contact Appium developers"] buildError:error];
 }
 
 + (BOOL)fb_supportsNonModalElementsInclusion

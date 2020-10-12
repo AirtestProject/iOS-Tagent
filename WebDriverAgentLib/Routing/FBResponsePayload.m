@@ -90,7 +90,7 @@ inline NSDictionary *FBDictionaryResponseWithElement(XCUIElement *element, NSStr
   NSMutableDictionary *dictionary = FBInsertElement(@{}, elementUUID).mutableCopy;
   if (!compact) {
     NSArray *fields = [FBConfiguration.elementResponseAttributes componentsSeparatedByString:@","];
-    XCElementSnapshot *snapshot = element.fb_cachedSnapshot ?: element.fb_lastSnapshot;
+    XCElementSnapshot *snapshot = element.fb_takeSnapshot;
     for (NSString *field in fields) {
       // 'name' here is the w3c-approved identifier for what we mean by 'type'
       if ([field isEqualToString:@"name"] || [field isEqualToString:@"type"]) {
@@ -104,7 +104,7 @@ inline NSDictionary *FBDictionaryResponseWithElement(XCUIElement *element, NSStr
       } else if ([field isEqualToString:@"displayed"]) {
         dictionary[field] = @(snapshot.wdVisible);
       } else if ([field isEqualToString:@"selected"]) {
-        dictionary[field] = @(snapshot.selected);
+        dictionary[field] = @(snapshot.wdSelected);
       } else if ([field isEqualToString:@"label"]) {
         dictionary[field] = snapshot.wdLabel ?: [NSNull null];
       } else if ([field hasPrefix:arbitraryAttrPrefix]) {
