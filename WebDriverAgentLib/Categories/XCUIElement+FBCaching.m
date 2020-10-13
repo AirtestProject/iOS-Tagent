@@ -36,9 +36,9 @@ static char XCUIELEMENT_CACHE_ID_KEY;
 
 - (NSString *)fb_cacheId
 {
-  NSString *result = (NSString *)objc_getAssociatedObject(self, &XCUIELEMENT_IS_RESOLVED_FROM_CACHE_KEY);
-  if (nil != result) {
-    return result;
+  id result = objc_getAssociatedObject(self, &XCUIELEMENT_CACHE_ID_KEY);
+  if ([result isKindOfClass:NSString.class]) {
+    return (NSString *)result;
   }
 
   XCElementSnapshot *snapshot = self.fb_cachedSnapshot ?: self.fb_takeSnapshot;
