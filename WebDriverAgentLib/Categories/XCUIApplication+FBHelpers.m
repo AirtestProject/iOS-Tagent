@@ -107,13 +107,14 @@ static NSString* const FBUnknownBundleId = @"unknown";
                                                                      selfUID:snapshot.wdUID
                                                                 onlyChildren:YES];
   NSMutableArray<NSDictionary *> *childrenTrees = [NSMutableArray arrayWithCapacity:children.count];
-  [self fb_waitUntilSnapshotIsStable];
+  [self fb_waitUntilStable];
   for (XCUIElement* child in children) {
     XCElementSnapshot *childSnapshot;
     @try {
       childSnapshot = child.fb_snapshotWithAllAttributes;
       if (nil == childSnapshot) {
-        [FBLogger logFmt:@"Skipping source dump for '%@' because its snapshot cannot be resolved", child.description];
+        [FBLogger logFmt:@"Falling back to the default snapshotting mechanism for the element '%@' (some attribute values, like visibility or accessibility might not be precise though)", child.description];
+        childSnapshot = child.fb_takeSnapshot;
       }
     } @catch (NSException *e) {
       [FBLogger logFmt:@"Skipping source dump for '%@' because its snapshot cannot be resolved: %@", child.description, e.reason];
@@ -129,7 +130,7 @@ static NSString* const FBUnknownBundleId = @"unknown";
 
 - (NSDictionary *)fb_accessibilityTree
 {
-  [self fb_waitUntilSnapshotIsStable];
+  [self fb_waitUntilStable];
   // We ignore all elements except for the main window for accessibility tree
   return [self.class accessibilityInfoForElement:(self.fb_snapshotWithAllAttributes ?: self.lastSnapshot)];
 }

@@ -48,10 +48,10 @@
 
 - (BOOL)isPresent
 {
-  if (nil == self.alertElement) {
-    return NO;
-  }
   @try {
+    if (nil == self.alertElement) {
+      return NO;
+    }
     [self.alertElement fb_takeSnapshot];
     return YES;
   } @catch (NSException *) {
@@ -91,18 +91,20 @@
       return;
     }
 
-    if (elementType == XCUIElementTypeTextView
-        && [descendant fb_descendantsMatchingType:XCUIElementTypeStaticText].count > 0) {
-      return;
-    }
     if (elementType == XCUIElementTypeStaticText
         && nil != [descendant fb_parentMatchingType:XCUIElementTypeButton]) {
       return;
     }
 
-    NSString *text = isSafariAlert
-      ? descendant.wdLabel
-      : (descendant.wdLabel ?: descendant.wdValue);
+    NSString *text = descendant.wdLabel ?: descendant.wdValue;
+    if (isSafariAlert && nil != descendant.parent) {
+      NSString *parentText = descendant.parent.wdLabel ?: descendant.parent.wdValue;
+      if ([parentText isEqualToString:text]) {
+        // Avoid duplicated texts on Safari alerts
+        return;
+      }
+    }
+
     if (nil != text) {
       [resultText addObject:[NSString stringWithFormat:@"%@", text]];
     }

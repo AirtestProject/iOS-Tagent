@@ -30,7 +30,6 @@
 const CGFloat FBFuzzyPointThreshold = 20.f; //Smallest determined value that is not interpreted as touch
 const CGFloat FBScrollToVisibleNormalizedDistance = .5f;
 const CGFloat FBTouchEventDelay = 1.f;
-const NSTimeInterval FBAnimationCoolOffTimeout = 2.0;
 const CGFloat FBScrollTouchProportion = 0.75f;
 
 #if !TARGET_OS_TV
@@ -320,13 +319,13 @@ const CGFloat FBScrollTouchProportion = 0.75f;
       @"action": @"release"
     }
   ];
-  BOOL result = [application fb_performAppiumTouchActions:gesture
-                                             elementCache:nil
-                                                    error:error];
-  if (result) {
-    [application fb_waitUntilSnapshotIsStableWithTimeout:FBAnimationCoolOffTimeout];
+  if (![application fb_performAppiumTouchActions:gesture
+                                    elementCache:nil
+                                           error:error]) {
+    return NO;
   }
-  return result;
+
+  return YES;
 }
 
 @end

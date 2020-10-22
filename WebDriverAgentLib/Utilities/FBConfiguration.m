@@ -30,7 +30,6 @@ static NSString *const axSettingsClassName = @"AXSettings";
 static BOOL FBShouldUseTestManagerForVisibilityDetection = NO;
 static BOOL FBShouldUseSingletonTestManager = YES;
 static BOOL FBShouldUseCompactResponses = YES;
-static BOOL FBShouldWaitForQuiescence = NO;
 static NSString *FBElementResponseAttributes = @"type,label";
 static NSUInteger FBMaxTypingFrequency = 60;
 static NSUInteger FBMjpegServerScreenshotQuality = 25;
@@ -47,6 +46,7 @@ static NSString *FBAcceptAlertButtonSelector = @"";
 static NSString *FBDismissAlertButtonSelector = @"";
 static NSString *FBSnapshotMaxDepthKey = @"maxDepth";
 static NSMutableDictionary *FBSnapshotRequestParameters;
+static NSTimeInterval FBWaitForIdleTimeout = 10.;
 
 #if !TARGET_OS_TV
 static UIInterfaceOrientation FBScreenshotOrientation = UIInterfaceOrientationUnknown;
@@ -180,16 +180,6 @@ static UIInterfaceOrientation FBScreenshotOrientation = UIInterfaceOrientationUn
   return [XCElementSnapshot fb_attributesForElementSnapshotKeyPathsSelector] != nil;
 }
 
-+ (BOOL)shouldWaitForQuiescence
-{
-  return FBShouldWaitForQuiescence;
-}
-
-+ (void)setShouldWaitForQuiescence:(BOOL)value
-{
-  FBShouldWaitForQuiescence = value;
-}
-
 + (NSUInteger)mjpegServerFramerate
 {
   return FBMjpegServerFramerate;
@@ -218,6 +208,16 @@ static UIInterfaceOrientation FBScreenshotOrientation = UIInterfaceOrientationUn
 + (void)setScreenshotQuality:(NSUInteger)quality
 {
   FBScreenshotQuality = quality;
+}
+
++ (NSTimeInterval)waitForIdleTimeout
+{
+  return FBWaitForIdleTimeout;
+}
+
++ (void)setWaitForIdleTimeout:(NSTimeInterval)timeout
+{
+  FBWaitForIdleTimeout = timeout;
 }
 
 // Works for Simulator and Real devices

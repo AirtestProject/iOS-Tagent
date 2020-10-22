@@ -49,10 +49,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)setShouldUseSingletonTestManager:(BOOL)value;
 + (BOOL)shouldUseSingletonTestManager;
 
-/* Whether to wait for quiescence on application startup */
-+ (void)setShouldWaitForQuiescence:(BOOL)value;
-+ (BOOL)shouldWaitForQuiescence;
-
 /**
  * Extract switch value from arguments
  *
@@ -204,6 +200,17 @@ typedef NS_ENUM(NSInteger, FBConfigurationKeyboardPreference) {
  */
 + (void)setReduceMotionEnabled:(BOOL)isEnabled;
 + (BOOL)reduceMotionEnabled;
+
+/**
+ * Set the idling timeout. If the timeout expires then WDA
+ * tries to interact with the application even if it is not idling.
+ * Setting it to zero disables idling checks.
+ * The default timeout is set to 10 seconds.
+ *
+ * @param timeout The actual timeout value in float seconds
+ */
++ (void)setWaitForIdleTimeout:(NSTimeInterval)timeout;
++ (NSTimeInterval)waitForIdleTimeout;
 
 /**
  Enforces the page hierarchy to include non modal elements,

@@ -362,7 +362,7 @@ static NSString *const topNodeIndexPath = @"top";
         || 0 == snapshotAttributes.count) {
       // If the app is not idle state while we retrieve the visiblity state
       // then the snapshot retrieval operation might freeze and time out
-      [element.application fb_waitUntilSnapshotIsStable];
+      [element.application fb_waitUntilStable];
     }
     if ([root isKindOfClass:XCUIApplication.class]) {
       currentSnapshot = element.fb_isResolvedFromCache.boolValue
@@ -379,8 +379,8 @@ static NSString *const topNodeIndexPath = @"top";
             ? window.fb_snapshotWithAllAttributes
             : [window fb_snapshotWithAttributes:snapshotAttributes.copy];
           if (nil == windowSnapshot) {
-            [FBLogger logFmt:@"Skipping source dump for the element '%@' because its snapshot cannot be resolved", window.description];
-            continue;
+            [FBLogger logFmt:@"Falling back to the default snapshotting mechanism for the element '%@' (some attribute values, like visibility or accessibility might not be precise though)", window.description];
+            windowSnapshot = window.fb_takeSnapshot;
           }
         } @catch (NSException *e) {
           [FBLogger logFmt:@"Skipping source dump for the element '%@' because its snapshot cannot be resolved: %@", window.description, e.reason];
