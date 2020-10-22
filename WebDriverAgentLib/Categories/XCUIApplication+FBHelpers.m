@@ -101,38 +101,16 @@ static NSString* const FBUnknownBundleId = @"unknown";
 {
   XCElementSnapshot *snapshot = self.fb_isResolvedFromCache.boolValue
     ? self.lastSnapshot
-    : self.fb_takeSnapshot;
-  NSMutableDictionary *rootTree = [[self.class dictionaryForElement:snapshot recursive:NO] mutableCopy];
-  NSArray<XCUIElement *> *children = [self fb_filterDescendantsWithSnapshots:snapshot.children
-                                                                     selfUID:snapshot.wdUID
-                                                                onlyChildren:YES];
-  NSMutableArray<NSDictionary *> *childrenTrees = [NSMutableArray arrayWithCapacity:children.count];
-  [self fb_waitUntilStable];
-  for (XCUIElement* child in children) {
-    XCElementSnapshot *childSnapshot;
-    @try {
-      childSnapshot = child.fb_snapshotWithAllAttributes;
-      if (nil == childSnapshot) {
-        [FBLogger logFmt:@"Falling back to the default snapshotting mechanism for the element '%@' (some attribute values, like visibility or accessibility might not be precise though)", child.description];
-        childSnapshot = child.fb_takeSnapshot;
-      }
-    } @catch (NSException *e) {
-      [FBLogger logFmt:@"Skipping source dump for '%@' because its snapshot cannot be resolved: %@", child.description, e.reason];
-      continue;
-    }
-    [childrenTrees addObject:[self.class dictionaryForElement:childSnapshot recursive:YES]];
-  }
-  // This is necessary because web views are not visible in the native page source otherwise
-  [rootTree setObject:childrenTrees.copy forKey:@"children"];
-
-  return rootTree.copy;
+    : [self fb_snapshotWithAllAttributesUsingFallback:YES];
+  return [self.class dictionaryForElement:snapshot recursive:YES];
 }
 
 - (NSDictionary *)fb_accessibilityTree
 {
-  [self fb_waitUntilStable];
-  // We ignore all elements except for the main window for accessibility tree
-  return [self.class accessibilityInfoForElement:(self.fb_snapshotWithAllAttributes ?: self.lastSnapshot)];
+  XCElementSnapshot *snapshot = self.fb_isResolvedFromCache.boolValue
+    ? self.lastSnapshot
+    : [self fb_snapshotWithAllAttributesUsingFallback:YES];
+  return [self.class accessibilityInfoForElement:snapshot];
 }
 
 + (NSDictionary *)dictionaryForElement:(XCElementSnapshot *)snapshot recursive:(BOOL)recursive
