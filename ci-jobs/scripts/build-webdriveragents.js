@@ -25,7 +25,7 @@ async function buildAndUploadWebDriverAgents () {
     const [, , patch] = xcodePath.split('.');
     if (patch === '0') {
       log.info(`Skipping xcode '${xcodePath}'`);
-      continue
+      continue;
     }
 
     // Build webdriveragent for this xcode version
