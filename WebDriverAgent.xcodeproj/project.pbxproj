@@ -3574,6 +3574,7 @@
 					"-Wno-double-promotion",
 					"-Wno-partial-availability",
 					"-Wno-objc-messaging-id",
+					"-Wno-direct-ivar-access",
 				);
 			};
 			name = Debug;
@@ -3633,6 +3634,7 @@
 					"-Wno-double-promotion",
 					"-Wno-partial-availability",
 					"-Wno-objc-messaging-id",
+					"-Wno-direct-ivar-access",
 				);
 			};
 			name = Release;
@@ -3873,6 +3875,7 @@
 					"-Wno-double-promotion",
 					"-Wno-partial-availability",
 					"-Wno-objc-messaging-id",
+					"-Wno-direct-ivar-access",
 				);
 			};
 			name = Debug;
@@ -3930,6 +3933,7 @@
 					"-Wno-double-promotion",
 					"-Wno-partial-availability",
 					"-Wno-objc-messaging-id",
+					"-Wno-direct-ivar-access",
 				);
 			};
 			name = Release;

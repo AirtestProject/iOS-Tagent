@@ -85,11 +85,11 @@
             block(key, object);
         });
     } else {
-        [_diskCache objectForKey:key withBlock:^(NSString *key, id<NSCoding> object) {
-            if (object && ![_memoryCache objectForKey:key]) {
-                [_memoryCache setObject:object forKey:key];
+        [_diskCache objectForKey:key withBlock:^(NSString *cacheKey, id<NSCoding> cacheObject) {
+            if (cacheObject && ![self.memoryCache objectForKey:cacheKey]) {
+               [self.memoryCache setObject:cacheObject forKey:cacheKey];
             }
-            block(key, object);
+            block(cacheKey, cacheObject);
         }];
     }
 }
@@ -132,10 +132,9 @@
 }
 
 - (NSString *)description {
-    if (_name) return [NSString stringWithFormat:@"<%@: %p> (%@)", self.class, self, _name];
-    else return [NSString stringWithFormat:@"<%@: %p>", self.class, self];
+    if (_name) return [NSString stringWithFormat:@"<%@: %p> (%@)", self.class, (void *)self, _name];
+    else return [NSString stringWithFormat:@"<%@: %p>", self.class, (void *)self];
 }
-
 @end
 
 #pragma clang diagnostic pop
