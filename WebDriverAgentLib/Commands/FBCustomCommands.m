@@ -10,6 +10,7 @@
 #import "FBCustomCommands.h"
 
 #import <XCTest/XCUIDevice.h>
+#import <CoreLocation/CoreLocation.h>
 
 #import "FBApplication.h"
 #import "FBConfiguration.h"
@@ -60,6 +61,8 @@
     [[FBRoute GET:@"/wda/device/info"] respondWithTarget:self action:@selector(handleGetDeviceInfo:)],
     [[FBRoute POST:@"/wda/resetAppAuth"] respondWithTarget:self action:@selector(handleResetAppAuth:)],
     [[FBRoute GET:@"/wda/device/info"].withoutSession respondWithTarget:self action:@selector(handleGetDeviceInfo:)],
+    [[FBRoute GET:@"/wda/device/location"] respondWithTarget:self action:@selector(handleGetLocation:)],
+    [[FBRoute GET:@"/wda/device/location"].withoutSession respondWithTarget:self action:@selector(handleGetLocation:)],
     [[FBRoute OPTIONS:@"/*"].withoutSession respondWithTarget:self action:@selector(handlePingCommand:)],
   ];
 }
@@ -296,6 +299,43 @@
     return FBResponseWithUnknownError(error);
   }
   return FBResponseWithOK();
+}
+
+/**
+ Returns device location data.
+ It requires to configure location access permission by manual.
+ The response is always zero (0) without authorization.
+ 'authorizationStatus' indidates current authorization status.
+ https://developer.apple.com/documentation/corelocation/clauthorizationstatus
+
+ Settings -> Privacy -> Location Service -> WebDriverAgent-Runner -> Always
+
+ The return value could be zero even the permission is Always
+ since the location service needs to update the location data.
+ */
++ (id<FBResponsePayload>)handleGetLocation:(FBRouteRequest *)request
+{
+#if TARGET_OS_TV
+  return FBResponseWithStatus([FBCommandStatus unsupportedOperationErrorWithMessage:@"unsupported"
+                                                                          traceback:nil]);
+#else
+  CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+  [locationManager setDistanceFilter:kCLHeadingFilterNone];
+  // Always return the best acurate location data
+  [locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+  [locationManager setPausesLocationUpdatesAutomatically:NO];
+  [locationManager startUpdatingLocation];
+
+  CLAuthorizationStatus authStatus = [locationManager respondsToSelector:@selector(authorizationStatus)]
+    ? (CLAuthorizationStatus) [locationManager performSelector:@selector(authorizationStatus)]
+    : [CLLocationManager authorizationStatus];
+
+  return FBResponseWithObject(@{
+    @"authorizationStatus": @(authStatus),
+    @"latitude": @(locationManager.location.coordinate.latitude),
+    @"longitude": @(locationManager.location.coordinate.longitude),
+  });
+#endif
 }
 
 + (id<FBResponsePayload>)handleGetDeviceInfo:(FBRouteRequest *)request
