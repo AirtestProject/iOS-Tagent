@@ -12,6 +12,7 @@
 #import "FBSpringboardApplication.h"
 #import "XCElementSnapshot.h"
 #import "FBElementTypeTransformer.h"
+#import "FBKeyboard.h"
 #import "FBLogger.h"
 #import "FBMacros.h"
 #import "FBMathUtils.h"
@@ -251,6 +252,66 @@ static NSString* const FBUnknownBundleId = @"unknown";
   [invocation setArgument:&resourceId atIndex:2]; // 0 and 1 are reserved
   [invocation invokeWithTarget:self];
   return YES;
+}
+
+- (BOOL)fb_dismissKeyboardWithKeyNames:(nullable NSArray<NSString *> *)keyNames
+                                 error:(NSError **)error
+{
+  BOOL (^isKeyboardInvisible)(void) = ^BOOL(void) {
+    return ![FBKeyboard waitUntilVisibleForApplication:self
+                                               timeout:0
+                                                 error:nil];
+  };
+
+  if (isKeyboardInvisible()) {
+    // Short circuit if the keyboard is not visible
+    return YES;
+  }
+
+#if TARGET_OS_TV
+  [[XCUIRemote sharedRemote] pressButton:XCUIRemoteButtonMenu];
+#else
+  NSArray<XCUIElement *> *(^findMatchingKeys)(NSPredicate *) = ^NSArray<XCUIElement *> *(NSPredicate * predicate) {
+    NSPredicate *keysPredicate = [NSPredicate predicateWithFormat:@"elementType == %@", @(XCUIElementTypeKey)];
+    XCUIElementQuery *parentView = [[self.keyboard descendantsMatchingType:XCUIElementTypeOther]
+                                    containingPredicate:keysPredicate];
+    return [[parentView childrenMatchingType:XCUIElementTypeAny]
+            matchingPredicate:predicate].allElementsBoundByIndex;
+  };
+
+  if (nil != keyNames && keyNames.count > 0) {
+    NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"elementType IN %@ AND label IN %@",
+                                    @[@(XCUIElementTypeKey), @(XCUIElementTypeButton)], keyNames];
+    NSArray *matchedKeys = findMatchingKeys(searchPredicate);
+    if (matchedKeys.count > 0) {
+      for (XCUIElement *matchedKey in matchedKeys) {
+        if (!matchedKey.exists) {
+          continue;
+        }
+
+        [matchedKey fb_tapWithError:nil];
+        if (isKeyboardInvisible()) {
+          return YES;
+        }
+      }
+    }
+  }
+  
+  if ([UIDevice.currentDevice userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+    NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"elementType IN %@",
+                                    @[@(XCUIElementTypeKey), @(XCUIElementTypeButton)]];
+    NSArray *matchedKeys = findMatchingKeys(searchPredicate);
+    if (matchedKeys.count > 0) {
+      [matchedKeys[matchedKeys.count - 1] fb_tapWithError:nil];
+    }
+  }
+#endif
+  NSString *errorDescription = @"Did not know how to dismiss the keyboard. Try to dismiss it in the way supported by your application under test.";
+  return [[[[FBRunLoopSpinner new]
+            timeout:3]
+           timeoutErrorMessage:errorDescription]
+          spinUntilTrue:isKeyboardInvisible
+          error:error];
 }
 
 @end

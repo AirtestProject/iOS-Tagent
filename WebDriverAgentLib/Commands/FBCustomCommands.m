@@ -99,34 +99,13 @@
 
 + (id<FBResponsePayload>)handleDismissKeyboardCommand:(FBRouteRequest *)request
 {
-#if TARGET_OS_TV
-  if ([FBKeyboard waitUntilVisibleForApplication:request.session.activeApplication
-                                         timeout:0
-                                           error:nil]) {
-    [[XCUIRemote sharedRemote] pressButton: XCUIRemoteButtonMenu];
-  }
-#else
-  [request.session.activeApplication dismissKeyboard];
-#endif
   NSError *error;
-  NSString *errorDescription = @"The keyboard cannot be dismissed. Try to dismiss it in the way supported by your application under test.";
-  if ([UIDevice.currentDevice userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-    errorDescription = @"The keyboard on iPhone cannot be dismissed because of a known XCTest issue. Try to dismiss it in the way supported by your application under test.";
-  }
-  BOOL isKeyboardNotPresent = [[[[FBRunLoopSpinner new]
-                                 timeout:5]
-                                timeoutErrorMessage:errorDescription]
-                               spinUntilTrue:^BOOL{
-    return ![FBKeyboard waitUntilVisibleForApplication:request.session.activeApplication
-                                               timeout:0
-                                                 error:nil];
-  }
-                               error:&error];
-  if (!isKeyboardNotPresent) {
-    return FBResponseWithStatus([FBCommandStatus elementNotVisibleErrorWithMessage:error.description
-                                                                         traceback:nil]);
-  }
-  return FBResponseWithOK();
+  BOOL isDismissed = [request.session.activeApplication fb_dismissKeyboardWithKeyNames:request.arguments[@"keyNames"]
+                                                                                 error:&error];
+  return isDismissed
+    ? FBResponseWithOK()
+    : FBResponseWithStatus([FBCommandStatus invalidElementStateErrorWithMessage:error.description
+                                                                      traceback:nil]);
 }
 
 + (id<FBResponsePayload>)handlePingCommand:(FBRouteRequest *)request
