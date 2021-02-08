@@ -9,8 +9,9 @@
 /* Begin PBXBuildFile section */
 		5C0022732090981400335DBC /* WebDriverAgentLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C0022722090981300335DBC /* WebDriverAgentLib.framework */; };
 		5C0022742090989A00335DBC /* WebDriverAgentLib.framework in Copy frameworks */ = {isa = PBXBuildFile; fileRef = 5C0022722090981300335DBC /* WebDriverAgentLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5C0022762091B80300335DBC /* RoutingHTTPServer.framework in Copy frameworks */ = {isa = PBXBuildFile; fileRef = 5C0022752091B80300335DBC /* RoutingHTTPServer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		AAF0F07424CA92D600C5AAE7 /* YYCache.framework in Copy frameworks */ = {isa = PBXBuildFile; fileRef = AAF0F07324CA92D600C5AAE7 /* YYCache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73A640B72580D4DC00F06022 /* CocoaAsyncSocket.framework in Copy frameworks */ = {isa = PBXBuildFile; fileRef = 73A640B62580D4DC00F06022 /* CocoaAsyncSocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73A640B92580D4EA00F06022 /* RoutingHTTPServer.framework in Copy frameworks */ = {isa = PBXBuildFile; fileRef = 73A640B82580D4EA00F06022 /* RoutingHTTPServer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73A640BB2580D4F700F06022 /* YYCache.framework in Copy frameworks */ = {isa = PBXBuildFile; fileRef = 73A640BA2580D4F700F06022 /* YYCache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EE9AB8011CAEE048008C271F /* UITestingUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = EE9AB7FD1CAEE048008C271F /* UITestingUITests.m */; };
 /* End PBXBuildFile section */
 
@@ -21,8 +22,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				AAF0F07424CA92D600C5AAE7 /* YYCache.framework in Copy frameworks */,
-				5C0022762091B80300335DBC /* RoutingHTTPServer.framework in Copy frameworks */,
+				73A640BB2580D4F700F06022 /* YYCache.framework in Copy frameworks */,
+				73A640B92580D4EA00F06022 /* RoutingHTTPServer.framework in Copy frameworks */,
+				73A640B72580D4DC00F06022 /* CocoaAsyncSocket.framework in Copy frameworks */,
 				5C0022742090989A00335DBC /* WebDriverAgentLib.framework in Copy frameworks */,
 			);
 			name = "Copy frameworks";
@@ -32,8 +34,9 @@
 
 /* Begin PBXFileReference section */
 		5C0022722090981300335DBC /* WebDriverAgentLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebDriverAgentLib.framework; path = WebDriverAgentLib/WebDriverAgentLib.framework; sourceTree = "<group>"; };
-		5C0022752091B80300335DBC /* RoutingHTTPServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RoutingHTTPServer.framework; path = WebDriverAgentLib/WebDriverAgentLib.framework/Frameworks/RoutingHTTPServer.framework; sourceTree = "<group>"; };
-		AAF0F07324CA92D600C5AAE7 /* YYCache.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YYCache.framework; path = WebDriverAgentLib/WebDriverAgentLib.framework/Frameworks/YYCache.framework; sourceTree = "<group>"; };
+		73A640B62580D4DC00F06022 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaAsyncSocket.framework; path = WebDriverAgentLib/WebDriverAgentLib.framework/Frameworks/CocoaAsyncSocket.framework; sourceTree = "<group>"; };
+		73A640B82580D4EA00F06022 /* RoutingHTTPServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RoutingHTTPServer.framework; path = WebDriverAgentLib/WebDriverAgentLib.framework/Frameworks/RoutingHTTPServer.framework; sourceTree = "<group>"; };
+		73A640BA2580D4F700F06022 /* YYCache.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YYCache.framework; path = WebDriverAgentLib/WebDriverAgentLib.framework/Frameworks/YYCache.framework; sourceTree = "<group>"; };
 		AD42DD2A1CF121E600806E5D /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		EE9AB7FC1CAEE048008C271F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = WebDriverAgentRunner/Info.plist; sourceTree = SOURCE_ROOT; };
 		EE9AB7FD1CAEE048008C271F /* UITestingUITests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UITestingUITests.m; path = WebDriverAgentRunner/UITestingUITests.m; sourceTree = SOURCE_ROOT; };
@@ -58,8 +61,9 @@
 		91F9DAE01B99DBC2001349B2 = {
 			isa = PBXGroup;
 			children = (
-				AAF0F07324CA92D600C5AAE7 /* YYCache.framework */,
-				5C0022752091B80300335DBC /* RoutingHTTPServer.framework */,
+				73A640BA2580D4F700F06022 /* YYCache.framework */,
+				73A640B82580D4EA00F06022 /* RoutingHTTPServer.framework */,
+				73A640B62580D4DC00F06022 /* CocoaAsyncSocket.framework */,
 				EEE5CABE1C80361500CBBDD9 /* Configurations */,
 				EEF988341C486655005CA669 /* WebDriverAgentRunner */,
 				EE9AB8021CAEE182008C271F /* Scripts */,
@@ -333,7 +337,7 @@
 					"$(inherited)",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.game.netease;
+				PRODUCT_BUNDLE_IDENTIFIER = com.facebook.WebDriverAgentRunner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USES_XCTRUNNER = YES;
 			};
@@ -357,7 +361,7 @@
 					"$(inherited)",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.game.netease;
+				PRODUCT_BUNDLE_IDENTIFIER = com.facebook.WebDriverAgentRunner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USES_XCTRUNNER = YES;
 			};
