@@ -1,17 +1,16 @@
 # WebDriverAgent
 
 [![GitHub license](https://img.shields.io/badge/license-BSD-lightgrey.svg)](LICENSE)
-[![Build Status](https://travis-ci.org/appium/WebDriverAgent.svg?branch=master)](https://travis-ci.org/appium/WebDriverAgent)
 
 WebDriverAgent is a [WebDriver server](https://w3c.github.io/webdriver/webdriver-spec.html) implementation for iOS that can be used to remote control iOS devices. It allows you to launch & kill applications, tap & scroll views or confirm view presence on a screen. This makes it a perfect tool for application end-to-end testing or general purpose device automation. It works by linking `XCTest.framework` and calling Apple's API to execute commands directly on a device. WebDriverAgent is developed for end-to-end testing and is successfully adopted by [Appium](http://appium.io) via [XCUITest driver](https://github.com/appium/appium-xcuitest-driver).
 
 ## Features
- * Both iOS and tvOS platforms are supported with device & simulator
+ * Both iOS and tvOS platforms are supported with devices & simulators
  * Implements most of [WebDriver Spec](https://w3c.github.io/webdriver/webdriver-spec.html)
  * Implements part of [Mobile JSON Wire Protocol Spec](https://github.com/SeleniumHQ/mobile-spec/blob/master/spec-draft.md)
- * [USB support](https://github.com/facebook/WebDriverAgent/wiki/USB-support) for devices
+ * USB support for devices is implemented via [appium-ios-device](https://github.com/appium/appium-ios-device) library and has zero dependencies on third-party tools.
  * Easy development cycle as it can be launched & debugged directly via Xcode
- * Unsupported yet, but works with OSX
+ * Use [Mac2Driver](https://github.com/appium/appium-mac2-driver) to automate macOS apps
 
 ## Getting Started On This Repository
 
@@ -37,8 +36,10 @@ Follow [this doc](docs/CREATING_BUNDLES.md)
 
 ## Third Party Sources
 
-WebDriverAgent depends on [CocoaHTTPServer](https://github.com/robbiehanson/CocoaHTTPServer)
-and [RoutingHTTPServer](https://github.com/mattstevens/RoutingHTTPServer).
+WebDriverAgent depends on the following third-party frameworks:
+- [CocoaHTTPServer](https://github.com/robbiehanson/CocoaHTTPServer)
+- [RoutingHTTPServer](https://github.com/mattstevens/RoutingHTTPServer)
+- [YYCache](https://github.com/ibireme/YYCache)
 
 These projects haven't been maintained in a while. That's why the source code of these
 projects has been integrated directly in the WebDriverAgent source tree.
