@@ -21,9 +21,10 @@
 #import "XCUIScreen.h"
 #import "XCUIScreenDataSource-Protocol.h"
 
-static const NSTimeInterval SCREENSHOT_TIMEOUT = .5;
+static const NSTimeInterval SCREENSHOT_TIMEOUT = 20.;
+static const NSTimeInterval FRAME_TIMEOUT = 1.;
 static const CGFloat HIGH_QUALITY = 0.8;
-static const CGFloat LOW_QUALITY = 0.2;
+static const CGFloat LOW_QUALITY = 0.25;
 
 NSString *formatTimeInterval(NSTimeInterval interval) {
   NSUInteger milliseconds = (NSUInteger)(interval * 1000);
@@ -166,7 +167,7 @@ NSString *formatTimeInterval(NSTimeInterval interval) {
 }
 
 + (NSData *)takeWithScreenID:(unsigned int)screenID
-                     quality:(CGFloat)quality
+          compressionQuality:(CGFloat)compressionQuality
                          uti:(NSString *)uti
                        error:(NSError **)error
 {
@@ -177,7 +178,7 @@ NSString *formatTimeInterval(NSTimeInterval interval) {
   [proxy _XCT_requestScreenshotOfScreenWithID:screenID
                                      withRect:CGRectNull
                                           uti:uti
-                           compressionQuality:quality
+                           compressionQuality:compressionQuality
                                     withReply:^(NSData *data, NSError *err) {
     if (nil != err) {
       [FBLogger logFmt:@"Got an error while taking a screenshot: %@", [err description]];
@@ -190,7 +191,7 @@ NSString *formatTimeInterval(NSTimeInterval interval) {
   if (nil != error && innerError) {
     *error = innerError;
   }
-  int64_t timeoutNs = (int64_t)(SCREENSHOT_TIMEOUT * NSEC_PER_SEC);
+  int64_t timeoutNs = (int64_t)(FRAME_TIMEOUT * NSEC_PER_SEC);
   if (0 != dispatch_semaphore_wait(sem, dispatch_time(DISPATCH_TIME_NOW, timeoutNs))) {
     NSString *timeoutMsg = [NSString stringWithFormat:@"Cannot take a screenshot within %@ timeout", formatTimeInterval(SCREENSHOT_TIMEOUT)];
     if (nil == error) {
