@@ -306,9 +306,17 @@
   [locationManager setPausesLocationUpdatesAutomatically:NO];
   [locationManager startUpdatingLocation];
 
-  CLAuthorizationStatus authStatus = [locationManager respondsToSelector:@selector(authorizationStatus)]
-    ? (CLAuthorizationStatus) [[locationManager performSelector:@selector(authorizationStatus)] integerValue]
-    : [CLLocationManager authorizationStatus];
+  CLAuthorizationStatus authStatus;
+  if ([locationManager respondsToSelector:@selector(authorizationStatus)]) {
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[[locationManager class]
+      instanceMethodSignatureForSelector:@selector(authorizationStatus)]];
+    [invocation setSelector:@selector(authorizationStatus)];
+    [invocation setTarget:locationManager];
+    [invocation invoke];
+    [invocation getReturnValue:&authStatus];
+  } else {
+    authStatus = [CLLocationManager authorizationStatus];
+  }
 
   return FBResponseWithObject(@{
     @"authorizationStatus": @(authStatus),
