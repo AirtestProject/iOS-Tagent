@@ -97,6 +97,13 @@
   if (requirements[@"shouldUseSingletonTestManager"]) {
     [FBConfiguration setShouldUseSingletonTestManager:[requirements[@"shouldUseSingletonTestManager"] boolValue]];
   }
+  if (requirements[@"disableAutomaticScreenshots"]) {
+    if ([requirements[@"disableAutomaticScreenshots"] boolValue]) {
+      [FBConfiguration disableScreenshots];
+    } else {
+      [FBConfiguration enableScreenshots];
+    }
+  }
   NSNumber *delay = requirements[@"eventloopIdleDelaySec"];
   if ([delay doubleValue] > 0.0) {
     [XCUIApplicationProcessDelay setEventLoopHasIdledDelay:[delay doubleValue]];
