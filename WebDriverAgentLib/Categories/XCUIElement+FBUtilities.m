@@ -34,6 +34,7 @@
 #import "XCUIElementQuery.h"
 #import "XCUIElementQuery+FBHelpers.h"
 #import "XCUIElement+FBUID.h"
+#import "XCUIScreen.h"
 
 #define DEFAULT_AX_TIMEOUT 60.
 
@@ -241,9 +242,15 @@
     }
   }
 #endif
-  return [FBScreenshot takeWithQuality:FBConfiguration.screenshotQuality
-                                  rect:elementRect
-                                 error:error];
+
+  // adjust element rect for the actual screen scale
+  XCUIScreen *mainScreen = XCUIScreen.mainScreen;
+  elementRect = CGRectMake(elementRect.origin.x * mainScreen.scale, elementRect.origin.y * mainScreen.scale,
+                           elementRect.size.width * mainScreen.scale, elementRect.size.height * mainScreen.scale);
+
+  return [FBScreenshot takeInOriginalResolutionWithQuality:FBConfiguration.screenshotQuality
+                                                      rect:elementRect
+                                                     error:error];
 }
 
 @end

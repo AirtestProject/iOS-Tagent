@@ -12,6 +12,7 @@
 #import "FBIntegrationTestCase.h"
 #import "XCUIDevice+FBRotation.h"
 #import "XCUIElement+FBUtilities.h"
+#import "XCUIScreen.h"
 
 @interface FBElementScreenshotTests : FBIntegrationTestCase
 @end
@@ -48,6 +49,15 @@
   UIImage *image = [UIImage imageWithData:screenshotData];
   XCTAssertNotNil(image);
   XCTAssertTrue(image.size.width > image.size.height);
+
+  XCUIScreen *mainScreen = XCUIScreen.mainScreen;
+  UIImage *buttonScreenshot = button.screenshot.image;
+  XCTAssertEqualWithAccuracy(buttonScreenshot.size.height * mainScreen.scale,
+                             image.size.height,
+                             FLT_EPSILON);
+  XCTAssertEqualWithAccuracy(buttonScreenshot.size.width * mainScreen.scale,
+                             image.size.width,
+                             FLT_EPSILON);
 }
 
 @end

@@ -16,6 +16,7 @@
 #import "FBTestMacros.h"
 #import "XCUIDevice+FBHelpers.h"
 #import "XCUIDevice+FBRotation.h"
+#import "XCUIScreen.h"
 
 @interface XCUIDeviceHelperTests : FBIntegrationTestCase
 @end
@@ -33,11 +34,24 @@
 
 - (void)testScreenshot
 {
+  [[XCUIDevice sharedDevice] fb_setDeviceInterfaceOrientation:UIDeviceOrientationPortrait];
   NSError *error = nil;
   NSData *screenshotData = [[XCUIDevice sharedDevice] fb_screenshotWithError:&error];
-  XCTAssertNotNil([UIImage imageWithData:screenshotData]);
+  XCTAssertNotNil(screenshotData);
   XCTAssertNil(error);
   XCTAssertTrue(FBIsPngImage(screenshotData));
+
+  UIImage *screenshot = [UIImage imageWithData:screenshotData];
+  XCTAssertNotNil(screenshot);
+
+  XCUIScreen *mainScreen = XCUIScreen.mainScreen;
+  UIImage *screenshotExact = ((XCUIScreenshot *)mainScreen.screenshot).image;
+  XCTAssertEqualWithAccuracy(screenshotExact.size.height * mainScreen.scale,
+                             screenshot.size.height,
+                             FLT_EPSILON);
+  XCTAssertEqualWithAccuracy(screenshotExact.size.width * mainScreen.scale,
+                             screenshot.size.width,
+                             FLT_EPSILON);
 }
 
 - (void)testLandscapeScreenshot
@@ -48,9 +62,19 @@
   XCTAssertNotNil(screenshotData);
   XCTAssertTrue(FBIsPngImage(screenshotData));
   XCTAssertNil(error);
-  UIImage *image = [UIImage imageWithData:screenshotData];
-  XCTAssertNotNil(image);
-  XCTAssertTrue(image.size.width > image.size.height);
+
+  UIImage *screenshot = [UIImage imageWithData:screenshotData];
+  XCTAssertNotNil(screenshot);
+  XCTAssertTrue(screenshot.size.width > screenshot.size.height);
+
+  XCUIScreen *mainScreen = XCUIScreen.mainScreen;
+  UIImage *screenshotExact = ((XCUIScreenshot *)mainScreen.screenshot).image;
+  XCTAssertEqualWithAccuracy(screenshotExact.size.height * mainScreen.scale,
+                             screenshot.size.height,
+                             FLT_EPSILON);
+  XCTAssertEqualWithAccuracy(screenshotExact.size.width * mainScreen.scale,
+                             screenshot.size.width,
+                             FLT_EPSILON);
 }
 
 - (void)testWifiAddress
