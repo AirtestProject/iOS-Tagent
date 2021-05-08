@@ -75,12 +75,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)fb_openUrl:(NSString *)url error:(NSError **)error;
 
 /**
- Presses the corresponding hardware button on the device
+ Presses the corresponding hardware button on the device with duration.
 
  @param buttonName One of the supported button names: volumeUp (real devices only), volumeDown (real device only), home
+ @param duration Duration in seconds. This argument works only on tvOS. On iOS, this value will be ignored.
  @return YES if the button has been pressed
  */
-- (BOOL)fb_pressButton:(NSString *)buttonName error:(NSError **)error;
+- (BOOL)fb_pressButton:(NSString *)buttonName forDuration:(NSTimeInterval)duration error:(NSError **)error;
+
 
 /**
  Activates Siri service voice recognition with the given text to parse

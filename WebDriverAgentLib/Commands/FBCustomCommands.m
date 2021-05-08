@@ -243,7 +243,11 @@
 + (id<FBResponsePayload>)handlePressButtonCommand:(FBRouteRequest *)request
 {
   NSError *error;
-  if (![XCUIDevice.sharedDevice fb_pressButton:(id)request.arguments[@"name"] error:&error]) {
+  NSNumber *requestedDuration = request.arguments[@"duration"];
+  NSTimeInterval duration = (requestedDuration ? requestedDuration.doubleValue : -1);
+  if (![XCUIDevice.sharedDevice fb_pressButton:(id)request.arguments[@"name"]
+                                   forDuration:duration
+                                         error:&error]) {
     return FBResponseWithUnknownError(error);
   }
   return FBResponseWithOK();
