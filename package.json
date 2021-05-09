@@ -1,6 +1,6 @@
 {
   "name": "appium-webdriveragent",
-  "version": "3.8.1",
+  "version": "3.9.0",
   "description": "Package bundling WebDriverAgent",
   "main": "build/index.js",
   "scripts": {
