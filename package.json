@@ -15,7 +15,7 @@
     "lint:fix": "gulp eslint --fix",
     "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
     "precommit-test": "gulp lint",
-    "bundle": "node ./ci-jobs/scripts/build-webdriveragent.js",
+    "bundle": "node ./Scripts/build-webdriveragent.js",
     "fetch-prebuilt-wda": "node ./Scripts/fetch-prebuilt-wda"
   },
   "bin": {
@@ -78,6 +78,7 @@
     "build/lib",
     "Scripts/build.sh",
     "Scripts/fetch-prebuilt-wda.js",
+    "Scripts/build-webdriveragent.js",
     "Cartfile",
     "Cartfile.resolved",
     "Configurations",
