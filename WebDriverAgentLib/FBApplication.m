@@ -149,7 +149,7 @@ static const NSTimeInterval APP_STATE_CHANGE_TIMEOUT = 5.0;
   if ([FBXCAXClientProxy.sharedClient hasProcessTracker]) {
     return (FBApplication *)[FBXCAXClientProxy.sharedClient monitoredApplicationWithProcessIdentifier:processID];
   }
-  return  [super applicationWithPID:processID];
+  return [super applicationWithPID:processID];
 }
 
 - (void)launch
