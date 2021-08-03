@@ -90,6 +90,8 @@ static id FBAXClient = nil;
                                     error:(NSError **)error
 {
   NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+  // Mimicking XCTest framework behavior (this attribute is added by default unless it is an excludingNonModalElements query)
+  // See https://github.com/appium/WebDriverAgent/pull/523
   if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"13.0")) {
     parameters[@"snapshotKeyHonorModalViews"] = @(NO);
   }
