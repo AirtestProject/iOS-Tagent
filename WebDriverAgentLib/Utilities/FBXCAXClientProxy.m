@@ -91,7 +91,7 @@ static id FBAXClient = nil;
 {
   NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
   if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"13.0")) {
-    parameters[@"snapshotKeyHonorModalViews"] = @0;
+    parameters[@"snapshotKeyHonorModalViews"] = @(NO);
   }
   if (nil != maxDepth) {
     [parameters addEntriesFromDictionary:self.defaultParameters];
