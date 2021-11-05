@@ -126,7 +126,8 @@ static NSString *const topNodeIndexPath = @"top";
   if (rc < 0) {
     [FBLogger logFmt:@"Failed to invoke libxml2>xmlTextWriterStartDocument. Error code: %d", rc];
   } else {
-    if (nil != options.scope && [options.scope length] > 0) {
+    BOOL hasScope = nil != options.scope && [options.scope length] > 0;
+    if (hasScope) {
       rc = xmlTextWriterStartElement(writer,
                                      (xmlChar *)[[self safeXmlStringWithString:options.scope] UTF8String]);
       if (rc < 0) {
@@ -142,7 +143,7 @@ static NSString *const topNodeIndexPath = @"top";
                               excludingAttributes:options.excludedAttributes];
     }
 
-    if (rc >= 0 && nil != options.scope) {
+    if (rc >= 0 && hasScope) {
       rc = xmlTextWriterEndElement(writer);
       if (rc < 0) {
         [FBLogger logFmt:@"Failed to invoke libxml2>xmlTextWriterEndElement. Error code: %d", rc];
