@@ -9,10 +9,10 @@ variables:
   MIN_PLATFORM_VERSION: 13.2.2
   MIN_IPHONE_DEVICE_NAME: iPhone 11
   MIN_IPAD_DEVICE_NAME: iPad Pro (11-inch)
-  MAX_VM_IMAGE: macOS-10.15
-  MAX_XCODE_VERSION: 12.4
-  MAX_PLATFORM_VERSION: 14.4
-  MAX_PLATFORM_VERSION_TV: 14.3
+  MAX_VM_IMAGE: macOS-11
+  MAX_XCODE_VERSION: 13.2
+  MAX_PLATFORM_VERSION: 15.2
+  MAX_PLATFORM_VERSION_TV: 15.2
   MAX_IPHONE_DEVICE_NAME: iPhone 11 Pro Max
   MAX_TV_DEVICE_NAME: Apple TV 4K
   MAX_IPAD_DEVICE_NAME: iPad Pro (11-inch) (2nd generation)
@@ -303,12 +303,9 @@ stages:
 
   - job: Node_Integration_Tests
     variables:
-      # XCODE_VERSION: $(MAX_XCODE_VERSION)
-      # DEVICE_NAME: $(MAX_IPHONE_DEVICE_NAME)
-      # PLATFORM_VERSION: $(MAX_PLATFORM_VERSION)
-      XCODE_VERSION: 11.7
-      DEVICE_NAME: iPhone 11 Pro Max
-      PLATFORM_VERSION: 13.7
+      XCODE_VERSION: $(MAX_XCODE_VERSION)
+      DEVICE_NAME: $(MAX_IPHONE_DEVICE_NAME)
+      PLATFORM_VERSION: $(MAX_PLATFORM_VERSION)
     steps:
     - template: azure-templates/node_setup_steps.yml
     - script: npm install
