@@ -326,4 +326,11 @@ static bool fb_isLocked;
           buildError:error];
 }
 
+- (NSNumber *)fb_getAppearance
+{
+  return [self respondsToSelector:@selector(appearanceMode)]
+  ? [NSNumber numberWithLongLong:[self appearanceMode]]
+  : nil;
+}
+
 @end

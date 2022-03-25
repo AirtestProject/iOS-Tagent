@@ -426,6 +426,16 @@
  */
 + (NSString *)userInterfaceStyle
 {
+
+  if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.0")) {
+    // Only iOS 15+ simulators/devices return correct data while
+    // the api itself works in iOS 13 and 14 that has style preference.
+    NSNumber *appearance = [XCUIDevice.sharedDevice fb_getAppearance];
+    if (appearance != nil) {
+      return [self getAppearanceName:appearance];
+    }
+  }
+
   static id userInterfaceStyle = nil;
   static dispatch_once_t styleOnceToken;
   dispatch_once(&styleOnceToken, ^{
@@ -441,10 +451,17 @@
     return @"unsupported";
   }
 
-  switch ([userInterfaceStyle integerValue]) {
-    case 1: // UIUserInterfaceStyleLight
+  return [self getAppearanceName:userInterfaceStyle];
+}
+
++ (NSString *)getAppearanceName:(NSNumber *)appearance
+{
+  switch ([appearance longLongValue]) {
+    case FBUIInterfaceAppearanceUnspecified:
+      return @"automatic";
+    case FBUIInterfaceAppearanceLight:
       return @"light";
-    case 2: // UIUserInterfaceStyleDark
+    case FBUIInterfaceAppearanceDark:
       return @"dark";
     default:
       return @"unknown";
