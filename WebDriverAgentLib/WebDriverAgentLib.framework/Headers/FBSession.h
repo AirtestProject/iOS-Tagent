@@ -14,9 +14,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! Exception used to notify about application crash */
-extern NSString *const FBApplicationCrashedException;
-
 /**
  Class that represents testing session
  */
@@ -31,7 +28,17 @@ extern NSString *const FBApplicationCrashedException;
 /*! Element cache related to that session */
 @property (nonatomic, strong, readonly) FBElementCache *elementCache;
 
+/*! The identifier of the active application */
 @property (nonatomic, copy) NSString *defaultActiveApplication;
+
+/*! The action to apply to unexpected alerts. Either "accept"/"dismiss" or nil/empty string (by default) to do nothing */
+@property (nonatomic, nullable) NSString *defaultAlertAction;
+
+/*! Whether to use the native caching strategy for elements or the custom one: https://discuss.appium.io/t/elements-state-coming-from-xpath-vs-ios-predicate-string/34016 */
+@property (nonatomic) BOOL useNativeCachingStrategy;
+
+/*! Keeps cached visibility values for the current snapshots tree */
+@property (nonatomic, readonly) NSMutableDictionary<NSNumber *, NSMutableDictionary<NSString *, NSNumber *> *> *elementsVisibilityCache;
 
 + (nullable instancetype)activeSession;
 
@@ -74,21 +81,23 @@ extern NSString *const FBApplicationCrashedException;
  @param shouldWaitForQuiescence whether to wait for quiescence on application startup
  @param arguments The optional array of application command line arguments. The arguments are going to be applied if the application was not running before.
  @param environment The optional dictionary of environment variables for the application, which is going to be executed. The environment variables are going to be applied if the application was not running before.
+ @return The application instance
  @throws FBApplicationMethodNotSupportedException if the method is not supported with the current XCTest SDK
  */
-- (void)launchApplicationWithBundleId:(NSString *)bundleIdentifier
-              shouldWaitForQuiescence:(nullable NSNumber *)shouldWaitForQuiescence
-                            arguments:(nullable NSArray<NSString *> *)arguments
-                          environment:(nullable NSDictionary <NSString *, NSString *> *)environment;
+- (FBApplication *)launchApplicationWithBundleId:(NSString *)bundleIdentifier
+                         shouldWaitForQuiescence:(nullable NSNumber *)shouldWaitForQuiescence
+                                       arguments:(nullable NSArray<NSString *> *)arguments
+                                     environment:(nullable NSDictionary <NSString *, NSString *> *)environment;
 
 /**
  Activate an application with given bundle identifier in scope of current session.
  !This method is only available since Xcode9 SDK
 
  @param bundleIdentifier Valid bundle identifier of the application to be activated
+ @return The application instance
  @throws FBApplicationMethodNotSupportedException if the method is not supported with the current XCTest SDK
  */
-- (void)activateApplicationWithBundleId:(NSString *)bundleIdentifier;
+- (FBApplication *)activateApplicationWithBundleId:(NSString *)bundleIdentifier;
 
 /**
  Terminate an application with the given bundle id. The application should be previously
