@@ -9,11 +9,13 @@
 
 #import <Foundation/Foundation.h>
 
-//#import "AXSettings.h"
-//#import "UIKeyboardImpl.h"
-//#import "TIPreferencesController.h"
+// #import "AXSettings.h"
+// #import "UIKeyboardImpl.h"
+// #import "TIPreferencesController.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+extern NSString *const FBSnapshotMaxDepthKey;
 
 /**
  Accessors for Global Constants.
@@ -28,6 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)setShouldUseCompactResponses:(BOOL)value;
 + (BOOL)shouldUseCompactResponses;
 
+/*! If set to YES (which is the default), the app will be terminated at the end of the session, if a bundleId was specified */
++ (void)setShouldTerminateApp:(BOOL)value;
++ (BOOL)shouldTerminateApp;
+
 /*! If shouldUseCompactResponses == NO, is the comma-separated list of fields to return with each element. Defaults to "type,label". */
 + (void)setElementResponseAttributes:(NSString *)value;
 + (NSString *)elementResponseAttributes;
@@ -35,8 +41,17 @@ NS_ASSUME_NONNULL_BEGIN
 /*! Disables remote query evaluation making Xcode 9.x tests behave same as Xcode 8.x test */
 + (void)disableRemoteQueryEvaluation;
 
+/*! Enables the extended XCTest debug logging. Useful for developemnt purposes */
++ (void)enableXcTestDebugLogs;
+
 /*! Disables attribute key path analysis, which will cause XCTest on Xcode 9.x to ignore some elements */
 + (void)disableAttributeKeyPathAnalysis;
+
+/*! Disables XCTest automated screenshots taking */
++ (void)disableScreenshots;
+
+/*! Enables XCTest automated screenshots taking */
++ (void)enableScreenshots;
 
 /* The maximum typing frequency for all typing activities */
 + (void)setMaxTypingFrequency:(NSUInteger)value;
@@ -45,10 +60,6 @@ NS_ASSUME_NONNULL_BEGIN
 /* Use singleton test manager proxy */
 + (void)setShouldUseSingletonTestManager:(BOOL)value;
 + (BOOL)shouldUseSingletonTestManager;
-
-/* Whether to wait for quiescence on application startup */
-+ (void)setShouldWaitForQuiescence:(BOOL)value;
-+ (BOOL)shouldWaitForQuiescence;
 
 /**
  * Extract switch value from arguments
@@ -107,12 +118,30 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (BOOL)verboseLoggingEnabled;
 
-+ (BOOL)shouldLoadSnapshotWithAttributes;
+/**
+ Disables automatic handling of XCTest UI interruptions.
+ */
++ (void)disableApplicationUIInterruptionsHandling;
 
 /**
  * Configure keyboards preference to make test running stable
  */
 + (void)configureDefaultKeyboardPreferences;
+
+
+/**
+ * Turn on softwar keyboard forcefully for simulator.
+ */
++ (void)forceSimulatorSoftwareKeyboardPresence;
+
+/**
+Defines keyboard preference enabled status
+*/
+typedef NS_ENUM(NSInteger, FBConfigurationKeyboardPreference) {
+    FBConfigurationKeyboardPreferenceDisabled = 0,
+    FBConfigurationKeyboardPreferenceEnabled = 1,
+    FBConfigurationKeyboardPreferenceNotSupported = 2,
+};
 
 /**
  * Modify keyboard configuration of 'auto-correction'.
@@ -120,7 +149,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @param isEnabled Turn the configuration on if the value is YES
  */
 + (void)setKeyboardAutocorrection:(BOOL)isEnabled;
-+ (BOOL)keyboardAutocorrection;
++ (FBConfigurationKeyboardPreference)keyboardAutocorrection;
 
 /**
  * Modify keyboard configuration of 'predictive'
@@ -128,15 +157,15 @@ NS_ASSUME_NONNULL_BEGIN
  * @param isEnabled Turn the configuration on if the value is YES
  */
 + (void)setKeyboardPrediction:(BOOL)isEnabled;
-+ (BOOL)keyboardPrediction;
++ (FBConfigurationKeyboardPreference)keyboardPrediction;
 
 /**
  * The maximum time to wait until accessibility snapshot is taken
  *
  * @param timeout The number of float seconds to wait (15 seconds by default)
  */
-+ (void)setSnapshotTimeout:(NSTimeInterval)timeout;
-+ (NSTimeInterval)snapshotTimeout;
++ (void)setCustomSnapshotTimeout:(NSTimeInterval)timeout;
++ (NSTimeInterval)customSnapshotTimeout;
 
 /**
  Sets maximum depth for traversing elements tree from parents to children while requesting XCElementSnapshot.
@@ -172,6 +201,17 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)useFirstMatch;
 
 /**
+ * Whether to bound the lookup results by index.
+ * By default this is disabled and bounding by accessibility is used.
+ * Read https://stackoverflow.com/questions/49307513/meaning-of-allelementsboundbyaccessibilityelement
+ * for more details on these two bounding methods.
+ *
+ * @param enabled Either YES or NO
+ */
++ (void)setBoundElementsByIndex:(BOOL)enabled;
++ (BOOL)boundElementsByIndex;
+
+/**
  * Modify reduce motion configuration in accessibility.
  * It works only for Simulator since Real device has security model which allows chnaging preferences
  * only from settings app.
@@ -180,6 +220,28 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (void)setReduceMotionEnabled:(BOOL)isEnabled;
 + (BOOL)reduceMotionEnabled;
+
+/**
+ * Set the idling timeout. If the timeout expires then WDA
+ * tries to interact with the application even if it is not idling.
+ * Setting it to zero disables idling checks.
+ * The default timeout is set to 10 seconds.
+ *
+ * @param timeout The actual timeout value in float seconds
+ */
++ (void)setWaitForIdleTimeout:(NSTimeInterval)timeout;
++ (NSTimeInterval)waitForIdleTimeout;
+
+/**
+ * Set the idling timeout for different actions, for example events synthesis, rotation change,
+ * etc. If the timeout expires then WDA tries to interact with the application even if it is not idling.
+ * Setting it to zero disables idling checks.
+ * The default timeout is set to 2 seconds.
+ *
+ * @param timeout The actual timeout value in float seconds
+ */
++ (void)setAnimationCoolOffTimeout:(NSTimeInterval)timeout;
++ (NSTimeInterval)animationCoolOffTimeout;
 
 /**
  Enforces the page hierarchy to include non modal elements,

@@ -11,6 +11,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSUInteger, FBUIInterfaceAppearance) {
+  FBUIInterfaceAppearanceUnspecified,
+  FBUIInterfaceAppearanceLight,
+  FBUIInterfaceAppearanceDark
+};
+
 @interface XCUIDevice (FBHelpers)
 
 /**
@@ -54,18 +60,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Returns screenshot
-
- @param quality The number in range 0-2, where 2 (JPG) is the lowest and 0 (PNG) is the highest quality.
- @param error If there is an error, upon return contains an NSError object that describes the problem.
- @return Device screenshot as PNG- or JPG-encoded data or nil in case of failure
- */
-- (nullable NSData *)fb_rawScreenshotWithQuality:(NSUInteger)quality error:(NSError*__autoreleasing*)error;
-
-
-- (NSData *)fb_fast_screenshotWithError:(NSError*__autoreleasing*)error;
-
-/**
- Returns screenshot
  @param error If there is an error, upon return contains an NSError object that describes the problem.
  @return Device screenshot as PNG-encoded data or nil in case of failure
  */
@@ -87,12 +81,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)fb_openUrl:(NSString *)url error:(NSError **)error;
 
 /**
- Presses the corresponding hardware button on the device
+ Presses the corresponding hardware button on the device with duration.
 
  @param buttonName One of the supported button names: volumeUp (real devices only), volumeDown (real device only), home
+ @param duration Duration in seconds or nil.
+                This argument works only on tvOS. When this argument is nil on tvOS,
+                https://developer.apple.com/documentation/xctest/xcuiremote/1627476-pressbutton will be called.
+                Others are https://developer.apple.com/documentation/xctest/xcuiremote/1627475-pressbutton.
+                A single tap when this argument is `nil` is equal to when the duration is 0.005 seconds in XCTest.
+                On iOS, this value will be ignored. It always calls https://developer.apple.com/documentation/xctest/xcuidevice/1619052-pressbutton
  @return YES if the button has been pressed
  */
-- (BOOL)fb_pressButton:(NSString *)buttonName error:(NSError **)error;
+- (BOOL)fb_pressButton:(NSString *)buttonName forDuration:(nullable NSNumber *)duration error:(NSError **)error;
+
 
 /**
  Activates Siri service voice recognition with the given text to parse
@@ -102,6 +103,57 @@ NS_ASSUME_NONNULL_BEGIN
  @return YES the command has been successfully executed by Siri voice recognition service
  */
 - (BOOL)fb_activateSiriVoiceRecognitionWithText:(NSString *)text error:(NSError **)error;
+
+/**
+ Emulated triggering of the given low-level IOHID device event. The constants for possible events are defined
+ in https://unix.superglobalmegacorp.com/xnu/newsrc/iokit/IOKit/hidsystem/IOHIDUsageTables.h.html
+ Popular constants:
+ - kHIDPage_Consumer = 0x0C
+ - kHIDUsage_Csmr_VolumeIncrement  = 0xE9 (Volume Up)
+ - kHIDUsage_Csmr_VolumeDecrement  = 0xEA (Volume Down)
+ - kHIDUsage_Csmr_Menu = 0x40 (Home)
+ - kHIDUsage_Csmr_Power  = 0x30 (Power)
+ - kHIDUsage_Csmr_Snapshot  = 0x65 (Power + Home)
+
+ @param page The event page identifier
+ @param usage The event usage identifier (usages are defined per-page)
+ @param duration The event duration in float seconds (XCTest uses 0.005 for a single press event)
+ @param error If there is an error, upon return contains an NSError object that describes the problem.
+ @return YES the event has successfully been triggered
+ */
+- (BOOL)fb_performIOHIDEventWithPage:(unsigned int)page
+                               usage:(unsigned int)usage
+                            duration:(NSTimeInterval)duration
+                               error:(NSError **)error;
+
+- (BOOL)fb_synthTapWithX:(CGFloat)x
+                       y:(CGFloat)y
+                duration:(CGFloat)duration;
+
+- (BOOL)fb_synthSwipe:(CGFloat)x1
+                   y1:(CGFloat)y1
+                   x2:(CGFloat)x2
+                   y2:(CGFloat)y2
+                delay:(CGFloat)delay;
+
+- (BOOL)fb_synthKeyEvent:(id)keyId
+           modifierFlags:(unsigned long long)modifierFlags;
+           
+/**
+ Allows to set device appearance
+
+ @param appearance The desired appearance value
+ @param error If there is an error, upon return contains an NSError object that describes the problem.
+ @return YES if the appearance has been successfully set
+ */
+- (BOOL)fb_setAppearance:(FBUIInterfaceAppearance)appearance error:(NSError **)error;
+
+/**
+ Get current appearance prefefence.
+
+ @return 0 (automatic), 1 (light) or 2 (dark), or nil
+ */
+- (nullable NSNumber *)fb_getAppearance;
 
 @end
 
