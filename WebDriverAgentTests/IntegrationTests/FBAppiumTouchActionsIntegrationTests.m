@@ -214,6 +214,7 @@
   [self verifyGesture:gesture orientation:UIDeviceOrientationLandscapeLeft];
 }
 
+// TODO: UIDeviceOrientationLandscapeRight is not so good in iOS 16? (Especially simulators)
 - (void)testPress
 {
   if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.0")) {

@@ -78,6 +78,7 @@
   XCTAssertTrue(screenshot.size.width > screenshot.size.height);
 
   XCUIScreen *mainScreen = XCUIScreen.mainScreen;
+  // TODO: This screenshot rotation was not landscape in an iOS 16 beta simulator. 
   UIImage *screenshotExact = ((XCUIScreenshot *)mainScreen.screenshot).image;
   XCTAssertEqualWithAccuracy(screenshotExact.size.height * mainScreen.scale,
                              screenshot.size.height,
