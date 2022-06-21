@@ -13,11 +13,13 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js 14.x
+    - name: Use Node.js 16.x
       uses: actions/setup-node@v1
       with:
-        node-version: 14.x
-    - run: npm install --no-package-lock
+        node-version: 16.x
+    - run: |
+        npm install -g appium@next
+        npm install --no-package-lock
       name: Install dev dependencies
     - run: npm test
       name: Run NPM Test
