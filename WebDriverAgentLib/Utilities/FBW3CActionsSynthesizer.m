@@ -19,7 +19,7 @@
 #import "FBW3CActionsHelpers.h"
 #import "FBXCodeCompatibility.h"
 #import "FBXCTestDaemonsProxy.h"
-#import "XCElementSnapshot+FBHelpers.h"
+#import "FBXCElementSnapshotWrapper+Helpers.h"
 #import "XCUIApplication+FBHelpers.h"
 #import "XCUIDevice.h"
 #import "XCUIElement+FBCaching.h"
@@ -163,13 +163,13 @@ static NSString *const FB_KEY_ACTIONS = @"actions";
   }
 
   // An offset relative to the element is defined
-  XCElementSnapshot *snapshot = element.fb_isResolvedFromCache.boolValue
+  id<FBXCElementSnapshot> snapshot = element.fb_isResolvedFromCache.boolValue
     ? element.lastSnapshot
     : element.fb_takeSnapshot;
   CGRect frame = snapshot.frame;
   if (CGRectIsEmpty(frame)) {
     [FBLogger log:self.application.fb_descriptionRepresentation];
-    NSString *description = [NSString stringWithFormat:@"The element '%@' is not visible on the screen and thus is not interactable", snapshot.fb_description];
+    NSString *description = [NSString stringWithFormat:@"The element '%@' is not visible on the screen and thus is not interactable", [FBXCElementSnapshotWrapper ensureWrapped:snapshot].fb_description];
     if (error) {
       *error = [[FBErrorBuilder.builder withDescription:description] build];
     }

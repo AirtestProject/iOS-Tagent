@@ -6,17 +6,17 @@
 
 #import <XCTest/XCUIElement.h>
 
-@class NSString, XCElementSnapshot, XCUIApplication, XCUICoordinate, XCUIElementQuery;
+@class NSString, XCUIApplication, XCUICoordinate, XCUIElementQuery;
 
 @interface XCUIElement ()
 {
     BOOL _safeQueryResolutionEnabled;
     XCUIElementQuery *_query;
-    XCElementSnapshot *_lastSnapshot;
+    id/*XCElementSnapshot*/ _lastSnapshot;
 }
 
 @property BOOL safeQueryResolutionEnabled; // @synthesize safeQueryResolutionEnabled=_safeQueryResolutionEnabled;
-@property(retain) XCElementSnapshot *lastSnapshot; // @synthesize lastSnapshot=_lastSnapshot;
+@property(retain) id/*XCElementSnapshot*/ lastSnapshot; // @synthesize lastSnapshot=_lastSnapshot;
 @property(readonly) XCUIElementQuery *query; // @synthesize query=_query;
 #if !TARGET_OS_TV
 @property(readonly, nonatomic) UIInterfaceOrientation interfaceOrientation;

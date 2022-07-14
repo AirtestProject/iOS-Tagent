@@ -12,7 +12,6 @@
 #import "FBApplication.h"
 #import "FBConfiguration.h"
 #import "FBKeyboard.h"
-#import "FBPredicate.h"
 #import "FBRoute.h"
 #import "FBRouteRequest.h"
 #import "FBRunLoopSpinner.h"
@@ -105,7 +104,7 @@
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
-  BOOL isEnabled = element.lastSnapshot.isWDEnabled;
+  BOOL isEnabled = [FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot].isWDEnabled;
   return FBResponseWithObject(isEnabled ? @YES : @NO);
 }
 
@@ -113,7 +112,7 @@
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
-  return FBResponseWithObject(element.lastSnapshot.wdRect);
+  return FBResponseWithObject([FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot].wdRect);
 }
 
 + (id<FBResponsePayload>)handleGetAttribute:(FBRouteRequest *)request
@@ -143,7 +142,8 @@
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
-  id text = FBFirstNonEmptyValue(element.lastSnapshot.wdValue, element.lastSnapshot.wdLabel);
+  FBXCElementSnapshotWrapper *wrappedSnapshot = [FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot];
+  id text = FBFirstNonEmptyValue(wrappedSnapshot.wdValue, wrappedSnapshot.wdLabel);
   return FBResponseWithObject(text ?: @"");
 }
 
@@ -153,7 +153,7 @@
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]
                        resolveForAdditionalAttributes:@[FB_XCAXAIsVisibleAttributeName]
                                           andMaxDepth:@1];
-  return FBResponseWithObject(@(element.lastSnapshot.isWDVisible));
+  return FBResponseWithObject(@([FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot].isWDVisible));
 }
 
 + (id<FBResponsePayload>)handleGetAccessible:(FBRouteRequest *)request
@@ -162,7 +162,7 @@
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]
                        resolveForAdditionalAttributes:@[FB_XCAXAIsElementAttributeName]
                                           andMaxDepth:@1];
-  return FBResponseWithObject(@(element.lastSnapshot.isWDAccessible));
+  return FBResponseWithObject(@([FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot].isWDAccessible));
 }
 
 + (id<FBResponsePayload>)handleGetIsAccessibilityContainer:(FBRouteRequest *)request
@@ -171,21 +171,21 @@
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]
                        resolveForAdditionalAttributes:@[FB_XCAXAIsElementAttributeName]
                                           andMaxDepth:nil];
-  return FBResponseWithObject(@(element.lastSnapshot.isWDAccessibilityContainer));
+  return FBResponseWithObject(@([FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot].isWDAccessibilityContainer));
 }
 
 + (id<FBResponsePayload>)handleGetName:(FBRouteRequest *)request
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
-  return FBResponseWithObject(element.lastSnapshot.wdType);
+  return FBResponseWithObject([FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot].wdType);
 }
 
 + (id<FBResponsePayload>)handleGetSelected:(FBRouteRequest *)request
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
-  return FBResponseWithObject(@(element.lastSnapshot.wdSelected));
+  return FBResponseWithObject(@([FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot].wdSelected));
 }
 
 + (id<FBResponsePayload>)handleSetValue:(FBRouteRequest *)request
@@ -199,7 +199,7 @@
   NSString *textToType = [value isKindOfClass:NSArray.class]
     ? [value componentsJoinedByString:@""]
     : value;
-  XCUIElementType elementType = element.lastSnapshot.elementType;
+  XCUIElementType elementType = [(id<FBXCElementSnapshot>)element.lastSnapshot elementType];
 #if !TARGET_OS_TV
   if (elementType == XCUIElementTypePickerWheel) {
     [element adjustToPickerWheelValue:textToType];
@@ -370,7 +370,8 @@
 
   NSString *const predicateString = request.arguments[@"predicateString"];
   if (predicateString) {
-    NSPredicate *formattedPredicate = [NSPredicate fb_formatSearchPredicate:[FBPredicate predicateWithFormat:predicateString]];
+    NSPredicate *formattedPredicate = [NSPredicate fb_snapshotBlockPredicateWithPredicate:[NSPredicate
+                                                                                           predicateWithFormat:predicateString]];
     XCUIElement *childElement = [[[[element.fb_query descendantsMatchingType:XCUIElementTypeAny] matchingPredicate:formattedPredicate] allElementsBoundByAccessibilityElement] lastObject];
     if (!childElement) {
       return FBResponseWithStatus([FBCommandStatus noSuchElementErrorWithMessage:[NSString stringWithFormat:@"'%@' predicate didn't match any elements", predicateString] traceback:[NSString stringWithFormat:@"%@", NSThread.callStackSymbols]]);
@@ -414,7 +415,7 @@
   FBSession *session = request.session;
   FBElementCache *elementCache = session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
-  CGRect frame = element.lastSnapshot.frame;
+  CGRect frame = [(id<FBXCElementSnapshot>)element.lastSnapshot frame];
   CGPoint startPoint = CGPointMake((CGFloat)(frame.origin.x + [request.arguments[@"fromX"] doubleValue]), (CGFloat)(frame.origin.y + [request.arguments[@"fromY"] doubleValue]));
   CGPoint endPoint = CGPointMake((CGFloat)(frame.origin.x + [request.arguments[@"toX"] doubleValue]), (CGFloat)(frame.origin.y + [request.arguments[@"toY"] doubleValue]));
   NSTimeInterval duration = [request.arguments[@"duration"] doubleValue];
@@ -564,7 +565,7 @@ static const CGFloat DEFAULT_OFFSET = (CGFloat)0.2;
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
-  if (element.lastSnapshot.elementType != XCUIElementTypePickerWheel) {
+  if ([element.lastSnapshot elementType] != XCUIElementTypePickerWheel) {
     return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:[NSString stringWithFormat:@"The element is expected to be a valid Picker Wheel control. '%@' was given instead", element.wdType] traceback:[NSString stringWithFormat:@"%@", NSThread.callStackSymbols]]);
   }
   NSString* order = [request.arguments[@"order"] lowercaseString];
@@ -634,7 +635,7 @@ static const CGFloat DEFAULT_OFFSET = (CGFloat)0.2;
     XCUIElement *window = application.windows.fb_firstMatch;
     if (window) {
       element = window;
-      XCElementSnapshot *snapshot = element.fb_cachedSnapshot ?: element.fb_takeSnapshot;
+      id<FBXCElementSnapshot> snapshot = element.fb_cachedSnapshot ?: element.fb_takeSnapshot;
       point.x -= snapshot.frame.origin.x;
       point.y -= snapshot.frame.origin.y;
     }
