@@ -72,7 +72,7 @@
     "lodash": "^4.17.11",
     "node-simctl": "^7.0.1",
     "source-map-support": "^0.x",
-    "teen_process": "^1.14.1"
+    "teen_process": "^2.0.0"
   },
   "files": [
     "index.js",
