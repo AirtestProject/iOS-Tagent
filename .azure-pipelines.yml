@@ -48,6 +48,7 @@ stages:
     - script: |
         npm install -g appium@next
         npm install
+        npm run lint
     - script: npm run test
 
   # region Build
