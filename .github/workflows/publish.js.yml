@@ -10,13 +10,28 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    # To specify Xcode version
+    runs-on: macos-11
+
+    env:
+      XCODE_VERSION: 13.2.1
+      ZIP_PKG_NAME_IOS: "WebDriverAgentRunner-Runner.zip"
+      PKG_PATH_IOS: "appium_wda_ios"
+      ZIP_PKG_NAME_TVOS: "WebDriverAgentRunner_tvOS-Runner.zip"
+      PKG_PATH_TVOS: "appium_wda_tvos"
+
     steps:
+    # setup
     - uses: actions/checkout@v2
     - name: Use Node.js 18.x
       uses: actions/setup-node@v1
       with:
         node-version: 18.x
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: "${{ env.XCODE_VERSION }}"
+
+    # nodejs
     - run: |
         npm install -g appium@next
         npm install --no-package-lock
@@ -25,8 +40,46 @@ jobs:
       name: Run build
     - run: npm run test
       name: Run test
+
+    # building WDA packages
+    - name: Build iOS
+      run: |
+        xcodebuild clean build-for-testing \
+          -project WebDriverAgent.xcodeproj \
+          -derivedDataPath $PKG_PATH_IOS \
+          -scheme WebDriverAgentRunner \
+          -destination generic/platform=iOS \
+          CODE_SIGNING_ALLOWED=NO
+    - name: Creating a zip of WebDriverAgentRunner-Runner.app for iOS
+      run: |
+        pushd appium_wda_ios/Build/Products/Debug-iphoneos
+        zip -r $ZIP_PKG_NAME_IOS WebDriverAgentRunner-Runner.app
+        popd
+        mv $PKG_PATH_IOS/Build/Products/Debug-iphoneos/$ZIP_PKG_NAME_IOS ./
+    - name: Build tvOS
+      run: |
+        xcodebuild clean build-for-testing \
+          -project WebDriverAgent.xcodeproj \
+          -derivedDataPath $PKG_PATH_TVOS \
+          -scheme WebDriverAgentRunner_tvOS \
+          -destination generic/platform=tvOS \
+          CODE_SIGNING_ALLOWED=NO
+    - name: Creating a zip of WebDriverAgentRunner-Runner.app for tvOS
+      run: |
+        pushd appium_wda_tvos/Build/Products/Debug-appletvos
+        zip -r $ZIP_PKG_NAME_TVOS WebDriverAgentRunner_tvOS-Runner.app
+        popd
+        mv $PKG_PATH_TVOS/Build/Products/Debug-appletvos/$ZIP_PKG_NAME_TVOS ./
+
+    # release tasks
     - run: npx semantic-release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       name: Release
+    - name: Upload Release assets
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          "${{ env.ZIP_PKG_NAME_IOS }}"
+          "${{ env.ZIP_PKG_NAME_TVOS }}"
