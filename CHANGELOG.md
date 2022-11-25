@@ -1,3 +1,10 @@
+## [4.10.10](https://github.com/appium/WebDriverAgent/compare/v4.10.9...v4.10.10) (2022-11-25)
+
+
+### Bug Fixes
+
+* Only check existence if firstMatch is applied ([#638](https://github.com/appium/WebDriverAgent/issues/638)) ([5394fe8](https://github.com/appium/WebDriverAgent/commit/5394fe8cc2eda3d1668685bd00f9f7383e122627))
+
 ## [4.10.9](https://github.com/appium/WebDriverAgent/compare/v4.10.8...v4.10.9) (2022-11-25)
 
 ## [4.10.8](https://github.com/appium/WebDriverAgent/compare/v4.10.7...v4.10.8) (2022-11-24)
