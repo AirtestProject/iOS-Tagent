@@ -1,3 +1,5 @@
+## [4.10.11](https://github.com/appium/WebDriverAgent/compare/v4.10.10...v4.10.11) (2022-11-29)
+
 ## [4.10.10](https://github.com/appium/WebDriverAgent/compare/v4.10.9...v4.10.10) (2022-11-25)
 
 
