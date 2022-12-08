@@ -1,3 +1,10 @@
+## [4.10.12](https://github.com/appium/WebDriverAgent/compare/v4.10.11...v4.10.12) (2022-12-08)
+
+
+### Bug Fixes
+
+* Provide proper xcodebuild argument for tvOS ([#640](https://github.com/appium/WebDriverAgent/issues/640)) ([72bd327](https://github.com/appium/WebDriverAgent/commit/72bd32780f26ae0f60b30e0cee8fc585aea600fe))
+
 ## [4.10.11](https://github.com/appium/WebDriverAgent/compare/v4.10.10...v4.10.11) (2022-11-29)
 
 ## [4.10.10](https://github.com/appium/WebDriverAgent/compare/v4.10.9...v4.10.10) (2022-11-25)
