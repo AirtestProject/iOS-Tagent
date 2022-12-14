@@ -1,3 +1,11 @@
+## [4.10.14](https://github.com/appium/WebDriverAgent/compare/v4.10.13...v4.10.14) (2022-12-14)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @appium/test-support from 2.0.2 to 3.0.0 ([#644](https://github.com/appium/WebDriverAgent/issues/644)) ([ab84580](https://github.com/appium/WebDriverAgent/commit/ab8458027457563b7faaeef36d9019b7ac1921b0))
+* **deps:** bump @appium/support from 2.61.1 to 3.0.0 ([#643](https://github.com/appium/WebDriverAgent/issues/643)) ([3ca197a](https://github.com/appium/WebDriverAgent/commit/3ca197ac7526036e408584207b26129847a615ca))
+
 ## [4.10.13](https://github.com/appium/WebDriverAgent/compare/v4.10.12...v4.10.13) (2022-12-13)
 
 ## [4.10.12](https://github.com/appium/WebDriverAgent/compare/v4.10.11...v4.10.12) (2022-12-08)
