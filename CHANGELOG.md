@@ -1,3 +1,11 @@
+## [4.10.15](https://github.com/appium/WebDriverAgent/compare/v4.10.14...v4.10.15) (2022-12-16)
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @appium/base-driver from 8.7.3 to 9.0.0 ([#645](https://github.com/appium/WebDriverAgent/issues/645)) ([35dd981](https://github.com/appium/WebDriverAgent/commit/35dd98111f1d8222bc0cb412c11cb1442d10295e))
+* **deps:** bump appium-ios-simulator from 4.2.1 to 5.0.1 ([#646](https://github.com/appium/WebDriverAgent/issues/646)) ([7911cbb](https://github.com/appium/WebDriverAgent/commit/7911cbb3607b1d75091bdf3dc436baae3868854a))
+
 ## [4.10.14](https://github.com/appium/WebDriverAgent/compare/v4.10.13...v4.10.14) (2022-12-14)
 
 
