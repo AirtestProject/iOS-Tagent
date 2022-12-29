@@ -1,3 +1,10 @@
+## [4.10.16](https://github.com/appium/WebDriverAgent/compare/v4.10.15...v4.10.16) (2022-12-29)
+
+
+### Miscellaneous Chores
+
+* build only arm64 for generic build in a release ([#648](https://github.com/appium/WebDriverAgent/issues/648)) ([63e175d](https://github.com/appium/WebDriverAgent/commit/63e175d56526d9fb74d9053dbe60fd0c80b9c670))
+
 ## [4.10.15](https://github.com/appium/WebDriverAgent/compare/v4.10.14...v4.10.15) (2022-12-16)
 
 
