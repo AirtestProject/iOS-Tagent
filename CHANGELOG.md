@@ -1,3 +1,10 @@
+## [4.10.18](https://github.com/appium/WebDriverAgent/compare/v4.10.17...v4.10.18) (2022-12-30)
+
+
+### Miscellaneous Chores
+
+* simplify Script/build-webdriveragent.js ([#647](https://github.com/appium/WebDriverAgent/issues/647)) ([81dab6c](https://github.com/appium/WebDriverAgent/commit/81dab6ca0645f9925a8515abfb4851d6e85da7e9))
+
 ## [4.10.17](https://github.com/appium/WebDriverAgent/compare/v4.10.16...v4.10.17) (2022-12-30)
 
 
