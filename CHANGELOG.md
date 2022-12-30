@@ -1,3 +1,10 @@
+## [4.10.17](https://github.com/appium/WebDriverAgent/compare/v4.10.16...v4.10.17) (2022-12-30)
+
+
+### Miscellaneous Chores
+
+* add  ARCHS=arm64 for a release package build ([#649](https://github.com/appium/WebDriverAgent/issues/649)) ([08612aa](https://github.com/appium/WebDriverAgent/commit/08612aade1833c384914bb618675b5653d5f5118))
+
 ## [4.10.16](https://github.com/appium/WebDriverAgent/compare/v4.10.15...v4.10.16) (2022-12-29)
 
 
