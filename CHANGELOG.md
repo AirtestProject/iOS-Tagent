@@ -1,3 +1,10 @@
+## [4.10.19](https://github.com/appium/WebDriverAgent/compare/v4.10.18...v4.10.19) (2023-01-13)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump appium-xcode from 4.0.5 to 5.0.0 ([#652](https://github.com/appium/WebDriverAgent/issues/652)) ([75c247f](https://github.com/appium/WebDriverAgent/commit/75c247fe82ebe7b2b8ba0d79528cadeda871e229))
+
 ## [4.10.18](https://github.com/appium/WebDriverAgent/compare/v4.10.17...v4.10.18) (2022-12-30)
 
 
