@@ -1,3 +1,10 @@
+## [4.10.20](https://github.com/appium/WebDriverAgent/compare/v4.10.19...v4.10.20) (2023-01-17)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump semantic-release from 19.0.5 to 20.0.2 ([#651](https://github.com/appium/WebDriverAgent/issues/651)) ([e96c367](https://github.com/appium/WebDriverAgent/commit/e96c367cb0d9461bb5e443740504969a4cb857e1))
+
 ## [4.10.19](https://github.com/appium/WebDriverAgent/compare/v4.10.18...v4.10.19) (2023-01-13)
 
 
