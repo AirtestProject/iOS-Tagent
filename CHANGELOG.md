@@ -1,3 +1,10 @@
+## [4.10.21](https://github.com/appium/WebDriverAgent/compare/v4.10.20...v4.10.21) (2023-01-26)
+
+
+### Bug Fixes
+
+* Properly update maxDepth while fetching snapshots ([#655](https://github.com/appium/WebDriverAgent/issues/655)) ([6f99bab](https://github.com/appium/WebDriverAgent/commit/6f99bab5fbdbf65c9ef74c42b5f1b4c658aeaafb))
+
 ## [4.10.20](https://github.com/appium/WebDriverAgent/compare/v4.10.19...v4.10.20) (2023-01-17)
 
 
