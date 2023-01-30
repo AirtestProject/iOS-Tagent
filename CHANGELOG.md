@@ -1,3 +1,10 @@
+## [4.10.22](https://github.com/appium/WebDriverAgent/compare/v4.10.21...v4.10.22) (2023-01-30)
+
+
+### Bug Fixes
+
+* Pull defaultAdditionalRequestParameters dynamically ([#658](https://github.com/appium/WebDriverAgent/issues/658)) ([d7c397b](https://github.com/appium/WebDriverAgent/commit/d7c397b0260a71568edd6d99ecf7b39ca3503083))
+
 ## [4.10.21](https://github.com/appium/WebDriverAgent/compare/v4.10.20...v4.10.21) (2023-01-26)
 
 
