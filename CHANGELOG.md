@@ -1,3 +1,10 @@
+## [4.10.23](https://github.com/appium/WebDriverAgent/compare/v4.10.22...v4.10.23) (2023-02-05)
+
+
+### Miscellaneous Chores
+
+* bundle:tv for tvOS ([#657](https://github.com/appium/WebDriverAgent/issues/657)) ([9d2d047](https://github.com/appium/WebDriverAgent/commit/9d2d047fba57a33787c66a1e8a8449b9538c67be))
+
 ## [4.10.22](https://github.com/appium/WebDriverAgent/compare/v4.10.21...v4.10.22) (2023-01-30)
 
 
