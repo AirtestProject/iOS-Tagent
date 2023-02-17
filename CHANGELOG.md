@@ -1,3 +1,10 @@
+## [4.10.24](https://github.com/appium/WebDriverAgent/compare/v4.10.23...v4.10.24) (2023-02-17)
+
+
+### Bug Fixes
+
+* Catch unexpected exceptions thrown by the alerts monitor ([#660](https://github.com/appium/WebDriverAgent/issues/660)) ([aa22555](https://github.com/appium/WebDriverAgent/commit/aa22555f0dcf98de43c95cb20be73e911a97741e))
+
 ## [4.10.23](https://github.com/appium/WebDriverAgent/compare/v4.10.22...v4.10.23) (2023-02-05)
 
 
