@@ -1,3 +1,10 @@
+## [4.11.0](https://github.com/appium/WebDriverAgent/compare/v4.10.24...v4.11.0) (2023-02-19)
+
+
+### Features
+
+* Add openUrl handler available since Xcode 14.3 ([#661](https://github.com/appium/WebDriverAgent/issues/661)) ([bee564e](https://github.com/appium/WebDriverAgent/commit/bee564e8c6b975aff07fd1244583f0727a0f5470))
+
 ## [4.10.24](https://github.com/appium/WebDriverAgent/compare/v4.10.23...v4.10.24) (2023-02-17)
 
 
