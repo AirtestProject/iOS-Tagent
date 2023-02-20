@@ -8,6 +8,11 @@
  */
 
 #import <XCTest/XCTest.h>
+
+#if !TARGET_OS_TV
+#import <CoreLocation/CoreLocation.h>
+#endif
+
 #import "XCSynthesizedEventRecord.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -27,6 +32,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (BOOL)openURL:(NSURL *)url usingApplication:(NSString *)bundleId error:(NSError **)error;
 + (BOOL)openDefaultApplicationForURL:(NSURL *)url error:(NSError **)error;
+
+#if !TARGET_OS_TV
++ (BOOL)setSimulatedLocation:(CLLocation *)location error:(NSError **)error;
++ (nullable CLLocation *)getSimulatedLocation:(NSError **)error;
++ (BOOL)clearSimulatedLocation:(NSError **)error;
+#endif
 
 @end
 

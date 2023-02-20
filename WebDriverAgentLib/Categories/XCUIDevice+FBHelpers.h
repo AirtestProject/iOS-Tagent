@@ -9,6 +9,10 @@
 
 #import <XCTest/XCTest.h>
 
+#if !TARGET_OS_TV
+#import <CoreLocation/CoreLocation.h>
+#endif
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, FBUIInterfaceAppearance) {
@@ -153,6 +157,36 @@ typedef NS_ENUM(NSUInteger, FBUIInterfaceAppearance) {
  @return 0 (automatic), 1 (light) or 2 (dark), or nil
  */
 - (nullable NSNumber *)fb_getAppearance;
+
+#if !TARGET_OS_TV
+/**
+ Allows to set a simulated geolocation coordinates.
+ Only works since Xcode 14.3/iOS 16.4
+
+ @param location The simlated location coordinates to set
+ @param error If there is an error, upon return contains an NSError object that describes the problem.
+ @return YES if the simulated location has been successfully set
+ */
+- (BOOL)fb_setSimulatedLocation:(CLLocation *)location error:(NSError **)error;
+
+/**
+ Allows to get a simulated geolocation coordinates.
+ Only works since Xcode 14.3/iOS 16.4
+
+ @param error If there is an error, upon return contains an NSError object that describes the problem.
+ @return The current simulated location or nil in case of failure
+ */
+- (nullable CLLocation *)fb_getSimulatedLocation:(NSError **)error;
+
+/**
+ Allows to clear a previosuly set simulated geolocation coordinates.
+ Only works since Xcode 14.3/iOS 16.4
+
+ @param error If there is an error, upon return contains an NSError object that describes the problem.
+ @return YES if the simulated location has been successfully cleared
+ */
+- (BOOL)fb_clearSimulatedLocation:(NSError **)error;
+#endif
 
 @end
 
