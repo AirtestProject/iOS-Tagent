@@ -1,3 +1,10 @@
+## [4.12.1](https://github.com/appium/WebDriverAgent/compare/v4.12.0...v4.12.1) (2023-02-20)
+
+
+### Bug Fixes
+
+* Return null if no simulated location has been previously set ([#663](https://github.com/appium/WebDriverAgent/issues/663)) ([6a5c48b](https://github.com/appium/WebDriverAgent/commit/6a5c48bd2ffc43c0f0d9bf781671bbcf171f9375))
+
 ## [4.12.0](https://github.com/appium/WebDriverAgent/compare/v4.11.0...v4.12.0) (2023-02-20)
 
 
