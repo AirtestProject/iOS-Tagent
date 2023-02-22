@@ -1,3 +1,10 @@
+## [4.12.2](https://github.com/appium/WebDriverAgent/compare/v4.12.1...v4.12.2) (2023-02-22)
+
+
+### Miscellaneous Chores
+
+* Make sure the test is never going to be unexpectedly interrupted ([#664](https://github.com/appium/WebDriverAgent/issues/664)) ([cafe47e](https://github.com/appium/WebDriverAgent/commit/cafe47e9bea9649a0e9b4a2b96ca44434bbac411))
+
 ## [4.12.1](https://github.com/appium/WebDriverAgent/compare/v4.12.0...v4.12.1) (2023-02-20)
 
 
