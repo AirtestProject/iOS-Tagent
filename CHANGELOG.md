@@ -1,3 +1,10 @@
+## [4.13.0](https://github.com/appium/WebDriverAgent/compare/v4.12.2...v4.13.0) (2023-02-23)
+
+
+### Features
+
+* Increase Xpath Lookup Performance ([#666](https://github.com/appium/WebDriverAgent/issues/666)) ([1696f4b](https://github.com/appium/WebDriverAgent/commit/1696f4bb879152ef04408940849708654072c797))
+
 ## [4.12.2](https://github.com/appium/WebDriverAgent/compare/v4.12.1...v4.12.2) (2023-02-22)
 
 
