@@ -142,6 +142,21 @@ typedef NS_ENUM(NSUInteger, FBUIInterfaceAppearance) {
                             duration:(NSTimeInterval)duration
                                error:(NSError **)error;
 
+// modified start tag
+- (BOOL)fb_synthTapWithX:(CGFloat)x
+                       y:(CGFloat)y
+                duration:(CGFloat)duration;
+
+- (BOOL)fb_synthSwipe:(CGFloat)x1
+                   y1:(CGFloat)y1
+                   x2:(CGFloat)x2
+                   y2:(CGFloat)y2
+                delay:(CGFloat)delay;
+
+- (BOOL)fb_synthKeyEvent:(id)keyId
+           modifierFlags:(unsigned long long)modifierFlags;
+// end tag
+
 /**
  Allows to set device appearance
 
