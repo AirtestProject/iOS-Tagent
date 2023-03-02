@@ -173,7 +173,7 @@ static bool fb_isLocked;
     }
     NSString *interfaceName = [NSString stringWithUTF8String:temp_addr->ifa_name];
     address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
-    [FBLogger logFmt:@"interface: %@, address: %@", interfaceName, address];
+//    [FBLogger logFmt:@"interface: %@, address: %@", interfaceName, address];
     
     if([interfaceName containsString:@"en"] && ![address containsString:@"169.254"]) {
       has_wifi = TRUE;
