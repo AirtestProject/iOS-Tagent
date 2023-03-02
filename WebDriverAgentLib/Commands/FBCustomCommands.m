@@ -315,14 +315,14 @@
 
 + (id <FBResponsePayload>)handleDeviceSwipe:(FBRouteRequest *)request
 {
-  CGFloat x1 = [request.arguments[@"x1"] doubleValue];
-  CGFloat y1 = [request.arguments[@"y1"] doubleValue];
-  CGFloat x2 = [request.arguments[@"x2"] doubleValue];
-  CGFloat y2 = [request.arguments[@"y2"] doubleValue];
+  CGFloat fromX = [request.arguments[@"fromX"] doubleValue];
+  CGFloat fromY = [request.arguments[@"fromY"] doubleValue];
+  CGFloat toX = [request.arguments[@"toX"] doubleValue];
+  CGFloat toY = [request.arguments[@"toY"] doubleValue];
   CGFloat delay = [request.arguments[@"delay"] doubleValue];
   [XCUIDevice.sharedDevice
-    fb_synthSwipe:x1
-    y1:y1 x2:x2 y2:y2 delay:delay];
+    fb_synthSwipe:fromX
+    fromY:fromY toX:toX toY:toY delay:delay];
 
   return FBResponseWithOK();
 }

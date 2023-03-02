@@ -356,14 +356,14 @@ static bool fb_isLocked;
   return YES;
 }
 
-- (BOOL)fb_synthSwipe:(CGFloat)x1
-  y1:(CGFloat) y1
-  x2:(CGFloat) x2
-  y2:(CGFloat) y2
+- (BOOL)fb_synthSwipe:(CGFloat)fromX
+  fromY:(CGFloat) fromY
+  toX:(CGFloat) toX
+  toY:(CGFloat) toY
   delay:(CGFloat) delay
 {
-  CGPoint point1 = CGPointMake(x1,y1);
-  CGPoint point2 = CGPointMake(x2,y2);
+  CGPoint point1 = CGPointMake(fromX,fromY);
+  CGPoint point2 = CGPointMake(toX,toY);
 
   CGFloat TapDuration = 0.05;
 
