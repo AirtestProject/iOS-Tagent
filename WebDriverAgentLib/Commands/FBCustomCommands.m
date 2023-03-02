@@ -30,6 +30,7 @@
 #import "XCUIElement+FBIsVisible.h"
 #import "XCUIElementQuery.h"
 #import "FBUnattachedAppLauncher.h"
+#import "sys/utsname.h"
 
 @implementation FBCustomCommands
 
@@ -56,7 +57,21 @@
     [[FBRoute GET:@"/wda/batteryInfo"] respondWithTarget:self action:@selector(handleGetBatteryInfo:)],
 #endif
     [[FBRoute POST:@"/wda/pressButton"] respondWithTarget:self action:@selector(handlePressButtonCommand:)],
+
+    // modified start tag 
+    [[FBRoute POST:@"/wda/pressButton"].withoutSession respondWithTarget:self action:@selector(handlePressButtonCommand:)],
+    // end tag
+
     [[FBRoute POST:@"/wda/performIoHidEvent"] respondWithTarget:self action:@selector(handlePeformIOHIDEvent:)],
+
+    // modified start tag 
+    [[FBRoute POST:@"/wda/performIoHidEvent"].withoutSession respondWithTarget:self action:@selector(handlePeformIOHIDEvent:)],
+    [[FBRoute POST:@"/wda/tap"] respondWithTarget:self action:@selector(handleDeviceTap:)],
+    [[FBRoute POST:@"/wda/tap"].withoutSession respondWithTarget:self action:@selector(handleDeviceTap:)],
+    [[FBRoute POST:@"/wda/swipe"] respondWithTarget:self action:@selector(handleDeviceSwipe:)],
+    [[FBRoute POST:@"/wda/swipe"].withoutSession respondWithTarget:self action:@selector(handleDeviceSwipe:)],
+    // end tag
+
     [[FBRoute POST:@"/wda/expectNotification"] respondWithTarget:self action:@selector(handleExpectNotification:)],
     [[FBRoute POST:@"/wda/siri/activate"] respondWithTarget:self action:@selector(handleActivateSiri:)],
     [[FBRoute POST:@"/wda/apps/launchUnattached"].withoutSession respondWithTarget:self action:@selector(handleLaunchUnattachedApp:)],
@@ -284,6 +299,34 @@
   }
   return FBResponseWithOK();
 }
+
+// modified start tag
++ (id <FBResponsePayload>)handleDeviceTap:(FBRouteRequest *)request
+{
+  CGFloat x = [request.arguments[@"x"] doubleValue];
+  CGFloat y = [request.arguments[@"y"] doubleValue];
+  CGFloat duration = [request.arguments[@"duration"] doubleValue];
+  [XCUIDevice.sharedDevice
+    fb_synthTapWithX:x
+    y:y duration:duration];
+
+  return FBResponseWithOK();
+}
+
++ (id <FBResponsePayload>)handleDeviceSwipe:(FBRouteRequest *)request
+{
+  CGFloat fromX = [request.arguments[@"fromX"] doubleValue];
+  CGFloat fromY = [request.arguments[@"fromY"] doubleValue];
+  CGFloat toX = [request.arguments[@"toX"] doubleValue];
+  CGFloat toY = [request.arguments[@"toY"] doubleValue];
+  CGFloat delay = [request.arguments[@"delay"] doubleValue];
+  [XCUIDevice.sharedDevice
+    fb_synthSwipe:fromX
+    fromY:fromY toX:toX toY:toY delay:delay];
+
+  return FBResponseWithOK();
+}
+// modified end tag
 
 + (id <FBResponsePayload>)handleLaunchUnattachedApp:(FBRouteRequest *)request
 {
