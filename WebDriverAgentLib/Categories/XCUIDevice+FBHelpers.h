@@ -75,6 +75,11 @@ typedef NS_ENUM(NSUInteger, FBUIInterfaceAppearance) {
 - (nullable NSString *)fb_wifiIPAddress;
 
 /**
+ Returns device current actural wifi ip4 address
+ */
+- (nullable NSString *)fb_acturalWifiIPAddress;
+
+/**
  Opens the particular url scheme using the default application assigned to it.
  This API only works since XCode 14.3/iOS 16.4
  Older Xcode/iOS version try to use Siri fallback.

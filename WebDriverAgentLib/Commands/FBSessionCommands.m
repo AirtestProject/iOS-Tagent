@@ -255,7 +255,8 @@
 #if TARGET_OS_SIMULATOR
           @"simulatorVersion" : [[UIDevice currentDevice] systemVersion],
 #endif
-          @"ip" : [XCUIDevice sharedDevice].fb_wifiIPAddress ?: [NSNull null]
+          @"ip" : [XCUIDevice sharedDevice].fb_wifiIPAddress ?: [NSNull null],
+          @"wifiIP" : [XCUIDevice sharedDevice].fb_acturalWifiIPAddress ?: [NSNull null],
         },
       @"build" : buildInfo.copy,
       @"Version":@("1.1"),

@@ -153,6 +153,38 @@ static bool fb_isLocked;
   return address;
 }
 
+- (NSString *)fb_acturalWifiIPAddress
+{
+  struct ifaddrs *interfaces = NULL;
+  struct ifaddrs *temp_addr = NULL;
+  int success = getifaddrs(&interfaces);
+  if (success != 0) {
+    freeifaddrs(interfaces);
+    return nil;
+  }
+
+  NSString *address = nil;
+  temp_addr = interfaces;
+  bool has_wifi = FALSE;
+  while(temp_addr != NULL) {
+    if(temp_addr->ifa_addr->sa_family != AF_INET) {
+      temp_addr = temp_addr->ifa_next;
+      continue;
+    }
+    NSString *interfaceName = [NSString stringWithUTF8String:temp_addr->ifa_name];
+    address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
+//    [FBLogger logFmt:@"interface: %@, address: %@", interfaceName, address];
+    
+    if([interfaceName containsString:@"en"] && ![address containsString:@"169.254"]) {
+      has_wifi = TRUE;
+      break;
+    }
+    temp_addr = temp_addr->ifa_next;
+  }
+  freeifaddrs(interfaces);
+  return has_wifi ? address : nil;
+}
+
 - (BOOL)fb_openUrl:(NSString *)url error:(NSError **)error
 {
   NSURL *parsedUrl = [NSURL URLWithString:url];
