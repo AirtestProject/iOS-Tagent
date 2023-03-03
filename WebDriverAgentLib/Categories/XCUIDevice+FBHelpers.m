@@ -365,8 +365,6 @@ static bool fb_isLocked;
   CGPoint point1 = CGPointMake(fromX,fromY);
   CGPoint point2 = CGPointMake(toX,toY);
 
-  CGFloat TapDuration = 0.05;
-
   XCPointerEventPath *pointerEventPath = [[XCPointerEventPath alloc] initForTouchAtPoint:point1 offset:0];
   [pointerEventPath moveToPoint:point2 atOffset:delay];
   [pointerEventPath liftUpAtOffset:delay];
