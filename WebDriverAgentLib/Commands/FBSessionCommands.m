@@ -259,7 +259,7 @@
           @"wifiIP" : [XCUIDevice sharedDevice].fb_acturalWifiIPAddress ?: [NSNull null],
         },
       @"build" : buildInfo.copy,
-      @"Version":@("1.1"),
+      @"Version":@("1.2"),
     }
   );
 }
