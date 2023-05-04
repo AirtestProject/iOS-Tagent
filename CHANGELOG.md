@@ -1,3 +1,10 @@
+## [4.15.0](https://github.com/appium/WebDriverAgent/compare/v4.14.0...v4.15.0) (2023-05-04)
+
+
+### Features
+
+* Make isFocused attribute available for iOS elements ([#692](https://github.com/appium/WebDriverAgent/issues/692)) ([0ec74ce](https://github.com/appium/WebDriverAgent/commit/0ec74ce32c817a5884228ccb2ec31f0a5a4de9c3))
+
 ## [4.14.0](https://github.com/appium/WebDriverAgent/compare/v4.13.2...v4.14.0) (2023-05-02)
 
 
