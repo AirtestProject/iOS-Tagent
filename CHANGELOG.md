@@ -1,3 +1,10 @@
+## [4.15.1](https://github.com/appium/WebDriverAgent/compare/v4.15.0...v4.15.1) (2023-05-06)
+
+
+### Performance Improvements
+
+* tune webDriverAgentUrl case by skiping xcodebuild stuff ([#691](https://github.com/appium/WebDriverAgent/issues/691)) ([d8f1457](https://github.com/appium/WebDriverAgent/commit/d8f1457b591b2dd00040f8336c1a7a728af871d2))
+
 ## [4.15.0](https://github.com/appium/WebDriverAgent/compare/v4.14.0...v4.15.0) (2023-05-04)
 
 
