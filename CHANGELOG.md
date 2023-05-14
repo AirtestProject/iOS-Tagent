@@ -1,3 +1,14 @@
+## [5.0.0](https://github.com/appium/WebDriverAgent/compare/v4.15.1...v5.0.0) (2023-05-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* The minimum supported xCode/iOS version is now 13/15.0
+
+### Code Refactoring
+
+* Drop workarounds for legacy iOS versions ([#696](https://github.com/appium/WebDriverAgent/issues/696)) ([bb562b9](https://github.com/appium/WebDriverAgent/commit/bb562b96db6aad476970ef7bd352cb8df4f1e6c2))
+
 ## [4.15.1](https://github.com/appium/WebDriverAgent/compare/v4.15.0...v4.15.1) (2023-05-06)
 
 
