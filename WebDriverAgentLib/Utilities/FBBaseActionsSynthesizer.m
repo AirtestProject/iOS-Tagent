@@ -48,24 +48,8 @@
     // There is no need to recalculate anything for portrait orientation
     return hitPoint;
   }
-  CGRect appFrame = self.application.frame;
-  if (@available(iOS 13.0, *)) {
-    // For Xcode11 it is always necessary to adjust the tap point coordinates
-    return FBInvertPointForApplication(hitPoint, appFrame.size, interfaceOrientation);
-  }
-  NSArray<id<FBXCElementSnapshot>> *ancestors = [FBXCElementSnapshotWrapper ensureWrapped:snapshot].fb_ancestors;
-  id<FBXCElementSnapshot> parentWindow = ancestors.count > 1 ? [ancestors objectAtIndex:ancestors.count - 2] : nil;
-  CGRect parentWindowFrame = nil == parentWindow ? snapshot.frame : parentWindow.frame;
-  if ((appFrame.size.height > appFrame.size.width && parentWindowFrame.size.height < parentWindowFrame.size.width) ||
-      (appFrame.size.height < appFrame.size.width && parentWindowFrame.size.height > parentWindowFrame.size.width)) {
-    /*
-     This is the indication of the fact that transformation is broken and coordinates should be
-     recalculated manually.
-     However, upside-down case cannot be covered this way, which is not important for Appium
-     */
-    return FBInvertPointForApplication(hitPoint, appFrame.size, interfaceOrientation);
-  }
-  return hitPoint;
+  // For Xcode11+ it is always necessary to adjust the tap point coordinates
+  return FBInvertPointForApplication(hitPoint, self.application.frame.size, interfaceOrientation);
 }
 
 - (nullable NSValue *)hitpointWithElement:(nullable XCUIElement *)element positionOffset:(nullable NSValue *)positionOffset error:(NSError **)error
@@ -74,14 +58,12 @@
   if (nil == element) {
     // Only absolute offset is defined
     hitPoint = [positionOffset CGPointValue];
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10.0")) {
-      /*
-       Since iOS 10.0 XCTest has a bug when it always returns portrait coordinates for UI elements
-       even if the device is not in portait mode. That is why we need to recalculate them manually
-       based on the current orientation value
-       */
-      hitPoint = FBInvertPointForApplication(hitPoint, self.application.frame.size, self.application.interfaceOrientation);
-    }
+    /*
+     Since iOS 10.0 XCTest has a bug when it always returns portrait coordinates for UI elements
+     even if the device is not in portait mode. That is why we need to recalculate them manually
+     based on the current orientation value
+     */
+    hitPoint = FBInvertPointForApplication(hitPoint, self.application.frame.size, self.application.interfaceOrientation);
   } else {
     // The offset relative to the element is defined
 
