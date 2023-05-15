@@ -1,3 +1,10 @@
+## [5.1.2](https://github.com/appium/WebDriverAgent/compare/v5.1.1...v5.1.2) (2023-05-15)
+
+
+### Miscellaneous Chores
+
+* remove code for old os versions ([#694](https://github.com/appium/WebDriverAgent/issues/694)) ([4a9faa5](https://github.com/appium/WebDriverAgent/commit/4a9faa5f85e0615c18a5f35090335bdbc7d56ebe))
+
 ## [5.1.1](https://github.com/appium/WebDriverAgent/compare/v5.1.0...v5.1.1) (2023-05-15)
 
 
