@@ -1,3 +1,10 @@
+## [5.1.4](https://github.com/appium/WebDriverAgent/compare/v5.1.3...v5.1.4) (2023-05-16)
+
+
+### Bug Fixes
+
+* Prevent freeze on launch/activate of a missing app ([#706](https://github.com/appium/WebDriverAgent/issues/706)) ([c4976e3](https://github.com/appium/WebDriverAgent/commit/c4976e3e99afa4d471bd39c3dccfc7d9f58d8bfc))
+
 ## [5.1.3](https://github.com/appium/WebDriverAgent/compare/v5.1.2...v5.1.3) (2023-05-16)
 
 
