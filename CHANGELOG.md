@@ -1,3 +1,10 @@
+## [5.1.3](https://github.com/appium/WebDriverAgent/compare/v5.1.2...v5.1.3) (2023-05-16)
+
+
+### Bug Fixes
+
+* Revert "fix: Assert app is installed before launching or activating it ([#704](https://github.com/appium/WebDriverAgent/issues/704))" ([#705](https://github.com/appium/WebDriverAgent/issues/705)) ([00baeb2](https://github.com/appium/WebDriverAgent/commit/00baeb2045b9aac98d27fe2e96cedce0dde5e8be))
+
 ## [5.1.2](https://github.com/appium/WebDriverAgent/compare/v5.1.1...v5.1.2) (2023-05-15)
 
 
