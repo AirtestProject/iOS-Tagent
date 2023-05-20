@@ -1,3 +1,10 @@
+## [5.2.0](https://github.com/appium/WebDriverAgent/compare/v5.1.6...v5.2.0) (2023-05-20)
+
+
+### Features
+
+* Replace non-encodable characters in the resulting JSON ([#713](https://github.com/appium/WebDriverAgent/issues/713)) ([cdfae40](https://github.com/appium/WebDriverAgent/commit/cdfae408be0bcf6607f0ca4462925eed2c300f5e))
+
 ## [5.1.6](https://github.com/appium/WebDriverAgent/compare/v5.1.5...v5.1.6) (2023-05-18)
 
 
