@@ -1,3 +1,10 @@
+## [5.3.0](https://github.com/appium/WebDriverAgent/compare/v5.2.0...v5.3.0) (2023-05-22)
+
+
+### Features
+
+* Use strongbox to persist the previous version of the module ([#714](https://github.com/appium/WebDriverAgent/issues/714)) ([4611792](https://github.com/appium/WebDriverAgent/commit/4611792ee5d5d7f39d188b5ebc31017f436c5ace))
+
 ## [5.2.0](https://github.com/appium/WebDriverAgent/compare/v5.1.6...v5.2.0) (2023-05-20)
 
 
