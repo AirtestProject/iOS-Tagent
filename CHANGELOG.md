@@ -1,3 +1,10 @@
+## [5.3.1](https://github.com/appium/WebDriverAgent/compare/v5.3.0...v5.3.1) (2023-06-06)
+
+
+### Bug Fixes
+
+* remove Parameter of overriding method should be annotated with __attribute__((noescape)) ([#720](https://github.com/appium/WebDriverAgent/issues/720)) ([5f811ac](https://github.com/appium/WebDriverAgent/commit/5f811ac65ba3ac770e42bd7f8614815df8ec990f))
+
 ## [5.3.0](https://github.com/appium/WebDriverAgent/compare/v5.2.0...v5.3.0) (2023-05-22)
 
 
