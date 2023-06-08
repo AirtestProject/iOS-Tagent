@@ -1,3 +1,10 @@
+## [5.3.3](https://github.com/appium/WebDriverAgent/compare/v5.3.2...v5.3.3) (2023-06-08)
+
+
+### Miscellaneous Chores
+
+* Disable automatic screen recording by default ([#726](https://github.com/appium/WebDriverAgent/issues/726)) ([a070223](https://github.com/appium/WebDriverAgent/commit/a070223e0ef43be8dd54d16ee3e3b96603ad5f3a))
+
 ## [5.3.2](https://github.com/appium/WebDriverAgent/compare/v5.3.1...v5.3.2) (2023-06-07)
 
 
