@@ -11,7 +11,7 @@
 
 #import <ImageIO/ImageIO.h>
 #import <UIKit/UIKit.h>
-#import <MobileCoreServices/MobileCoreServices.h>
+@import UniformTypeIdentifiers;
 
 #import "FBConfiguration.h"
 #import "FBErrorBuilder.h"
@@ -43,7 +43,6 @@ const CGFloat FBMaxCompressionQuality = 1.0f;
 }
 
 - (void)submitImage:(NSData *)image
-                uti:(NSString *)uti
       scalingFactor:(CGFloat)scalingFactor
  compressionQuality:(CGFloat)compressionQuality
   completionHandler:(void (^)(NSData *))completionHandler
@@ -118,7 +117,7 @@ const CGFloat FBMaxCompressionQuality = 1.0f;
 }
 
 - (nullable NSData *)scaledImageWithImage:(NSData *)image
-                                      uti:(NSString *)uti
+                                      uti:(UTType *)uti
                                      rect:(CGRect)rect
                             scalingFactor:(CGFloat)scalingFactor
                        compressionQuality:(CGFloat)compressionQuality
@@ -154,7 +153,7 @@ const CGFloat FBMaxCompressionQuality = 1.0f;
     UIGraphicsEndImageContext();
   }
 
-  return [uti isEqualToString:(__bridge id)kUTTypePNG]
+  return [uti conformsToType:UTTypePNG]
     ? UIImagePNGRepresentation(resultImage)
     : UIImageJPEGRepresentation(resultImage, compressionQuality);
 }
@@ -163,7 +162,11 @@ const CGFloat FBMaxCompressionQuality = 1.0f;
                     compressionQuality:(CGFloat)compressionQuality
 {
   NSMutableData *newImageData = [NSMutableData data];
-  CGImageDestinationRef imageDestination = CGImageDestinationCreateWithData((CFMutableDataRef)newImageData, kUTTypeJPEG, 1, NULL);
+  CGImageDestinationRef imageDestination = CGImageDestinationCreateWithData(
+                                                                            (__bridge CFMutableDataRef) newImageData,
+                                                                            (__bridge CFStringRef) UTTypeJPEG.identifier,
+                                                                            1,
+                                                                            NULL);
   CFDictionaryRef compressionOptions = (__bridge CFDictionaryRef)@{
     (const NSString *)kCGImageDestinationLossyCompressionQuality: @(compressionQuality)
   };

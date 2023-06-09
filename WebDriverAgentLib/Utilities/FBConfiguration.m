@@ -453,7 +453,7 @@ static UIInterfaceOrientation FBScreenshotOrientation;
   FBShouldUseCompactResponses = YES;
   FBElementResponseAttributes = @"type,label";
   FBMaxTypingFrequency = 60;
-  FBScreenshotQuality = 1;
+  FBScreenshotQuality = 3;
   FBCustomSnapshotTimeout = 15.;
   FBShouldUseFirstMatch = NO;
   FBShouldBoundElementsByIndex = NO;

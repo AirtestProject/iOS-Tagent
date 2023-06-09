@@ -10,6 +10,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
 
+@class UTType;
+
 NS_ASSUME_NONNULL_BEGIN
 
 // Those values define the allowed ranges for the scaling factor and compression quality settings
@@ -25,14 +27,12 @@ extern const CGFloat FBMaxCompressionQuality;
  queue it will be replaced with the new one
 
  @param image The image to scale down
- @param uti Either kUTTypePNG or kUTTypeJPEG
  @param completionHandler called after successfully scaling down an image
  @param scalingFactor the scaling factor in range 0.01..1.0. A value of 1.0 won't perform scaling at all
  @param compressionQuality the compression quality in range 0.0..1.0 (0.0 for max. compression and 1.0 for lossless compression)
- Only applicable for kUTTypeJPEG
+ Only applicable for UTTypeJPEG
  */
 - (void)submitImage:(NSData *)image
-                uti:(NSString *)uti
       scalingFactor:(CGFloat)scalingFactor
  compressionQuality:(CGFloat)compressionQuality
   completionHandler:(void (^)(NSData *))completionHandler;
@@ -41,7 +41,7 @@ extern const CGFloat FBMaxCompressionQuality;
  Scales and crops the source image
 
  @param image The source image data
- @param uti Either kUTTypePNG or kUTTypeJPEG
+ @param uti Either UTTypePNG or UTTypeJPEG
  @param rect The cropping rectange for the screenshot. The value is expected to be non-scaled one
             since it happens after scaling/orientation change.
             CGRectNull could be used to take a screenshot of the full screen.
@@ -52,7 +52,7 @@ extern const CGFloat FBMaxCompressionQuality;
  @returns Processed image data compressed according to the given UTI or nil in case of a failure
  */
 - (nullable NSData *)scaledImageWithImage:(NSData *)image
-                                      uti:(NSString *)uti
+                                      uti:(UTType *)uti
                                      rect:(CGRect)rect
                             scalingFactor:(CGFloat)scalingFactor
                        compressionQuality:(CGFloat)compressionQuality

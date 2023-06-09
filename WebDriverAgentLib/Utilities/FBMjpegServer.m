@@ -10,7 +10,7 @@
 #import "FBMjpegServer.h"
 
 #import <mach/mach_time.h>
-#import <MobileCoreServices/MobileCoreServices.h>
+@import UniformTypeIdentifiers;
 
 #import "GCDAsyncSocket.h"
 #import "FBApplication.h"
@@ -72,11 +72,6 @@ static const char *QUEUE_NAME = "JPEG Screenshots Provider Queue";
 
 - (void)streamScreenshot
 {
-  if (![self.class canStreamScreenshots]) {
-    [FBLogger log:@"MJPEG server cannot start because the current iOS version is not supported"];
-    return;
-  }
-
   NSUInteger framerate = FBConfiguration.mjpegServerFramerate;
   uint64_t timerInterval = (uint64_t)(1.0 / ((0 == framerate || framerate > MAX_FPS) ? MAX_FPS : framerate) * NSEC_PER_SEC);
   uint64_t timeStarted = clock_gettime_nsec_np(CLOCK_MONOTONIC_RAW);
@@ -96,7 +91,7 @@ static const char *QUEUE_NAME = "JPEG Screenshots Provider Queue";
   NSError *error;
   NSData *screenshotData = [FBScreenshot takeInOriginalResolutionWithScreenID:self.mainScreenID
                                                            compressionQuality:screenshotCompressionQuality
-                                                                          uti:(__bridge id)kUTTypeJPEG
+                                                                          uti:UTTypeJPEG
                                                                       timeout:FRAME_TIMEOUT
                                                                         error:&error];
   if (nil == screenshotData) {
@@ -107,7 +102,6 @@ static const char *QUEUE_NAME = "JPEG Screenshots Provider Queue";
 
   if (usesScaling) {
     [self.imageScaler submitImage:screenshotData
-                              uti:(__bridge id)kUTTypeJPEG
                     scalingFactor:scalingFactor
                compressionQuality:compressionQuality
                 completionHandler:^(NSData * _Nonnull scaled) {
@@ -130,11 +124,6 @@ static const char *QUEUE_NAME = "JPEG Screenshots Provider Queue";
       [client writeData:chunk withTimeout:-1 tag:0];
     }
   }
-}
-
-+ (BOOL)canStreamScreenshots
-{
-  return [FBScreenshot isNewScreenshotAPISupported];
 }
 
 - (void)didClientConnect:(GCDAsyncSocket *)newClient

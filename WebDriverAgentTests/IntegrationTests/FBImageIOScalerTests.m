@@ -8,7 +8,6 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "FBImageIOScaler.h"
 #import "FBIntegrationTestCase.h"
@@ -55,7 +54,6 @@
   id expScaled = [self expectationWithDescription:@"Receive scaled image"];
 
   [scaler submitImage:self.originalImage
-                  uti:(__bridge id)kUTTypeJPEG
         scalingFactor:scalingFactor
    compressionQuality:1.0
     completionHandler:^(NSData *scaled) {
