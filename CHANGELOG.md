@@ -1,3 +1,15 @@
+## [5.4.0](https://github.com/appium/WebDriverAgent/compare/v5.3.3...v5.4.0) (2023-06-09)
+
+
+### Features
+
+* Drop older screenshoting APIs ([#721](https://github.com/appium/WebDriverAgent/issues/721)) ([4a08d7a](https://github.com/appium/WebDriverAgent/commit/4a08d7a843af6b93b378b4e3dc10f123d2e56359))
+
+
+### Bug Fixes
+
+* Streamline errors handling for async block calls ([#725](https://github.com/appium/WebDriverAgent/issues/725)) ([364b779](https://github.com/appium/WebDriverAgent/commit/364b7791393ffae9c048c5cac023e3e7d1813a14))
+
 ## [5.3.3](https://github.com/appium/WebDriverAgent/compare/v5.3.2...v5.3.3) (2023-06-08)
 
 
