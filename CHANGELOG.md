@@ -1,3 +1,10 @@
+## [5.4.1](https://github.com/appium/WebDriverAgent/compare/v5.4.0...v5.4.1) (2023-06-09)
+
+
+### Bug Fixes
+
+* Return default testmanagerd version if the info is not available ([#728](https://github.com/appium/WebDriverAgent/issues/728)) ([e6e2dbd](https://github.com/appium/WebDriverAgent/commit/e6e2dbd86fc0c48ae146905f0e69a6223360e856))
+
 ## [5.4.0](https://github.com/appium/WebDriverAgent/compare/v5.3.3...v5.4.0) (2023-06-09)
 
 
