@@ -1,3 +1,10 @@
+## [5.5.0](https://github.com/appium/WebDriverAgent/compare/v5.4.1...v5.5.0) (2023-06-12)
+
+
+### Features
+
+* Add accessibility audit extension ([#727](https://github.com/appium/WebDriverAgent/issues/727)) ([78321dd](https://github.com/appium/WebDriverAgent/commit/78321dd3dafdb142eed136b48ec101f1daed50a4))
+
 ## [5.4.1](https://github.com/appium/WebDriverAgent/compare/v5.4.0...v5.4.1) (2023-06-09)
 
 
