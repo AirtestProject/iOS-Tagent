@@ -1,3 +1,10 @@
+## [5.5.1](https://github.com/appium/WebDriverAgent/compare/v5.5.0...v5.5.1) (2023-06-16)
+
+
+### Bug Fixes
+
+* Update strongbox API name ([4977032](https://github.com/appium/WebDriverAgent/commit/49770328aeeebacd76011ff1caf13d5b4ed71420))
+
 ## [5.5.0](https://github.com/appium/WebDriverAgent/compare/v5.4.1...v5.5.0) (2023-06-12)
 
 
