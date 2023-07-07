@@ -1,3 +1,10 @@
+## [5.5.2](https://github.com/appium/WebDriverAgent/compare/v5.5.1...v5.5.2) (2023-07-07)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump prettier from 2.8.8 to 3.0.0 ([#735](https://github.com/appium/WebDriverAgent/issues/735)) ([15614d0](https://github.com/appium/WebDriverAgent/commit/15614d030975f2b1eac5919d2353bc015f194d4c))
+
 ## [5.5.1](https://github.com/appium/WebDriverAgent/compare/v5.5.0...v5.5.1) (2023-06-16)
 
 
