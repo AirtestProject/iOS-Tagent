@@ -1,3 +1,10 @@
+## [5.6.0](https://github.com/appium/WebDriverAgent/compare/v5.5.2...v5.6.0) (2023-07-15)
+
+
+### Features
+
+* apply shouldWaitForQuiescence for activate in /wda/apps/launch ([#739](https://github.com/appium/WebDriverAgent/issues/739)) ([#740](https://github.com/appium/WebDriverAgent/issues/740)) ([66ab695](https://github.com/appium/WebDriverAgent/commit/66ab695f9fa1850145a1d94ef15978b70bc1b032))
+
 ## [5.5.2](https://github.com/appium/WebDriverAgent/compare/v5.5.1...v5.5.2) (2023-07-07)
 
 
