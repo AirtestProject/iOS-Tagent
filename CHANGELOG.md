@@ -1,3 +1,10 @@
+## [5.6.1](https://github.com/appium/WebDriverAgent/compare/v5.6.0...v5.6.1) (2023-08-14)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump lint-staged from 13.3.0 to 14.0.0 ([#750](https://github.com/appium/WebDriverAgent/issues/750)) ([0b74bf5](https://github.com/appium/WebDriverAgent/commit/0b74bf5befaa6d87c93a5306beb690a5a0e1843d))
+
 ## [5.6.0](https://github.com/appium/WebDriverAgent/compare/v5.5.2...v5.6.0) (2023-07-15)
 
 
