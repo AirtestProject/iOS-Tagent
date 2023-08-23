@@ -1,3 +1,10 @@
+## [5.6.2](https://github.com/appium/WebDriverAgent/compare/v5.6.1...v5.6.2) (2023-08-23)
+
+
+### Miscellaneous Chores
+
+* Remove unused glob dependency ([ee7655e](https://github.com/appium/WebDriverAgent/commit/ee7655e0a2aa39dd1f0c6d80d89065b4f34f264d))
+
 ## [5.6.1](https://github.com/appium/WebDriverAgent/compare/v5.6.0...v5.6.1) (2023-08-14)
 
 
