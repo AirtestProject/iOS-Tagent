@@ -1,3 +1,10 @@
+## [5.8.0](https://github.com/appium/WebDriverAgent/compare/v5.7.0...v5.8.0) (2023-08-24)
+
+
+### Features
+
+* Add wdHittable property ([#756](https://github.com/appium/WebDriverAgent/issues/756)) ([075298b](https://github.com/appium/WebDriverAgent/commit/075298b286c83ab5d4a2855e9e0bb915790b3f43))
+
 ## [5.7.0](https://github.com/appium/WebDriverAgent/compare/v5.6.2...v5.7.0) (2023-08-24)
 
 
