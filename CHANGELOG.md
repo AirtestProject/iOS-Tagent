@@ -1,3 +1,10 @@
+## [5.8.1](https://github.com/appium/WebDriverAgent/compare/v5.8.0...v5.8.1) (2023-08-25)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump semantic-release from 20.1.3 to 21.1.0 ([#754](https://github.com/appium/WebDriverAgent/issues/754)) ([d86d9a6](https://github.com/appium/WebDriverAgent/commit/d86d9a64ca75ad40273cfa10855f49b967d9fd95))
+
 ## [5.8.0](https://github.com/appium/WebDriverAgent/compare/v5.7.0...v5.8.0) (2023-08-24)
 
 
