@@ -1,3 +1,10 @@
+## [5.8.2](https://github.com/appium/WebDriverAgent/compare/v5.8.1...v5.8.2) (2023-08-28)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump conventional-changelog-conventionalcommits ([#757](https://github.com/appium/WebDriverAgent/issues/757)) ([a3047ea](https://github.com/appium/WebDriverAgent/commit/a3047ea70b7a9fd5ccb2a2c93b0964d7de609d38))
+
 ## [5.8.1](https://github.com/appium/WebDriverAgent/compare/v5.8.0...v5.8.1) (2023-08-25)
 
 
