@@ -1,3 +1,10 @@
+## [5.8.3](https://github.com/appium/WebDriverAgent/compare/v5.8.2...v5.8.3) (2023-09-01)
+
+
+### Bug Fixes
+
+* Address some typing-related issues ([#759](https://github.com/appium/WebDriverAgent/issues/759)) ([87e8704](https://github.com/appium/WebDriverAgent/commit/87e87044d6216513f755c5184d61514a76cb0179))
+
 ## [5.8.2](https://github.com/appium/WebDriverAgent/compare/v5.8.1...v5.8.2) (2023-08-28)
 
 
