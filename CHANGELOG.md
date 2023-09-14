@@ -1,3 +1,10 @@
+## [5.8.4](https://github.com/appium/WebDriverAgent/compare/v5.8.3...v5.8.4) (2023-09-14)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @types/teen_process from 2.0.0 to 2.0.1 ([#765](https://github.com/appium/WebDriverAgent/issues/765)) ([1af64b8](https://github.com/appium/WebDriverAgent/commit/1af64b8834371a3fdb3d0aab82fdfdeff6194555))
+
 ## [5.8.3](https://github.com/appium/WebDriverAgent/compare/v5.8.2...v5.8.3) (2023-09-01)
 
 
