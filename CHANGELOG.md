@@ -1,3 +1,10 @@
+## [5.8.6](https://github.com/appium/WebDriverAgent/compare/v5.8.5...v5.8.6) (2023-09-21)
+
+
+### Miscellaneous Chores
+
+* add log to leave it in the system log ([#772](https://github.com/appium/WebDriverAgent/issues/772)) ([012af21](https://github.com/appium/WebDriverAgent/commit/012af21383829397c7265daa0513829cc4e93aee))
+
 ## [5.8.5](https://github.com/appium/WebDriverAgent/compare/v5.8.4...v5.8.5) (2023-09-15)
 
 
