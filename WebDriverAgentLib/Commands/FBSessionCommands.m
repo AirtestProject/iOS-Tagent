@@ -257,7 +257,8 @@
 #endif
           @"ip" : [XCUIDevice sharedDevice].fb_wifiIPAddress ?: [NSNull null]
         },
-      @"build" : buildInfo.copy
+      @"build" : buildInfo.copy,
+      @"device": [self.class deviceNameByUserInterfaceIdiom:[UIDevice currentDevice].userInterfaceIdiom]
     }
   );
 }
@@ -418,6 +419,23 @@
   };
 }
 
+/*
+ Return the device kind as lower case
+*/
++ (NSString *)deviceNameByUserInterfaceIdiom:(UIUserInterfaceIdiom) userInterfaceIdiom
+{
+  if (userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+    return @"ipad";
+  } else if (userInterfaceIdiom == UIUserInterfaceIdiomTV) {
+    return @"apple tv";
+  } else if (userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+    return @"iphone";
+  }
+  // CarPlay, Mac, Vision UI or unknown are possible
+  return @"Unknown";
+  
+}
+
 + (NSDictionary *)currentCapabilities
 {
   FBApplication *application = [FBSession activeSession].activeApplication;
@@ -425,7 +443,7 @@
   [FBLogger logFmt:@"Current active application bundle id is %@", application.bundleID];
   return
   @{
-    @"device": ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) ? @"ipad" : @"iphone",
+    @"device": [self.class deviceNameByUserInterfaceIdiom:[UIDevice currentDevice].userInterfaceIdiom],
     @"sdkVersion": [[UIDevice currentDevice] systemVersion],
     @"browserName": application.label ?: [NSNull null],
     @"CFBundleIdentifier": application.bundleID ?: [NSNull null],
