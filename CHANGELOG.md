@@ -1,3 +1,10 @@
+## [5.9.0](https://github.com/appium/WebDriverAgent/compare/v5.8.7...v5.9.0) (2023-09-22)
+
+
+### Features
+
+* do not get active process information in a new session request ([#774](https://github.com/appium/WebDriverAgent/issues/774)) ([2784ce4](https://github.com/appium/WebDriverAgent/commit/2784ce440f8b5ab9710db08d9ffda704697ac07c))
+
 ## [5.8.7](https://github.com/appium/WebDriverAgent/compare/v5.8.6...v5.8.7) (2023-09-22)
 
 
