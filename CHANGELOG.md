@@ -1,3 +1,10 @@
+## [5.9.1](https://github.com/appium/WebDriverAgent/compare/v5.9.0...v5.9.1) (2023-09-22)
+
+
+### Bug Fixes
+
+* Provide signing arguments as command line parameters ([#779](https://github.com/appium/WebDriverAgent/issues/779)) ([51ba527](https://github.com/appium/WebDriverAgent/commit/51ba527b6cde3773ebcd5323cfa7e0890b2563aa))
+
 ## [5.9.0](https://github.com/appium/WebDriverAgent/compare/v5.8.7...v5.9.0) (2023-09-22)
 
 
