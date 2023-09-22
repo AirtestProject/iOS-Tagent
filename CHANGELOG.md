@@ -1,3 +1,10 @@
+## [5.8.7](https://github.com/appium/WebDriverAgent/compare/v5.8.6...v5.8.7) (2023-09-22)
+
+
+### Miscellaneous Chores
+
+* tweak device in currentCapabilities ([#773](https://github.com/appium/WebDriverAgent/issues/773)) ([8481b02](https://github.com/appium/WebDriverAgent/commit/8481b02fc84de1147e1254ea7fd114f8735b0226))
+
 ## [5.8.6](https://github.com/appium/WebDriverAgent/compare/v5.8.5...v5.8.6) (2023-09-21)
 
 
