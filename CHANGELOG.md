@@ -1,3 +1,10 @@
+## [5.10.0](https://github.com/appium/WebDriverAgent/compare/v5.9.1...v5.10.0) (2023-09-25)
+
+
+### Features
+
+* remove test frameworks in Frameworks and add device local references as rpath for real devices ([#780](https://github.com/appium/WebDriverAgent/issues/780)) ([ae6c842](https://github.com/appium/WebDriverAgent/commit/ae6c842f3c4e7deb51fcc7a1a1045d4eeede69fd))
+
 ## [5.9.1](https://github.com/appium/WebDriverAgent/compare/v5.9.0...v5.9.1) (2023-09-22)
 
 
