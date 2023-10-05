@@ -1,3 +1,10 @@
+## [5.11.0](https://github.com/appium/WebDriverAgent/compare/v5.10.1...v5.11.0) (2023-10-05)
+
+
+### Features
+
+* Add /calibrate endpoint ([#785](https://github.com/appium/WebDriverAgent/issues/785)) ([ae1603a](https://github.com/appium/WebDriverAgent/commit/ae1603a3b5b5c4828ed4959c63d6274254f832a2))
+
 ## [5.10.1](https://github.com/appium/WebDriverAgent/compare/v5.10.0...v5.10.1) (2023-10-05)
 
 
