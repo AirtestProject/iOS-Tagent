@@ -1,3 +1,10 @@
+## [5.10.1](https://github.com/appium/WebDriverAgent/compare/v5.10.0...v5.10.1) (2023-10-05)
+
+
+### Miscellaneous Chores
+
+* Remove the hardcoded keyboard wait delay from handleKeys ([#784](https://github.com/appium/WebDriverAgent/issues/784)) ([f043d67](https://github.com/appium/WebDriverAgent/commit/f043d67dd90fbfca00b8cf53ccae63dbd67fa150))
+
 ## [5.10.0](https://github.com/appium/WebDriverAgent/compare/v5.9.1...v5.10.0) (2023-09-25)
 
 
