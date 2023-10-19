@@ -1,3 +1,10 @@
+## [5.11.2](https://github.com/appium/WebDriverAgent/compare/v5.11.1...v5.11.2) (2023-10-19)
+
+
+### Miscellaneous Chores
+
+* Use latest teen_process types ([895cdfc](https://github.com/appium/WebDriverAgent/commit/895cdfc1a316117bb7c8b5be0265b439c1e911bc))
+
 ## [5.11.1](https://github.com/appium/WebDriverAgent/compare/v5.11.0...v5.11.1) (2023-10-19)
 
 
