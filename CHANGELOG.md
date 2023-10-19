@@ -1,3 +1,10 @@
+## [5.11.1](https://github.com/appium/WebDriverAgent/compare/v5.11.0...v5.11.1) (2023-10-19)
+
+
+### Miscellaneous Chores
+
+* Use latest types version ([123eefb](https://github.com/appium/WebDriverAgent/commit/123eefba5e5e30100cb3cdff09a516179f78afe7))
+
 ## [5.11.0](https://github.com/appium/WebDriverAgent/compare/v5.10.1...v5.11.0) (2023-10-05)
 
 
