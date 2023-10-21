@@ -1,3 +1,10 @@
+## [5.11.3](https://github.com/appium/WebDriverAgent/compare/v5.11.2...v5.11.3) (2023-10-21)
+
+
+### Miscellaneous Chores
+
+* use PRODUCT_BUNDLE_IDENTIFIER to info.plist ([#794](https://github.com/appium/WebDriverAgent/issues/794)) ([543c498](https://github.com/appium/WebDriverAgent/commit/543c49860d2d35148bcbaa33e14d3e1dab058cef))
+
 ## [5.11.2](https://github.com/appium/WebDriverAgent/compare/v5.11.1...v5.11.2) (2023-10-19)
 
 
