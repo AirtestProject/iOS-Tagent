@@ -1,3 +1,12 @@
+## [5.11.5](https://github.com/appium/WebDriverAgent/compare/v5.11.4...v5.11.5) (2023-10-23)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump eslint-config-prettier from 8.10.0 to 9.0.0 ([#791](https://github.com/appium/WebDriverAgent/issues/791)) ([f130961](https://github.com/appium/WebDriverAgent/commit/f130961f189f2746d4a2b0a18105fc10203312ca))
+* **deps-dev:** bump lint-staged from 14.0.1 to 15.0.2 ([#792](https://github.com/appium/WebDriverAgent/issues/792)) ([440279d](https://github.com/appium/WebDriverAgent/commit/440279d4f6d069e440180faf4bee8e5dc1758787))
+* **deps-dev:** bump semantic-release from 21.1.2 to 22.0.5 ([#781](https://github.com/appium/WebDriverAgent/issues/781)) ([a967183](https://github.com/appium/WebDriverAgent/commit/a96718308dbd6b13feb30e6ce8f01a7d9b74b146))
+
 ## [5.11.4](https://github.com/appium/WebDriverAgent/compare/v5.11.3...v5.11.4) (2023-10-23)
 
 
