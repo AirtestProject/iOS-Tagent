@@ -1,3 +1,10 @@
+## [5.11.4](https://github.com/appium/WebDriverAgent/compare/v5.11.3...v5.11.4) (2023-10-23)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump sinon from 16.1.3 to 17.0.0 ([#795](https://github.com/appium/WebDriverAgent/issues/795)) ([4921899](https://github.com/appium/WebDriverAgent/commit/4921899d96800dbcd59a9c27ba793ad16d0c715b))
+
 ## [5.11.3](https://github.com/appium/WebDriverAgent/compare/v5.11.2...v5.11.3) (2023-10-21)
 
 
