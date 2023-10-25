@@ -1,3 +1,10 @@
+## [5.11.7](https://github.com/appium/WebDriverAgent/compare/v5.11.6...v5.11.7) (2023-10-25)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @typescript-eslint/eslint-plugin from 5.62.0 to 6.9.0 ([#796](https://github.com/appium/WebDriverAgent/issues/796)) ([dabf141](https://github.com/appium/WebDriverAgent/commit/dabf141acd3186b1c27231ef52826fa42208c980))
+
 ## [5.11.6](https://github.com/appium/WebDriverAgent/compare/v5.11.5...v5.11.6) (2023-10-25)
 
 
