@@ -1,3 +1,10 @@
+## [5.11.6](https://github.com/appium/WebDriverAgent/compare/v5.11.5...v5.11.6) (2023-10-25)
+
+
+### Miscellaneous Chores
+
+* disable debugger for wda ([#768](https://github.com/appium/WebDriverAgent/issues/768)) ([e2f4405](https://github.com/appium/WebDriverAgent/commit/e2f4405a3449f1f4d390eae06bf91a220e81b58b))
+
 ## [5.11.5](https://github.com/appium/WebDriverAgent/compare/v5.11.4...v5.11.5) (2023-10-23)
 
 
