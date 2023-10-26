@@ -70,6 +70,9 @@
     [[FBRoute GET:@"/wda/device/location"] respondWithTarget:self action:@selector(handleGetLocation:)],
     [[FBRoute GET:@"/wda/device/location"].withoutSession respondWithTarget:self action:@selector(handleGetLocation:)],
 #if !TARGET_OS_TV // tvOS does not provide relevant APIs
+#if __clang_major__ >= 15
+    [[FBRoute POST:@"/wda/element/:uuid/keyboardInput"] respondWithTarget:self action:@selector(handleKeyboardInput:)],
+#endif
     [[FBRoute GET:@"/wda/simulatedLocation"] respondWithTarget:self action:@selector(handleGetSimulatedLocation:)],
     [[FBRoute GET:@"/wda/simulatedLocation"].withoutSession respondWithTarget:self action:@selector(handleGetSimulatedLocation:)],
     [[FBRoute POST:@"/wda/simulatedLocation"] respondWithTarget:self action:@selector(handleSetSimulatedLocation:)],
@@ -543,6 +546,48 @@
   }
   return FBResponseWithOK();
 }
+
+#if __clang_major__ >= 15
++ (id<FBResponsePayload>)handleKeyboardInput:(FBRouteRequest *)request
+{
+  FBElementCache *elementCache = request.session.elementCache;
+  BOOL hasElement = nil != request.parameters[@"uuid"];
+  XCUIElement *destination = hasElement
+    ? [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]]
+    : request.session.activeApplication;
+  id keys = request.arguments[@"keys"];
+  if (![keys isKindOfClass:NSArray.class]) {
+    NSString *message = @"The 'keys' argument must be an array";
+    return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:message
+                                                                       traceback:nil]);
+  }
+  for (id item in (NSArray *)keys) {
+    if ([item isKindOfClass:NSString.class]) {
+      NSString *keyValue = [FBKeyboard keyValueForName:item] ?: item;
+      [destination typeKey:keyValue modifierFlags:XCUIKeyModifierNone];
+    } else if ([item isKindOfClass:NSDictionary.class]) {
+      id key = [(NSDictionary *)item objectForKey:@"key"];
+      if (![key isKindOfClass:NSString.class]) {
+        NSString *message = [NSString stringWithFormat:@"All dictionaries of 'keys' array must have the 'key' item of type string. Got '%@' instead in the item %@", key, item];
+        return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:message
+                                                                           traceback:nil]);
+      }
+      id modifiers = [(NSDictionary *)item objectForKey:@"modifierFlags"];
+      NSUInteger modifierFlags = XCUIKeyModifierNone;
+      if ([modifiers isKindOfClass:NSNumber.class]) {
+        modifierFlags = [(NSNumber *)modifiers unsignedIntValue];
+      }
+      NSString *keyValue = [FBKeyboard keyValueForName:item] ?: key;
+      [destination typeKey:keyValue modifierFlags:modifierFlags];
+    } else {
+      NSString *message = @"All items of the 'keys' array must be either dictionaries or strings";
+      return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:message
+                                                                         traceback:nil]);
+    }
+  }
+  return FBResponseWithOK();
+}
+#endif
 #endif
 
 + (id<FBResponsePayload>)handlePerformAccessibilityAudit:(FBRouteRequest *)request
