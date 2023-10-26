@@ -1,3 +1,10 @@
+## [5.12.0](https://github.com/appium/WebDriverAgent/compare/v5.11.7...v5.12.0) (2023-10-26)
+
+
+### Features
+
+* Add an endpoint for keyboard input ([#797](https://github.com/appium/WebDriverAgent/issues/797)) ([aaf70c9](https://github.com/appium/WebDriverAgent/commit/aaf70c9196e4dcb2073da151cda23b2b221d4dae))
+
 ## [5.11.7](https://github.com/appium/WebDriverAgent/compare/v5.11.6...v5.11.7) (2023-10-25)
 
 
