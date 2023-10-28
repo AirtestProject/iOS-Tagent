@@ -1,3 +1,10 @@
+## [5.12.1](https://github.com/appium/WebDriverAgent/compare/v5.12.0...v5.12.1) (2023-10-28)
+
+
+### Bug Fixes
+
+* when 0 is given for handleKeyboardInput ([#798](https://github.com/appium/WebDriverAgent/issues/798)) ([58ebe8e](https://github.com/appium/WebDriverAgent/commit/58ebe8eb52966963ee30a5c066beb3bf9fed3161))
+
 ## [5.12.0](https://github.com/appium/WebDriverAgent/compare/v5.11.7...v5.12.0) (2023-10-26)
 
 
