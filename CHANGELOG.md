@@ -1,3 +1,10 @@
+## [5.12.2](https://github.com/appium/WebDriverAgent/compare/v5.12.1...v5.12.2) (2023-10-29)
+
+
+### Miscellaneous Chores
+
+* return operation error in `handleKeyboardInput` ([#799](https://github.com/appium/WebDriverAgent/issues/799)) ([247ace6](https://github.com/appium/WebDriverAgent/commit/247ace68f373c09054fabc3be088061089946806))
+
 ## [5.12.1](https://github.com/appium/WebDriverAgent/compare/v5.12.0...v5.12.1) (2023-10-28)
 
 
