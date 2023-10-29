@@ -556,6 +556,13 @@
     ? [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]]
     : request.session.activeApplication;
   id keys = request.arguments[@"keys"];
+
+  if (![destination respondsToSelector:@selector(typeKey:modifierFlags:)]) {
+    NSString *message = @"typeKey API is only supported since Xcode15 and iPadOS 17";
+    return FBResponseWithStatus([FBCommandStatus unsupportedOperationErrorWithMessage:message
+                                                                            traceback:nil]);
+  }
+
   if (![keys isKindOfClass:NSArray.class]) {
     NSString *message = @"The 'keys' argument must be an array";
     return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:message
