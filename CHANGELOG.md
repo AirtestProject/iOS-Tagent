@@ -1,3 +1,10 @@
+## [5.13.0](https://github.com/appium/WebDriverAgent/compare/v5.12.3...v5.13.0) (2023-10-31)
+
+
+### Features
+
+* Add "elementDescription" property to audit issues containing the debug description of an element ([#802](https://github.com/appium/WebDriverAgent/issues/802)) ([9925af4](https://github.com/appium/WebDriverAgent/commit/9925af44ec5fbfb66e6f034dfd93a6c25de48661))
+
 ## [5.12.3](https://github.com/appium/WebDriverAgent/compare/v5.12.2...v5.12.3) (2023-10-31)
 
 
