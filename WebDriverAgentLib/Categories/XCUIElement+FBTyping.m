@@ -15,11 +15,12 @@
 #import "NSString+FBVisualLength.h"
 #import "FBXCElementSnapshotWrapper.h"
 #import "FBXCElementSnapshotWrapper+Helpers.h"
+#import "XCUIDevice+FBHelpers.h"
 #import "XCUIElement+FBCaching.h"
 #import "XCUIElement+FBUtilities.h"
 #import "FBXCodeCompatibility.h"
 
-#define MAX_CLEAR_RETRIES 2
+#define MAX_CLEAR_RETRIES 3
 
 
 @interface NSString (FBRepeat)
@@ -136,27 +137,32 @@
     backspaceDeleteSequence = [[NSString alloc] initWithData:(NSData *)[@"\\u0008\\u007F" dataUsingEncoding:NSASCIIStringEncoding]
                                                     encoding:NSNonLossyASCIIStringEncoding];
   });
-  
+
+  NSUInteger preClearTextLength = [currentValue fb_visualLength];
+  NSString *backspacesToType = [backspaceDeleteSequence fb_repeatTimes:preClearTextLength];
+
+#if TARGET_OS_IOS
   NSUInteger retry = 0;
   NSString *placeholderValue = snapshot.placeholderValue;
-  NSUInteger preClearTextLength = [currentValue fb_visualLength];
   do {
-    if (retry >= MAX_CLEAR_RETRIES - 1) {
-      // Last chance retry. Tripple-tap the field to select its content
-
-      if ([self respondsToSelector:@selector(tapWithNumberOfTaps:numberOfTouches:)]) {
-        // e.g. tvOS 17 raised unrecognized selector error for XCUIElementTypeSearchField
-        // while following typeText worked.
-        [self tapWithNumberOfTaps:3 numberOfTouches:1];
-      }
-      return [FBKeyboard typeText:backspaceDeleteSequence error:error];
-    }
-
-    NSString *textToType = [backspaceDeleteSequence fb_repeatTimes:preClearTextLength];
+    // the ios needs to have keyboard focus to clear text
     if (shouldPrepareForInput && 0 == retry) {
       [self fb_prepareForTextInputWithSnapshot:snapshot];
     }
-    if (![FBKeyboard typeText:textToType error:error]) {
+
+    if (retry == 0) {
+      // 1st attempt is via the IOHIDEvent as the fastest operation
+      // https://github.com/appium/appium/issues/19389
+      [[XCUIDevice sharedDevice] fb_performIOHIDEventWithPage:0x07  // kHIDPage_KeyboardOrKeypad
+                                                        usage:0x9c  // kHIDUsage_KeyboardClear
+                                                     duration:0.01
+                                                        error:nil];
+    } else if (retry >= MAX_CLEAR_RETRIES - 1) {
+      // Last chance retry. Tripple-tap the field to select its content
+      [self tapWithNumberOfTaps:3 numberOfTouches:1];
+      return [FBKeyboard typeText:backspaceDeleteSequence error:error];
+    } else if (![FBKeyboard typeText:backspacesToType error:error]) {
+      // 2nd operation
       return NO;
     }
 
@@ -170,6 +176,13 @@
     retry++;
   } while (preClearTextLength > 0);
   return YES;
+#else
+  // tvOS does not need a focus.
+  // kHIDPage_KeyboardOrKeypad did not work for tvOS's search field. (tvOS 17 at least)
+  // Tested XCUIElementTypeSearchField and XCUIElementTypeTextView whch were
+  // common search field and email/passowrd input in tvOS apps.
+  return [FBKeyboard typeText:backspacesToType error:error];
+#endif
 }
 
 @end
