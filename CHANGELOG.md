@@ -1,3 +1,10 @@
+## [5.15.0](https://github.com/appium/WebDriverAgent/compare/v5.14.0...v5.15.0) (2023-11-16)
+
+
+### Features
+
+* Add element attributes to the performAccessibilityAudit output ([#808](https://github.com/appium/WebDriverAgent/issues/808)) ([0d7e4a6](https://github.com/appium/WebDriverAgent/commit/0d7e4a697adb7355279583eaa05118f396056e6f))
+
 ## [5.14.0](https://github.com/appium/WebDriverAgent/compare/v5.13.3...v5.14.0) (2023-11-10)
 
 
