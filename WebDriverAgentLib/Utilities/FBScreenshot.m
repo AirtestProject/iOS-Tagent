@@ -13,7 +13,7 @@
 
 #import "FBConfiguration.h"
 #import "FBErrorBuilder.h"
-#import "FBImageIOScaler.h"
+#import "FBImageProcessor.h"
 #import "FBLogger.h"
 #import "FBMacros.h"
 #import "FBXCodeCompatibility.h"
@@ -59,30 +59,19 @@ NSString *formatTimeInterval(NSTimeInterval interval) {
 }
 
 + (NSData *)takeInOriginalResolutionWithQuality:(NSUInteger)quality
-                                           rect:(CGRect)rect
                                           error:(NSError **)error
 {
   XCUIScreen *mainScreen = XCUIScreen.mainScreen;
   return [self.class takeWithScreenID:mainScreen.displayID
                                 scale:SCREENSHOT_SCALE
                    compressionQuality:[self.class compressionQualityWithQuality:quality]
-                                 rect:rect
                             sourceUTI:[self.class imageUtiWithQuality:quality]
                                 error:error];
-}
-
-+ (NSData *)takeInOriginalResolutionWithQuality:(NSUInteger)quality
-                                          error:(NSError **)error
-{
-  return [self.class takeInOriginalResolutionWithQuality:quality
-                                                    rect:CGRectNull
-                                                   error:error];
 }
 
 + (NSData *)takeWithScreenID:(long long)screenID
                        scale:(CGFloat)scale
           compressionQuality:(CGFloat)compressionQuality
-                        rect:(CGRect)rect
                    sourceUTI:(UTType *)uti
                        error:(NSError **)error
 {
@@ -94,9 +83,8 @@ NSString *formatTimeInterval(NSTimeInterval interval) {
   if (nil == screenshotData) {
     return nil;
   }
-  return [[[FBImageIOScaler alloc] init] scaledImageWithImage:screenshotData
+  return [[[FBImageProcessor alloc] init] scaledImageWithData:screenshotData
                                                           uti:UTTypePNG
-                                                         rect:rect
                                                 scalingFactor:1.0 / scale
                                            compressionQuality:FBMaxCompressionQuality
                                                         error:error];
