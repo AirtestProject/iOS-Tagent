@@ -1,3 +1,15 @@
+## [5.15.1](https://github.com/appium/WebDriverAgent/compare/v5.15.0...v5.15.1) (2023-11-16)
+
+
+### Bug Fixes
+
+* Content-Type of the MJPEG server ([b4704da](https://github.com/appium/WebDriverAgent/commit/b4704dafc4567e1f0dc8675facfc48a195aae4bf))
+
+
+### Code Refactoring
+
+* Optimize screenshots preprocessing ([#812](https://github.com/appium/WebDriverAgent/issues/812)) ([0b41757](https://github.com/appium/WebDriverAgent/commit/0b41757c0d21004afab32860b4e510d4bc426018))
+
 ## [5.15.0](https://github.com/appium/WebDriverAgent/compare/v5.14.0...v5.15.0) (2023-11-16)
 
 
