@@ -1,3 +1,15 @@
+## [5.15.2](https://github.com/appium/WebDriverAgent/compare/v5.15.1...v5.15.2) (2023-11-23)
+
+
+### Bug Fixes
+
+* fix run test ci ([#814](https://github.com/appium/WebDriverAgent/issues/814)) ([014d04d](https://github.com/appium/WebDriverAgent/commit/014d04df956e47fef67938b089511e80d344f007))
+
+
+### Miscellaneous Chores
+
+* a dummy commit to check a package release ([08388fd](https://github.com/appium/WebDriverAgent/commit/08388fd602ee9d588a8780e8d141d748813782ed))
+
 ## [5.15.1](https://github.com/appium/WebDriverAgent/compare/v5.15.0...v5.15.1) (2023-11-16)
 
 
