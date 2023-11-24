@@ -1,3 +1,10 @@
+## [5.15.3](https://github.com/appium/WebDriverAgent/compare/v5.15.2...v5.15.3) (2023-11-24)
+
+
+### Miscellaneous Chores
+
+* Make xcodebuild error message more helpful ([#816](https://github.com/appium/WebDriverAgent/issues/816)) ([2d7fc03](https://github.com/appium/WebDriverAgent/commit/2d7fc0370b30e5e3adc9a13002fa95f607c4c160))
+
 ## [5.15.2](https://github.com/appium/WebDriverAgent/compare/v5.15.1...v5.15.2) (2023-11-23)
 
 
