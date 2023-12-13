@@ -1,3 +1,10 @@
+## [5.15.5](https://github.com/appium/WebDriverAgent/compare/v5.15.4...v5.15.5) (2023-12-13)
+
+
+### Miscellaneous Chores
+
+* use appearance for get as well if available ([#825](https://github.com/appium/WebDriverAgent/issues/825)) ([89e233d](https://github.com/appium/WebDriverAgent/commit/89e233d8aef5a19491785fee0823fd8eddbd5fcc))
+
 ## [5.15.4](https://github.com/appium/WebDriverAgent/compare/v5.15.3...v5.15.4) (2023-12-07)
 
 
