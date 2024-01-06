@@ -11,17 +11,34 @@
 
 #import "FBConfiguration.h"
 #import "FBErrorBuilder.h"
-#import "FBKeyboard.h"
-#import "NSString+FBVisualLength.h"
 #import "FBXCElementSnapshotWrapper.h"
 #import "FBXCElementSnapshotWrapper+Helpers.h"
+#import "FBXCodeCompatibility.h"
+#import "FBXCTestDaemonsProxy.h"
+#import "NSString+FBVisualLength.h"
 #import "XCUIDevice+FBHelpers.h"
 #import "XCUIElement+FBCaching.h"
 #import "XCUIElement+FBUtilities.h"
-#import "FBXCodeCompatibility.h"
+#import "XCSynthesizedEventRecord.h"
+#import "XCPointerEventPath.h"
 
+#define MAX_TEXT_ABBR_LEN 12
 #define MAX_CLEAR_RETRIES 3
 
+BOOL FBTypeText(NSString *text, NSUInteger typingSpeed, NSError **error)
+{
+  NSString *name = text.length <= MAX_TEXT_ABBR_LEN
+    ? [NSString stringWithFormat:@"Type '%@'", text]
+    : [NSString stringWithFormat:@"Type '%@…'", [text substringToIndex:MAX_TEXT_ABBR_LEN]];
+  XCSynthesizedEventRecord *eventRecord = [[XCSynthesizedEventRecord alloc] initWithName:name];
+  XCPointerEventPath *ep = [[XCPointerEventPath alloc] initForTextInput];
+  [ep typeText:text
+      atOffset:0.0
+   typingSpeed:typingSpeed
+  shouldRedact:NO];
+  [eventRecord addPointerEventPath:ep];
+  return [FBXCTestDaemonsProxy synthesizeEventWithRecord:eventRecord error:error];
+}
 
 @interface NSString (FBRepeat)
 
@@ -96,13 +113,12 @@
   id<FBXCElementSnapshot> snapshot = self.fb_isResolvedFromCache.boolValue
     ? self.lastSnapshot
     : self.fb_takeSnapshot;
-  [self fb_prepareForTextInputWithSnapshot:[FBXCElementSnapshotWrapper ensureWrapped:snapshot]];
-  if (shouldClear && ![self fb_clearTextWithSnapshot:self.lastSnapshot
-                               shouldPrepareForInput:NO
-                                               error:error]) {
+  FBXCElementSnapshotWrapper *wrapped = [FBXCElementSnapshotWrapper ensureWrapped:snapshot];
+  [self fb_prepareForTextInputWithSnapshot:wrapped];
+  if (shouldClear && ![self fb_clearTextWithSnapshot:wrapped shouldPrepareForInput:NO error:error]) {
     return NO;
   }
-  return [FBKeyboard typeText:text frequency:frequency error:error];
+  return FBTypeText(text, frequency, error);
 }
 
 - (BOOL)fb_clearTextWithError:(NSError **)error
@@ -122,15 +138,15 @@
   id currentValue = snapshot.value;
   if (nil != currentValue && ![currentValue isKindOfClass:NSString.class]) {
     return [[[FBErrorBuilder builder]
-               withDescriptionFormat:@"The value of '%@' is not a string and thus cannot be edited", snapshot.fb_description]
-              buildError:error];
+             withDescriptionFormat:@"The value of '%@' is not a string and thus cannot be edited", snapshot.fb_description]
+            buildError:error];
   }
-  
+
   if (nil == currentValue || 0 == [currentValue fb_visualLength]) {
     // Short circuit if the content is not present
     return YES;
   }
-  
+
   static NSString *backspaceDeleteSequence;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
@@ -160,8 +176,8 @@
     } else if (retry >= MAX_CLEAR_RETRIES - 1) {
       // Last chance retry. Tripple-tap the field to select its content
       [self tapWithNumberOfTaps:3 numberOfTouches:1];
-      return [FBKeyboard typeText:backspaceDeleteSequence error:error];
-    } else if (![FBKeyboard typeText:backspacesToType error:error]) {
+      return FBTypeText(backspaceDeleteSequence, FBConfiguration.defaultTypingFrequency, error);
+    } else if (!FBTypeText(backspacesToType, FBConfiguration.defaultTypingFrequency, error)) {
       // 2nd operation
       return NO;
     }
@@ -181,7 +197,7 @@
   // kHIDPage_KeyboardOrKeypad did not work for tvOS's search field. (tvOS 17 at least)
   // Tested XCUIElementTypeSearchField and XCUIElementTypeTextView whch were
   // common search field and email/passowrd input in tvOS apps.
-  return [FBKeyboard typeText:backspacesToType error:error];
+  return FBTypeText(backspacesToType, FBConfiguration.defaultTypingFrequency, error);
 #endif
 }
 

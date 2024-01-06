@@ -558,7 +558,7 @@
   NSString *textToType = [request.arguments[@"value"] componentsJoinedByString:@""];
   NSUInteger frequency = [request.arguments[@"frequency"] unsignedIntegerValue] ?: [FBConfiguration maxTypingFrequency];
   NSError *error;
-  if (![FBKeyboard typeText:textToType frequency:frequency error:&error]) {
+  if (!FBTypeText(textToType, frequency, &error)) {
     return FBResponseWithStatus([FBCommandStatus invalidElementStateErrorWithMessage:error.description
                                                                            traceback:nil]);
   }
