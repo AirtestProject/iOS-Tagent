@@ -1,3 +1,10 @@
+## [5.15.6](https://github.com/appium/WebDriverAgent/compare/v5.15.5...v5.15.6) (2024-01-06)
+
+
+### Miscellaneous Chores
+
+* Update keyboard typing implementation ([#832](https://github.com/appium/WebDriverAgent/issues/832)) ([06cfb3b](https://github.com/appium/WebDriverAgent/commit/06cfb3b2b895a0bec681218fce658bdfcb4d13e9))
+
 ## [5.15.5](https://github.com/appium/WebDriverAgent/compare/v5.15.4...v5.15.5) (2023-12-13)
 
 
