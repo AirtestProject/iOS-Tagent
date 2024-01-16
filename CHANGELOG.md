@@ -1,3 +1,15 @@
+## [5.15.7](https://github.com/appium/WebDriverAgent/compare/v5.15.6...v5.15.7) (2024-01-16)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump semantic-release from 22.0.12 to 23.0.0 ([#836](https://github.com/appium/WebDriverAgent/issues/836)) ([a3ac2c5](https://github.com/appium/WebDriverAgent/commit/a3ac2c58786955507a34d0adcc4a53cd30f55014))
+
+
+### Code Refactoring
+
+* Ditch FBApplication in favour of XCUIApplication extensions ([#834](https://github.com/appium/WebDriverAgent/issues/834)) ([70a8d98](https://github.com/appium/WebDriverAgent/commit/70a8d98bc15d8fc615455be07fad9c37ff8d430b))
+
 ## [5.15.6](https://github.com/appium/WebDriverAgent/compare/v5.15.5...v5.15.6) (2024-01-06)
 
 
