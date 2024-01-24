@@ -1,3 +1,10 @@
+## [5.15.8](https://github.com/appium/WebDriverAgent/compare/v5.15.7...v5.15.8) (2024-01-24)
+
+
+### Bug Fixes
+
+* use arm64 naming for xctestrun ([#840](https://github.com/appium/WebDriverAgent/issues/840)) ([429e154](https://github.com/appium/WebDriverAgent/commit/429e154c28ab2f17685723b02c941efce03984d4))
+
 ## [5.15.7](https://github.com/appium/WebDriverAgent/compare/v5.15.6...v5.15.7) (2024-01-16)
 
 
