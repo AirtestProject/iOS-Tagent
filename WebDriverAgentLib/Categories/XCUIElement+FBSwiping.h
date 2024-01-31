@@ -22,4 +22,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+#if !TARGET_OS_TV
+@interface XCUICoordinate (FBSwiping)
+
+/**
+ * Performs swipe gesture on the coordinate
+ *
+ * @param direction Swipe direction. The following values are supported: up, down, left and right
+ * @param velocity Swipe speed in pixels per second
+ */
+- (void)fb_swipeWithDirection:(NSString *)direction velocity:(nullable NSNumber*)velocity;
+
+@end
+#endif
+
 NS_ASSUME_NONNULL_END
