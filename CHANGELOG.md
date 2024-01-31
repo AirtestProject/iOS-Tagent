@@ -1,3 +1,14 @@
+## [6.0.0](https://github.com/appium/WebDriverAgent/compare/v5.15.8...v6.0.0) (2024-01-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* The  /wda/tap/:uuid endpoint has been replaced by /wda/element/:uuid/tap and /wda/tap ones
+
+### Features
+
+* Add coordinate-based APIs for gesture calls ([#843](https://github.com/appium/WebDriverAgent/issues/843)) ([feda373](https://github.com/appium/WebDriverAgent/commit/feda373b6147d3e87b29dceb871887c77febe76b))
+
 ## [5.15.8](https://github.com/appium/WebDriverAgent/compare/v5.15.7...v5.15.8) (2024-01-24)
 
 
