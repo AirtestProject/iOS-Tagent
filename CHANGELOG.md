@@ -1,3 +1,10 @@
+## [6.1.0](https://github.com/appium/WebDriverAgent/compare/v6.0.0...v6.1.0) (2024-02-10)
+
+
+### Features
+
+* Add a possibility of starting a test with a deep link ([#845](https://github.com/appium/WebDriverAgent/issues/845)) ([aa25e49](https://github.com/appium/WebDriverAgent/commit/aa25e49fa9821960b08e9f4f3ea5891ebdf7d48d))
+
 ## [6.0.0](https://github.com/appium/WebDriverAgent/compare/v5.15.8...v6.0.0) (2024-01-31)
 
 
