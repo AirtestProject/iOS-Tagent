@@ -1,3 +1,10 @@
+## [6.1.1](https://github.com/appium/WebDriverAgent/compare/v6.1.0...v6.1.1) (2024-02-11)
+
+
+### Miscellaneous Chores
+
+* Make sure the app under test is restarted if opened from a deep link ([#846](https://github.com/appium/WebDriverAgent/issues/846)) ([88b0a5b](https://github.com/appium/WebDriverAgent/commit/88b0a5b0f8aefa05a7dc28d17faf62c229e0706f))
+
 ## [6.1.0](https://github.com/appium/WebDriverAgent/compare/v6.0.0...v6.1.0) (2024-02-10)
 
 
