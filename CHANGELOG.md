@@ -1,3 +1,16 @@
+## [7.0.0](https://github.com/appium/WebDriverAgent/compare/v6.1.1...v7.0.0) (2024-02-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* The following REST endpoints have been removed, use W3C actions instead:
+- /wda/touch/perform
+- /wda/touch/multi/perform
+
+### Features
+
+* Remove obsolete MJSONWP touch actions ([#847](https://github.com/appium/WebDriverAgent/issues/847)) ([d77f640](https://github.com/appium/WebDriverAgent/commit/d77f640867155fddbbbc9575f0a77802602865e7))
+
 ## [6.1.1](https://github.com/appium/WebDriverAgent/compare/v6.1.0...v6.1.1) (2024-02-11)
 
 
