@@ -1,3 +1,10 @@
+## [7.0.1](https://github.com/appium/WebDriverAgent/compare/v7.0.0...v7.0.1) (2024-02-21)
+
+
+### Miscellaneous Chores
+
+* Simplify the logic of alert element detection ([#851](https://github.com/appium/WebDriverAgent/issues/851)) ([54f91f1](https://github.com/appium/WebDriverAgent/commit/54f91f198e45535ea9d86b7eee40b21f43f84294))
+
 ## [7.0.0](https://github.com/appium/WebDriverAgent/compare/v6.1.1...v7.0.0) (2024-02-12)
 
 
