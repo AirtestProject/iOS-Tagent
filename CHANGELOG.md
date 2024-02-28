@@ -1,3 +1,10 @@
+## [7.0.2](https://github.com/appium/WebDriverAgent/compare/v7.0.1...v7.0.2) (2024-02-28)
+
+
+### Miscellaneous Chores
+
+* Tune alert detection if system app is active ([#854](https://github.com/appium/WebDriverAgent/issues/854)) ([857d3de](https://github.com/appium/WebDriverAgent/commit/857d3decf497935098ba6acb61654be1da173b11))
+
 ## [7.0.1](https://github.com/appium/WebDriverAgent/compare/v7.0.0...v7.0.1) (2024-02-21)
 
 
