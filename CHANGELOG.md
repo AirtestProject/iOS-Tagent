@@ -1,3 +1,10 @@
+## [7.0.3](https://github.com/appium/WebDriverAgent/compare/v7.0.2...v7.0.3) (2024-03-03)
+
+
+### Miscellaneous Chores
+
+* tune release packages ([#856](https://github.com/appium/WebDriverAgent/issues/856)) ([aa0765e](https://github.com/appium/WebDriverAgent/commit/aa0765e425faba6c035a9933320e91679b167b80))
+
 ## [7.0.2](https://github.com/appium/WebDriverAgent/compare/v7.0.1...v7.0.2) (2024-02-28)
 
 
