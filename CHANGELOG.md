@@ -1,3 +1,10 @@
+## [7.0.5](https://github.com/appium/WebDriverAgent/compare/v7.0.4...v7.0.5) (2024-03-03)
+
+
+### Reverts
+
+* Revert "chore: tune release packages (#856)" (#857) ([dc72015](https://github.com/appium/WebDriverAgent/commit/dc720157a60925451e6d5935abcd168082d44785)), closes [#856](https://github.com/appium/WebDriverAgent/issues/856) [#857](https://github.com/appium/WebDriverAgent/issues/857)
+
 ## [7.0.4](https://github.com/appium/WebDriverAgent/compare/v7.0.3...v7.0.4) (2024-03-03)
 
 
