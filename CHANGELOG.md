@@ -1,3 +1,10 @@
+## [7.0.6](https://github.com/appium/WebDriverAgent/compare/v7.0.5...v7.0.6) (2024-03-03)
+
+
+### Miscellaneous Chores
+
+* Handle app startup errors as session creation exceptions ([#855](https://github.com/appium/WebDriverAgent/issues/855)) ([0ec5398](https://github.com/appium/WebDriverAgent/commit/0ec5398e9cb4b0e5ab133cc0c330b85b3d37766e))
+
 ## [7.0.5](https://github.com/appium/WebDriverAgent/compare/v7.0.4...v7.0.5) (2024-03-03)
 
 
