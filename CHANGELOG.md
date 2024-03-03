@@ -1,3 +1,10 @@
+## [7.0.4](https://github.com/appium/WebDriverAgent/compare/v7.0.3...v7.0.4) (2024-03-03)
+
+
+### Miscellaneous Chores
+
+* dummy commit to trigger a release ([0cb66c5](https://github.com/appium/WebDriverAgent/commit/0cb66c5edc91c191d5ec412ba0a479e07cb4214b))
+
 ## [7.0.3](https://github.com/appium/WebDriverAgent/compare/v7.0.2...v7.0.3) (2024-03-03)
 
 
