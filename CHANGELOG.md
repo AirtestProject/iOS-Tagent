@@ -1,3 +1,15 @@
+## [7.1.0](https://github.com/appium/WebDriverAgent/compare/v7.0.6...v7.1.0) (2024-03-07)
+
+
+### Features
+
+* Add wrappers for native XCTest video recorder ([#858](https://github.com/appium/WebDriverAgent/issues/858)) ([9728548](https://github.com/appium/WebDriverAgent/commit/9728548676c8de67c30d127ee8b0374f58286e74))
+
+
+### Miscellaneous Chores
+
+* bump typescript ([89880f5](https://github.com/appium/WebDriverAgent/commit/89880f509f930f16f6469bcda613569040c337b6))
+
 ## [7.0.6](https://github.com/appium/WebDriverAgent/compare/v7.0.5...v7.0.6) (2024-03-03)
 
 
