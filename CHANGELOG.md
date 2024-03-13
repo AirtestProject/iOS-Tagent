@@ -1,3 +1,10 @@
+## [7.1.1](https://github.com/appium/WebDriverAgent/compare/v7.1.0...v7.1.1) (2024-03-13)
+
+
+### Bug Fixes
+
+* respect defaultActiveApplication in activeApplication selection ([#862](https://github.com/appium/WebDriverAgent/issues/862)) ([b1ddae2](https://github.com/appium/WebDriverAgent/commit/b1ddae2be3fd3f7c87de79e804d82cf7c13dc56e))
+
 ## [7.1.0](https://github.com/appium/WebDriverAgent/compare/v7.0.6...v7.1.0) (2024-03-07)
 
 
