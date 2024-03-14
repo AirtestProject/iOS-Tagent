@@ -1,3 +1,10 @@
+## [7.1.2](https://github.com/appium/WebDriverAgent/compare/v7.1.1...v7.1.2) (2024-03-14)
+
+
+### Bug Fixes
+
+* Always assume en0 is the WiFi interface ([#864](https://github.com/appium/WebDriverAgent/issues/864)) ([6dbfb3f](https://github.com/appium/WebDriverAgent/commit/6dbfb3f2ec8e0bfa5a42c6f8ab882893bfe3f534))
+
 ## [7.1.1](https://github.com/appium/WebDriverAgent/compare/v7.1.0...v7.1.1) (2024-03-13)
 
 
