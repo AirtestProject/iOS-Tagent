@@ -1,3 +1,10 @@
+## [7.2.0](https://github.com/appium/WebDriverAgent/compare/v7.1.2...v7.2.0) (2024-03-21)
+
+
+### Features
+
+* Enable usePreinstalledWDA feature for simulators ([#866](https://github.com/appium/WebDriverAgent/issues/866)) ([7c684e2](https://github.com/appium/WebDriverAgent/commit/7c684e2def9dd968de1cf89e4ec26403a52ba805))
+
 ## [7.1.2](https://github.com/appium/WebDriverAgent/compare/v7.1.1...v7.1.2) (2024-03-14)
 
 
