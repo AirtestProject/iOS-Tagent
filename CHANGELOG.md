@@ -1,3 +1,10 @@
+## [7.3.0](https://github.com/appium/WebDriverAgent/compare/v7.2.0...v7.3.0) (2024-03-23)
+
+
+### Features
+
+* Support prebuiltWDAPath for iOS 17 ([#868](https://github.com/appium/WebDriverAgent/issues/868)) ([39194d4](https://github.com/appium/WebDriverAgent/commit/39194d4ac6d0072c1214088ff5c15c986969914c))
+
 ## [7.2.0](https://github.com/appium/WebDriverAgent/compare/v7.1.2...v7.2.0) (2024-03-21)
 
 
