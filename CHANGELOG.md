@@ -1,3 +1,10 @@
+## [7.3.1](https://github.com/appium/WebDriverAgent/compare/v7.3.0...v7.3.1) (2024-03-24)
+
+
+### Miscellaneous Chores
+
+* move node-simctl to dev deps ([#869](https://github.com/appium/WebDriverAgent/issues/869)) ([9033759](https://github.com/appium/WebDriverAgent/commit/90337597e6c480c790cf299e160bc53731c0a87d))
+
 ## [7.3.0](https://github.com/appium/WebDriverAgent/compare/v7.2.0...v7.3.0) (2024-03-23)
 
 
