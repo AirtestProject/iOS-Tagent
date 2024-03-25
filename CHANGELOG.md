@@ -1,3 +1,14 @@
+## [8.0.0](https://github.com/appium/WebDriverAgent/compare/v7.3.1...v8.0.0) (2024-03-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* calls launch app process command with devicectl via this.device.devicectl
+
+### Features
+
+* launch WDA via devicectl object ([#870](https://github.com/appium/WebDriverAgent/issues/870)) ([090b815](https://github.com/appium/WebDriverAgent/commit/090b815ae47e1ef0e0a9842fac6828346bc38fe6))
+
 ## [7.3.1](https://github.com/appium/WebDriverAgent/compare/v7.3.0...v7.3.1) (2024-03-24)
 
 
