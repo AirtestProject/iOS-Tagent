@@ -7,12 +7,12 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-#import <XCTest/XCTest.h>
+#import <Foundation/Foundation.h>
 
-#if !TARGET_OS_TV
-@interface XCUICoordinate (FBFix)
+@interface XCUIApplicationDouble : NSObject
+@property (nonatomic, assign, readonly) BOOL didTerminate;
+@property (nonatomic, strong) NSString* bundleID;
+@property (nonatomic) BOOL fb_shouldWaitForQuiescence;
 
-- (CGPoint)fb_screenPoint;
-
+- (BOOL)running;
 @end
-#endif

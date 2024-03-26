@@ -9,11 +9,12 @@
 
 #import <XCTest/XCTest.h>
 
-#import "FBApplication.h"
 #import "FBIntegrationTestCase.h"
 #import "FBImageUtils.h"
 #import "FBMacros.h"
 #import "FBTestMacros.h"
+#import "XCUIApplication.h"
+#import "XCUIApplication+FBHelpers.h"
 #import "XCUIDevice+FBHelpers.h"
 #import "XCUIDevice+FBRotation.h"
 #import "XCUIScreen.h"
@@ -78,14 +79,12 @@
   XCTAssertTrue(screenshot.size.width > screenshot.size.height);
 
   XCUIScreen *mainScreen = XCUIScreen.mainScreen;
-  // TODO: This screenshot rotation was not landscape in an iOS 16 beta simulator. 
   UIImage *screenshotExact = ((XCUIScreenshot *)mainScreen.screenshot).image;
-  XCTAssertEqualWithAccuracy(screenshotExact.size.height * mainScreen.scale,
-                             screenshot.size.height,
-                             FLT_EPSILON);
-  XCTAssertEqualWithAccuracy(screenshotExact.size.width * mainScreen.scale,
-                             screenshot.size.width,
-                             FLT_EPSILON);
+  CGSize realMainScreenSize = screenshotExact.size.height > screenshot.size.width
+    ? CGSizeMake(screenshotExact.size.height * mainScreen.scale, screenshotExact.size.width * mainScreen.scale)
+    : CGSizeMake(screenshotExact.size.width * mainScreen.scale, screenshotExact.size.height * mainScreen.scale);
+  XCTAssertEqualWithAccuracy(realMainScreenSize.height, screenshot.size.height, FLT_EPSILON);
+  XCTAssertEqualWithAccuracy(realMainScreenSize.width, screenshot.size.width, FLT_EPSILON);
 }
 
 - (void)testWifiAddress
@@ -103,7 +102,7 @@
   NSError *error;
   XCTAssertTrue([[XCUIDevice sharedDevice] fb_goToHomescreenWithError:&error]);
   XCTAssertNil(error);
-  XCTAssertTrue([FBApplication fb_activeApplication].icons[@"Safari"].exists);
+  XCTAssertTrue([XCUIApplication fb_activeApplication].icons[@"Safari"].exists);
 }
 
 - (void)testLockUnlockScreen
@@ -126,7 +125,7 @@
 
   NSError *error;
   XCTAssertTrue([XCUIDevice.sharedDevice fb_openUrl:@"https://apple.com" error:&error]);
-  FBAssertWaitTillBecomesTrue([FBApplication.fb_activeApplication.bundleID isEqualToString:@"com.apple.mobilesafari"]);
+  FBAssertWaitTillBecomesTrue([XCUIApplication.fb_activeApplication.bundleID isEqualToString:@"com.apple.mobilesafari"]);
   XCTAssertNil(error);
 }
 
@@ -140,7 +139,7 @@
   XCTAssertTrue([XCUIDevice.sharedDevice fb_openUrl:@"https://apple.com"
                                     withApplication:@"com.apple.mobilesafari"
                                               error:&error]);
-  FBAssertWaitTillBecomesTrue([FBApplication.fb_activeApplication.bundleID isEqualToString:@"com.apple.mobilesafari"]);
+  FBAssertWaitTillBecomesTrue([XCUIApplication.fb_activeApplication.bundleID isEqualToString:@"com.apple.mobilesafari"]);
   XCTAssertNil(error);
 }
 

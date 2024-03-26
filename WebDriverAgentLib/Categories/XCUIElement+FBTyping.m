@@ -11,17 +11,34 @@
 
 #import "FBConfiguration.h"
 #import "FBErrorBuilder.h"
-#import "FBKeyboard.h"
-#import "NSString+FBVisualLength.h"
 #import "FBXCElementSnapshotWrapper.h"
 #import "FBXCElementSnapshotWrapper+Helpers.h"
-#import "XCUIElement+FBCaching.h"
-#import "XCUIElement+FBTap.h"
-#import "XCUIElement+FBUtilities.h"
 #import "FBXCodeCompatibility.h"
+#import "FBXCTestDaemonsProxy.h"
+#import "NSString+FBVisualLength.h"
+#import "XCUIDevice+FBHelpers.h"
+#import "XCUIElement+FBCaching.h"
+#import "XCUIElement+FBUtilities.h"
+#import "XCSynthesizedEventRecord.h"
+#import "XCPointerEventPath.h"
 
-#define MAX_CLEAR_RETRIES 2
+#define MAX_TEXT_ABBR_LEN 12
+#define MAX_CLEAR_RETRIES 3
 
+BOOL FBTypeText(NSString *text, NSUInteger typingSpeed, NSError **error)
+{
+  NSString *name = text.length <= MAX_TEXT_ABBR_LEN
+    ? [NSString stringWithFormat:@"Type '%@'", text]
+    : [NSString stringWithFormat:@"Type '%@…'", [text substringToIndex:MAX_TEXT_ABBR_LEN]];
+  XCSynthesizedEventRecord *eventRecord = [[XCSynthesizedEventRecord alloc] initWithName:name];
+  XCPointerEventPath *ep = [[XCPointerEventPath alloc] initForTextInput];
+  [ep typeText:text
+      atOffset:0.0
+   typingSpeed:typingSpeed
+  shouldRedact:NO];
+  [eventRecord addPointerEventPath:ep];
+  return [FBXCTestDaemonsProxy synthesizeEventWithRecord:eventRecord error:error];
+}
 
 @interface NSString (FBRepeat)
 
@@ -72,7 +89,7 @@
 // There is no possibility to open the keyboard by tapping a field in TvOS
 #if !TARGET_OS_TV
   [FBLogger logFmt:@"Trying to tap the \"%@\" element to have it focused", snapshot.fb_description];
-  [self fb_tapWithError:nil];
+  [self tap];
   // It might take some time to update the UI
   [self fb_takeSnapshot];
 #endif
@@ -96,13 +113,12 @@
   id<FBXCElementSnapshot> snapshot = self.fb_isResolvedFromCache.boolValue
     ? self.lastSnapshot
     : self.fb_takeSnapshot;
-  [self fb_prepareForTextInputWithSnapshot:[FBXCElementSnapshotWrapper ensureWrapped:snapshot]];
-  if (shouldClear && ![self fb_clearTextWithSnapshot:self.lastSnapshot
-                               shouldPrepareForInput:NO
-                                               error:error]) {
+  FBXCElementSnapshotWrapper *wrapped = [FBXCElementSnapshotWrapper ensureWrapped:snapshot];
+  [self fb_prepareForTextInputWithSnapshot:wrapped];
+  if (shouldClear && ![self fb_clearTextWithSnapshot:wrapped shouldPrepareForInput:NO error:error]) {
     return NO;
   }
-  return [FBKeyboard typeText:text frequency:frequency error:error];
+  return FBTypeText(text, frequency, error);
 }
 
 - (BOOL)fb_clearTextWithError:(NSError **)error
@@ -122,37 +138,47 @@
   id currentValue = snapshot.value;
   if (nil != currentValue && ![currentValue isKindOfClass:NSString.class]) {
     return [[[FBErrorBuilder builder]
-               withDescriptionFormat:@"The value of '%@' is not a string and thus cannot be edited", snapshot.fb_description]
-              buildError:error];
+             withDescriptionFormat:@"The value of '%@' is not a string and thus cannot be edited", snapshot.fb_description]
+            buildError:error];
   }
-  
+
   if (nil == currentValue || 0 == [currentValue fb_visualLength]) {
     // Short circuit if the content is not present
     return YES;
   }
-  
+
   static NSString *backspaceDeleteSequence;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     backspaceDeleteSequence = [[NSString alloc] initWithData:(NSData *)[@"\\u0008\\u007F" dataUsingEncoding:NSASCIIStringEncoding]
                                                     encoding:NSNonLossyASCIIStringEncoding];
   });
-  
+
+  NSUInteger preClearTextLength = [currentValue fb_visualLength];
+  NSString *backspacesToType = [backspaceDeleteSequence fb_repeatTimes:preClearTextLength];
+
+#if TARGET_OS_IOS
   NSUInteger retry = 0;
   NSString *placeholderValue = snapshot.placeholderValue;
-  NSUInteger preClearTextLength = [currentValue fb_visualLength];
   do {
-    if (retry >= MAX_CLEAR_RETRIES - 1) {
-      // Last chance retry. Tripple-tap the field to select its content
-      [self tapWithNumberOfTaps:3 numberOfTouches:1];
-      return [FBKeyboard typeText:backspaceDeleteSequence error:error];
-    }
-
-    NSString *textToType = [backspaceDeleteSequence fb_repeatTimes:preClearTextLength];
+    // the ios needs to have keyboard focus to clear text
     if (shouldPrepareForInput && 0 == retry) {
       [self fb_prepareForTextInputWithSnapshot:snapshot];
     }
-    if (![FBKeyboard typeText:textToType error:error]) {
+
+    if (retry == 0) {
+      // 1st attempt is via the IOHIDEvent as the fastest operation
+      // https://github.com/appium/appium/issues/19389
+      [[XCUIDevice sharedDevice] fb_performIOHIDEventWithPage:0x07  // kHIDPage_KeyboardOrKeypad
+                                                        usage:0x9c  // kHIDUsage_KeyboardClear
+                                                     duration:0.01
+                                                        error:nil];
+    } else if (retry >= MAX_CLEAR_RETRIES - 1) {
+      // Last chance retry. Tripple-tap the field to select its content
+      [self tapWithNumberOfTaps:3 numberOfTouches:1];
+      return FBTypeText(backspaceDeleteSequence, FBConfiguration.defaultTypingFrequency, error);
+    } else if (!FBTypeText(backspacesToType, FBConfiguration.defaultTypingFrequency, error)) {
+      // 2nd operation
       return NO;
     }
 
@@ -166,6 +192,13 @@
     retry++;
   } while (preClearTextLength > 0);
   return YES;
+#else
+  // tvOS does not need a focus.
+  // kHIDPage_KeyboardOrKeypad did not work for tvOS's search field. (tvOS 17 at least)
+  // Tested XCUIElementTypeSearchField and XCUIElementTypeTextView whch were
+  // common search field and email/passowrd input in tvOS apps.
+  return FBTypeText(backspacesToType, FBConfiguration.defaultTypingFrequency, error);
+#endif
 }
 
 @end

@@ -10,7 +10,6 @@
 #import <XCTest/XCTest.h>
 
 #import "FBIntegrationTestCase.h"
-#import "FBApplication.h"
 #import "FBMacros.h"
 #import "FBSession.h"
 #import "FBXCodeCompatibility.h"
@@ -49,15 +48,11 @@
 // The test is flaky on slow Travis CI
 - (void)disabled_testAutoAcceptingOfAlerts
 {
-  if (SYSTEM_VERSION_LESS_THAN(@"11.0")) {
-    return;
-  }
-  
   self.session = [FBSession
-                  initWithApplication:FBApplication.fb_activeApplication
+                  initWithApplication:XCUIApplication.fb_activeApplication
                   defaultAlertAction:@"accept"];
   for (int i = 0; i < 2; i++) {
-    [self.testedApplication.buttons[FBShowAlertButtonName] fb_tapWithError:nil];
+    [self.testedApplication.buttons[FBShowAlertButtonName] tap];
     [self.testedApplication fb_waitUntilStable];
     FBAssertWaitTillBecomesTrue(self.testedApplication.alerts.count == 0);
   }
@@ -66,15 +61,11 @@
 // The test is flaky on slow Travis CI
 - (void)disabled_testAutoDismissingOfAlerts
 {
-  if (SYSTEM_VERSION_LESS_THAN(@"11.0")) {
-    return;
-  }
-
   self.session = [FBSession
-                  initWithApplication:FBApplication.fb_activeApplication
+                  initWithApplication:XCUIApplication.fb_activeApplication
                   defaultAlertAction:@"dismiss"];
   for (int i = 0; i < 2; i++) {
-    [self.testedApplication.buttons[FBShowAlertButtonName] fb_tapWithError:nil];
+    [self.testedApplication.buttons[FBShowAlertButtonName] tap];
     [self.testedApplication fb_waitUntilStable];
     FBAssertWaitTillBecomesTrue(self.testedApplication.alerts.count == 0);
   }

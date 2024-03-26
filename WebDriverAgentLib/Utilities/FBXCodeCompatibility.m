@@ -9,6 +9,7 @@
 
 #import "FBXCodeCompatibility.h"
 
+#import "FBXCAXClientProxy.h"
 #import "FBConfiguration.h"
 #import "FBErrorBuilder.h"
 #import "FBLogger.h"
@@ -16,45 +17,6 @@
 #import "XCUIElementQuery.h"
 #import "FBXCTestDaemonsProxy.h"
 #import "XCTestManager_ManagerInterface-Protocol.h"
-
-static const NSTimeInterval APP_STATE_CHANGE_TIMEOUT = 5.0;
-
-NSString *const FBApplicationMethodNotSupportedException = @"FBApplicationMethodNotSupportedException";
-
-@implementation XCUIApplication (FBCompatibility)
-
-+ (instancetype)fb_applicationWithPID:(pid_t)processID
-{
-  if (0 == processID) {
-    return nil;
-  }
-
-  return [self applicationWithPID:processID];
-}
-
-- (void)fb_activate
-{
-  [self activate];
-  if (![self waitForState:XCUIApplicationStateRunningForeground timeout:APP_STATE_CHANGE_TIMEOUT / 2] || ![self fb_waitForAppElement:APP_STATE_CHANGE_TIMEOUT / 2]) {
-    [FBLogger logFmt:@"The application '%@' is not running in foreground after %.2f seconds", self.bundleID, APP_STATE_CHANGE_TIMEOUT];
-  }
-}
-
-- (void)fb_terminate
-{
-  [self terminate];
-  if (![self waitForState:XCUIApplicationStateNotRunning timeout:APP_STATE_CHANGE_TIMEOUT]) {
-    [FBLogger logFmt:@"The active application is still '%@' after %.2f seconds timeout", self.bundleID, APP_STATE_CHANGE_TIMEOUT];
-  }
-}
-
-- (NSUInteger)fb_state
-{
-  return [[self valueForKey:@"state"] intValue];
-}
-
-@end
-
 
 @implementation XCUIElementQuery (FBCompatibility)
 
@@ -89,7 +51,7 @@ NSString *const FBApplicationMethodNotSupportedException = @"FBApplicationMethod
   static dispatch_once_t hasIncludingNonModalElements;
   static BOOL result;
   dispatch_once(&hasIncludingNonModalElements, ^{
-    result = [FBApplication.fb_systemApplication.query respondsToSelector:@selector(includingNonModalElements)];
+    result = [XCUIApplication.fb_systemApplication.query respondsToSelector:@selector(includingNonModalElements)];
   });
   return result;
 }
@@ -123,12 +85,16 @@ NSInteger FBTestmanagerdVersion(void)
   static NSInteger testmanagerdVersion;
   dispatch_once(&getTestmanagerdVersion, ^{
     id<XCTestManager_ManagerInterface> proxy = [FBXCTestDaemonsProxy testRunnerProxy];
-    dispatch_semaphore_t sem = dispatch_semaphore_create(0);
-    [proxy _XCT_exchangeProtocolVersion:testmanagerdVersion reply:^(unsigned long long code) {
-      testmanagerdVersion = (NSInteger) code;
-      dispatch_semaphore_signal(sem);
-    }];
-    dispatch_semaphore_wait(sem, dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)));
+    if ([(NSObject *)proxy respondsToSelector:@selector(_XCT_exchangeProtocolVersion:reply:)]) {
+      [FBRunLoopSpinner spinUntilCompletion:^(void(^completion)(void)){
+        [proxy _XCT_exchangeProtocolVersion:testmanagerdVersion reply:^(unsigned long long code) {
+          testmanagerdVersion = (NSInteger) code;
+          completion();
+        }];
+      }];
+    } else {
+      testmanagerdVersion = 0xFFFF;
+    }
   });
   return testmanagerdVersion;
 }

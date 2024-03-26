@@ -103,6 +103,64 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)fb_dismissKeyboardWithKeyNames:(nullable NSArray<NSString *> *)keyNames
                                  error:(NSError **)error;
 
+/**
+ A wrapper over https://developer.apple.com/documentation/xctest/xcuiapplication/4190847-performaccessibilityauditwithaud?language=objc
+
+ @param auditTypes Combination of https://developer.apple.com/documentation/xctest/xcuiaccessibilityaudittype?language=objc
+ @param error If there is an error, upon return contains an NSError object that describes the problem.
+ @return List of found issues or nil if there was a failure
+ */
+- (nullable NSArray<NSDictionary<NSString *, NSString*> *> *)fb_performAccessibilityAuditWithAuditTypesSet:(NSSet<NSString *> *)auditTypes
+                                                                                                     error:(NSError **)error;
+
+/**
+ A wrapper over https://developer.apple.com/documentation/xctest/xcuiapplication/4190847-performaccessibilityauditwithaud?language=objc
+
+ @param auditTypes Combination of https://developer.apple.com/documentation/xctest/xcuiaccessibilityaudittype?language=objc
+ @param error If there is an error, upon return contains an NSError object that describes the problem.
+ @return List of found issues or nil if there was a failure
+ */
+- (nullable NSArray<NSDictionary<NSString *, NSString*> *> *)fb_performAccessibilityAuditWithAuditTypes:(uint64_t)auditTypes
+                                                                                                  error:(NSError **)error;
+/**
+ Constructor used to get current active application
+ */
++ (instancetype)fb_activeApplication;
+
+/**
+ Constructor used to get current active application
+
+ @param bundleId The bundle identifier of an app, which should be selected as active by default
+ if it is present in the list of active applications
+ */
++ (instancetype)fb_activeApplicationWithDefaultBundleId:(nullable NSString *)bundleId;
+
+/**
+ Constructor used to get the system application (e.g. Springboard on iOS)
+ */
++ (instancetype)fb_systemApplication;
+
+/**
+ Retrieves the list of all currently active applications
+ */
++ (NSArray<XCUIApplication *> *)fb_activeApplications;
+
+/**
+ Switch to system app (called Springboard on iOS)
+
+ @param error If there is an error, upon return contains an NSError object that describes the problem.
+ @return YES if the operation succeeds, otherwise NO.
+ */
++ (BOOL)fb_switchToSystemApplicationWithError:(NSError **)error;
+
+/**
+ Determines whether the other app is the same as the current one
+
+ @param otherApp  Other app instance
+ @return YES if the other app has the same identifier
+ */
+- (BOOL)fb_isSameAppAs:(nullable XCUIApplication *)otherApp;
+
 @end
 
 NS_ASSUME_NONNULL_END

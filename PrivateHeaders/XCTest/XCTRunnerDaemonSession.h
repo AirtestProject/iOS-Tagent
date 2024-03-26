@@ -80,4 +80,19 @@
 @property(readonly) _Bool supportsLocationSimulation;
 #endif
 
+// Since Xcode 15.0-beta1
+- (void)stopScreenRecordingWithUUID:(NSUUID *)arg1
+                          withReply:(void (^)(NSError *))arg2;
+- (void)startScreenRecordingWithRequest:(id/* XCTScreenRecordingRequest */)arg1
+                              withReply:(void (^)(id/* XCTAttachmentFutureMetadata */, NSError *))arg2;
+- (_Bool)supportsScreenRecording;
+- (_Bool)preferScreenshotsOverScreenRecordings;
+
+// Since Xcode 10.2
+- (void)launchApplicationWithPath:(NSString *)arg1
+                         bundleID:(NSString *)arg2
+                        arguments:(NSArray *)arg3
+                      environment:(NSDictionary *)arg4
+                       completion:(void (^)(_Bool, NSError *))arg5;
+
 @end

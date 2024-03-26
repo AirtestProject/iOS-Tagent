@@ -8,7 +8,6 @@
  */
 
 #import "FBScreen.h"
-#import "FBApplication.h"
 #import "XCUIElement+FBIsVisible.h"
 #import "FBXCodeCompatibility.h"
 #import "XCUIScreen.h"
@@ -22,17 +21,10 @@
 
 + (CGSize)statusBarSizeForApplication:(XCUIApplication *)application
 {
-  XCUIApplication *app = application;
-  BOOL expectVisibleBar = YES;
-
+  XCUIApplication *app = XCUIApplication.fb_systemApplication;
   // Since iOS 13 the status bar is no longer part of the application, it’s part of the SpringBoard
-  if (@available(iOS 13.0, *)) {
-    app = FBApplication.fb_systemApplication;
-    expectVisibleBar = NO;
-  }
-
   XCUIElement *mainStatusBar = app.statusBars.allElementsBoundByIndex.firstObject;
-  if (!mainStatusBar || (expectVisibleBar && !mainStatusBar.fb_isVisible)) {
+  if (nil == mainStatusBar) {
     return CGSizeZero;
   }
   CGSize result = mainStatusBar.frame.size;

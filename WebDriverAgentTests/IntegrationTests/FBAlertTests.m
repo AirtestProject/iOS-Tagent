@@ -15,7 +15,6 @@
 #import "FBIntegrationTestCase.h"
 #import "FBTestMacros.h"
 #import "FBMacros.h"
-#import "XCUIElement+FBTap.h"
 
 @interface FBAlertTests : FBIntegrationTestCase
 @end
@@ -42,13 +41,13 @@
 
 - (void)showApplicationAlert
 {
-  [self.testedApplication.buttons[FBShowAlertButtonName] fb_tapWithError:nil];
+  [self.testedApplication.buttons[FBShowAlertButtonName] tap];
   FBAssertWaitTillBecomesTrue(self.testedApplication.alerts.count != 0);
 }
 
 - (void)showApplicationSheet
 {
-  [self.testedApplication.buttons[FBShowSheetAlertButtonName] fb_tapWithError:nil];
+  [self.testedApplication.buttons[FBShowSheetAlertButtonName] tap];
   FBAssertWaitTillBecomesTrue(self.testedApplication.sheets.count != 0);
 }
 
@@ -155,6 +154,7 @@
   XCTAssertTrue([alert.text containsString:@"Notifications may include"]);
 }
 
+// This test case depends on the local app permission state.
 - (void)testCameraRollAlert
 {
   FBAlert *alert = [FBAlert alertWithApplication:self.testedApplication];
@@ -163,10 +163,13 @@
   [self.testedApplication.buttons[@"Create Camera Roll Alert"] tap];
   FBAssertWaitTillBecomesTrue(alert.isPresent);
 
-  XCTAssertTrue([alert.text containsString:@"Would Like to Access Your Photos"]);
+  // "Would Like to Access Your Photos" or "Would Like to Access Your Photo Library" displayes on the alert button.
+  XCTAssertTrue([alert.text containsString:@"Would Like to Access Your Photo"]);
   // iOS 15 has different UI flow
   if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.0")) {
     [[FBAlert alertWithApplication:self.testedApplication] dismissWithError:nil];
+    // CI env could take longer time to show up the button, thus it needs to wait a bit.
+    XCTAssertTrue([self.testedApplication.buttons[@"Cancel"] waitForExistenceWithTimeout:30.0]);
     [self.testedApplication.buttons[@"Cancel"] tap];
   }
 }

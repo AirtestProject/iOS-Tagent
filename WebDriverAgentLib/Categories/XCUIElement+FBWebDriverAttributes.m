@@ -20,6 +20,7 @@
 #import "XCUIElement+FBUtilities.h"
 #import "FBElementUtils.h"
 #import "XCTestPrivateSymbols.h"
+#import "XCUIHitPointResult.h"
 
 #define BROKEN_RECT CGRectMake(-1, -1, 0, 0)
 
@@ -154,12 +155,10 @@
   return self.fb_isVisible;
 }
 
-#if TARGET_OS_TV
 - (BOOL)isWDFocused
 {
   return self.hasFocus;
 }
-#endif
 
 - (BOOL)isWDAccessible
 {
@@ -226,6 +225,12 @@
   }
 
   return 0;
+}
+
+- (BOOL)isWDHittable
+{
+  XCUIHitPointResult *result = [self hitPoint:nil];
+  return nil == result ? NO : result.hittable;
 }
 
 - (NSDictionary *)wdRect

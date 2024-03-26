@@ -49,13 +49,18 @@ extern NSString *const FBSnapshotMaxDepthKey;
 
 /*! Disables XCTest automated screenshots taking */
 + (void)disableScreenshots;
-
 /*! Enables XCTest automated screenshots taking */
 + (void)enableScreenshots;
+
+/*! Disables XCTest automated videos taking (iOS 17+) */
++ (void)disableScreenRecordings;
+/*! Enables XCTest automated videos taking  (iOS 17+) */
++ (void)enableScreenRecordings;
 
 /* The maximum typing frequency for all typing activities */
 + (void)setMaxTypingFrequency:(NSUInteger)value;
 + (NSUInteger)maxTypingFrequency;
++ (NSUInteger)defaultTypingFrequency;
 
 /* Use singleton test manager proxy */
 + (void)setShouldUseSingletonTestManager:(BOOL)value;
@@ -81,6 +86,16 @@ extern NSString *const FBSnapshotMaxDepthKey;
 + (void)setMjpegServerScreenshotQuality:(NSUInteger)quality;
 
 /**
+ Whether to apply orientation fixes to the streamed JPEG images.
+ This is an expensive operation and it is disabled by default, so screenshots
+ are returned in portrait, but their actual orientation value could still be found in the EXIF
+ metadata.
+ ! Enablement of this setting may lead to WDA process termination because of an excessive CPU usage.
+ */
++ (BOOL)mjpegShouldFixOrientation;
++ (void)setMjpegShouldFixOrientation:(BOOL)enabled;
+
+/**
  The framerate at which the background screenshots broadcaster should broadcast
  screenshots in range 1..60. The default value is 10 (Frames Per Second).
  Setting zero value will cause the framerate to be at its maximum possible value.
@@ -89,9 +104,9 @@ extern NSString *const FBSnapshotMaxDepthKey;
 + (void)setMjpegServerFramerate:(NSUInteger)framerate;
 
 /**
- The quality of phone display screenshots. The higher quality you set is the bigger screenshot size is.
- The highest quality value is 0 (lossless PNG). The lowest quality is 2 (highly compressed JPEG).
- The default quality value is 1 (high quality JPEG).
+ The quality of display screenshots. The higher quality you set is the bigger screenshot size is.
+ The highest quality value is 0 (lossless PNG) or 3 (lossless HEIC). The lowest quality is 2 (highly compressed JPEG).
+ The default quality value is 3 (lossless HEIC).
  See https://developer.apple.com/documentation/xctest/xctimagequality?language=objc
  */
 + (NSUInteger)screenshotQuality;
@@ -108,7 +123,10 @@ extern NSString *const FBSnapshotMaxDepthKey;
 + (NSInteger)mjpegServerPort;
 
 /**
- The scaling factor for frames of the mjpeg stream (Default values is 100 and does not perform scaling).
+ The scaling factor for frames of the mjpeg stream. The default (and maximum) value is 100,
+ which does not perform any scaling. The minimum value must be greater than zero.
+ ! Setting this to a value less than 100, especially together with orientation fixing enabled
+ ! may lead to WDA process termination because of an excessive CPU usage.
  */
 + (NSUInteger)mjpegScalingFactor;
 + (void)setMjpegScalingFactor:(NSUInteger)scalingFactor;

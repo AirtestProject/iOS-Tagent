@@ -9,15 +9,14 @@
 
 #import "FBSessionCommands.h"
 
-#import "FBApplication.h"
 #import "FBCapabilities.h"
 #import "FBConfiguration.h"
+#import "FBExceptions.h"
 #import "FBLogger.h"
 #import "FBProtocolHelpers.h"
 #import "FBRouteRequest.h"
 #import "FBSession.h"
 #import "FBSettings.h"
-#import "FBApplication.h"
 #import "FBRuntimeUtils.h"
 #import "FBActiveAppDetectionPoint.h"
 #import "FBXCodeCompatibility.h"
@@ -93,7 +92,7 @@
                                                               traceback:nil]);
   }
   if (nil == (capabilities = FBParseCapabilities((NSDictionary *)request.arguments[@"capabilities"], &error))) {
-    return FBResponseWithStatus([FBCommandStatus sessionNotCreatedError:error.description traceback:nil]);
+    return FBResponseWithStatus([FBCommandStatus sessionNotCreatedError:error.localizedDescription traceback:nil]);
   }
 
   [FBConfiguration resetSessionSettings];
@@ -138,28 +137,67 @@
   }
 
   NSString *bundleID = capabilities[FB_CAP_BUNDLE_ID];
-  FBApplication *app = nil;
+  NSString *initialUrl = capabilities[FB_CAP_INITIAL_URL];
+  XCUIApplication *app = nil;
   if (bundleID != nil) {
-    app = [[FBApplication alloc] initWithBundleIdentifier:bundleID];
+    app = [[XCUIApplication alloc] initWithBundleIdentifier:bundleID];
     BOOL forceAppLaunch = YES;
     if (nil != capabilities[FB_CAP_FORCE_APP_LAUNCH]) {
       forceAppLaunch = [capabilities[FB_CAP_FORCE_APP_LAUNCH] boolValue];
     }
-    NSUInteger appState = [app fb_state];
-    BOOL isAppRunning = appState >= 2;
+    XCUIApplicationState appState = app.state;
+    BOOL isAppRunning = appState >= XCUIApplicationStateRunningBackground;
     if (!isAppRunning || (isAppRunning && forceAppLaunch)) {
       app.fb_shouldWaitForQuiescence = nil == capabilities[FB_CAP_SHOULD_WAIT_FOR_QUIESCENCE]
         || [capabilities[FB_CAP_SHOULD_WAIT_FOR_QUIESCENCE] boolValue];
       app.launchArguments = (NSArray<NSString *> *)capabilities[FB_CAP_ARGUMENTS] ?: @[];
       app.launchEnvironment = (NSDictionary <NSString *, NSString *> *)capabilities[FB_CAP_ENVIRNOMENT] ?: @{};
-      [app launch];
-      if (![app running]) {
+      if (nil != initialUrl) {
+        if (app.running) {
+          [app terminate];
+        }
+        NSError *openError;
+        if (![XCUIDevice.sharedDevice fb_openUrl:initialUrl
+                                 withApplication:bundleID
+                                           error:&openError]) {
+          NSString *errorMsg = [NSString stringWithFormat:@"Cannot open the URL %@ with the %@ application. Original error: %@",
+                                initialUrl, bundleID, openError.localizedDescription];
+          return FBResponseWithStatus([FBCommandStatus sessionNotCreatedError:errorMsg traceback:nil]);
+        }
+      } else {
+        @try {
+          [app launch];
+        } @catch (NSException *e) {
+          return FBResponseWithStatus([FBCommandStatus sessionNotCreatedError:e.reason traceback:nil]);
+        }
+      }
+      if (!app.running) {
         NSString *errorMsg = [NSString stringWithFormat:@"Cannot launch %@ application. Make sure the correct bundle identifier has been provided in capabilities and check the device log for possible crash report occurrences", bundleID];
         return FBResponseWithStatus([FBCommandStatus sessionNotCreatedError:errorMsg
                                                                   traceback:nil]);
       }
-    } else if (appState < 4 && !forceAppLaunch) {
-      [app fb_activate];
+    } else if (appState == XCUIApplicationStateRunningBackground && !forceAppLaunch) {
+      if (nil != initialUrl) {
+        NSError *openError;
+        if (![XCUIDevice.sharedDevice fb_openUrl:initialUrl
+                                 withApplication:bundleID
+                                           error:&openError]) {
+          NSString *errorMsg = [NSString stringWithFormat:@"Cannot open the URL %@ with the %@ application. Original error: %@",
+                                initialUrl, bundleID, openError.localizedDescription];
+          return FBResponseWithStatus([FBCommandStatus sessionNotCreatedError:errorMsg traceback:nil]);
+        }
+      } else {
+        [app activate];
+      }
+    }
+  }
+
+  if (nil != initialUrl && nil == bundleID) {
+    NSError *openError;
+    if (![XCUIDevice.sharedDevice fb_openUrl:initialUrl error:&openError]) {
+      NSString *errorMsg = [NSString stringWithFormat:@"Cannot open the URL %@. Original error: %@",
+                            initialUrl, openError.localizedDescription];
+      return FBResponseWithStatus([FBCommandStatus sessionNotCreatedError:errorMsg traceback:nil]);
     }
   }
 
@@ -260,13 +298,14 @@
         },
       @"build" : buildInfo.copy,
       @"Version":@("1.2"),
+	  @"device": [self.class deviceNameByUserInterfaceIdiom:[UIDevice currentDevice].userInterfaceIdiom]
     }
   );
 }
 
 + (id<FBResponsePayload>)handleGetHealthCheck:(FBRouteRequest *)request
 {
-  if (![[XCUIDevice sharedDevice] fb_healthCheckWithApplication:[FBApplication fb_activeApplication]]) {
+  if (![[XCUIDevice sharedDevice] fb_healthCheckWithApplication:[XCUIApplication fb_activeApplication]]) {
     return FBResponseWithUnknownErrorFormat(@"Health check failed");
   }
   return FBResponseWithOK();
@@ -281,6 +320,7 @@
       FB_SETTING_MJPEG_SERVER_SCREENSHOT_QUALITY: @([FBConfiguration mjpegServerScreenshotQuality]),
       FB_SETTING_MJPEG_SERVER_FRAMERATE: @([FBConfiguration mjpegServerFramerate]),
       FB_SETTING_MJPEG_SCALING_FACTOR: @([FBConfiguration mjpegScalingFactor]),
+      FB_SETTING_MJPEG_FIX_ORIENTATION: @([FBConfiguration mjpegShouldFixOrientation]),
       FB_SETTING_SCREENSHOT_QUALITY: @([FBConfiguration screenshotQuality]),
       FB_SETTING_KEYBOARD_AUTOCORRECTION: @([FBConfiguration keyboardAutocorrection]),
       FB_SETTING_KEYBOARD_PREDICTION: @([FBConfiguration keyboardPrediction]),
@@ -328,6 +368,9 @@
   if (nil != [settings objectForKey:FB_SETTING_MJPEG_SCALING_FACTOR]) {
     [FBConfiguration setMjpegScalingFactor:[[settings objectForKey:FB_SETTING_MJPEG_SCALING_FACTOR] unsignedIntegerValue]];
   }
+  if (nil != [settings objectForKey:FB_SETTING_MJPEG_FIX_ORIENTATION]) {
+    [FBConfiguration setMjpegShouldFixOrientation:[[settings objectForKey:FB_SETTING_MJPEG_FIX_ORIENTATION] boolValue]];
+  }
   if (nil != [settings objectForKey:FB_SETTING_KEYBOARD_AUTOCORRECTION]) {
     [FBConfiguration setKeyboardAutocorrection:[[settings objectForKey:FB_SETTING_KEYBOARD_AUTOCORRECTION] boolValue]];
   }
@@ -360,7 +403,8 @@
     NSError *error;
     if (![FBActiveAppDetectionPoint.sharedInstance setCoordinatesWithString:(NSString *)[settings objectForKey:FB_SETTING_ACTIVE_APP_DETECTION_POINT]
                                                                       error:&error]) {
-      return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:error.description traceback:nil]);
+      return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:error.localizedDescription
+                                                                         traceback:nil]);
     }
   }
   if (nil != [settings objectForKey:FB_SETTING_INCLUDE_NON_MODAL_ELEMENTS]) {
@@ -391,7 +435,7 @@
     NSError *error;
     if (![FBConfiguration setScreenshotOrientation:(NSString *)[settings objectForKey:FB_SETTING_SCREENSHOT_ORIENTATION]
                                              error:&error]) {
-      return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:error.description
+      return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:error.localizedDescription
                                                                          traceback:nil]);
     }
   }
@@ -411,6 +455,10 @@
   ];
 }
 
+/**
+ Return current session information.
+ This response does not have any active application information.
+*/
 + (NSDictionary *)sessionInformation
 {
   return
@@ -420,15 +468,29 @@
   };
 }
 
+/*
+ Return the device kind as lower case
+*/
++ (NSString *)deviceNameByUserInterfaceIdiom:(UIUserInterfaceIdiom) userInterfaceIdiom
+{
+  if (userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+    return @"ipad";
+  } else if (userInterfaceIdiom == UIUserInterfaceIdiomTV) {
+    return @"apple tv";
+  } else if (userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+    return @"iphone";
+  }
+  // CarPlay, Mac, Vision UI or unknown are possible
+  return @"Unknown";
+  
+}
+
 + (NSDictionary *)currentCapabilities
 {
-  FBApplication *application = [FBSession activeSession].activeApplication;
   return
   @{
-    @"device": ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) ? @"ipad" : @"iphone",
-    @"sdkVersion": [[UIDevice currentDevice] systemVersion],
-    @"browserName": application.label ?: [NSNull null],
-    @"CFBundleIdentifier": application.bundleID ?: [NSNull null],
+    @"device": [self.class deviceNameByUserInterfaceIdiom:[UIDevice currentDevice].userInterfaceIdiom],
+    @"sdkVersion": [[UIDevice currentDevice] systemVersion]
   };
 }
 

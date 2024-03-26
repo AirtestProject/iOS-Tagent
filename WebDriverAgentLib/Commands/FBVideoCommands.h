@@ -7,14 +7,14 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-#import "FBBaseActionsSynthesizer.h"
+#import <Foundation/Foundation.h>
+
+#import <WebDriverAgentLib/FBCommandHandler.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if !TARGET_OS_TV
-@interface FBAppiumActionsSynthesizer : FBBaseActionsSynthesizer
+@interface FBVideoCommands : NSObject <FBCommandHandler>
 
 @end
-#endif
 
 NS_ASSUME_NONNULL_END

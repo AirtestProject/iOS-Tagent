@@ -9,8 +9,6 @@
 
 #import "FBKeyboard.h"
 
-
-#import "FBApplication.h"
 #import "FBConfiguration.h"
 #import "FBXCTestDaemonsProxy.h"
 #import "FBErrorBuilder.h"
@@ -25,35 +23,13 @@
 
 @implementation FBKeyboard
 
-+ (BOOL)typeText:(NSString *)text error:(NSError **)error
-{
-  return [self typeText:text frequency:[FBConfiguration maxTypingFrequency] error:error];
-}
-
-+ (BOOL)typeText:(NSString *)text frequency:(NSUInteger)frequency error:(NSError **)error
-{
-  __block BOOL didSucceed = NO;
-  __block NSError *innerError;
-  [FBRunLoopSpinner spinUntilCompletion:^(void(^completion)(void)){
-    [[FBXCTestDaemonsProxy testRunnerProxy]
-     _XCT_sendString:text
-     maximumFrequency:frequency
-     completion:^(NSError *typingError){
-       didSucceed = (typingError == nil);
-       innerError = typingError;
-       completion();
-     }];
-  }];
-  if (error) {
-    *error = innerError;
-  }
-  return didSucceed;
-}
-
-+ (BOOL)waitUntilVisibleForApplication:(XCUIApplication *)app timeout:(NSTimeInterval)timeout error:(NSError **)error
++ (BOOL)waitUntilVisibleForApplication:(XCUIApplication *)app 
+                               timeout:(NSTimeInterval)timeout
+                                 error:(NSError **)error
 {
   BOOL (^isKeyboardVisible)(void) = ^BOOL(void) {
-    if (!app.keyboard.exists) {
+    XCUIElement *keyboard = app.keyboards.fb_firstMatch;
+    if (nil == keyboard) {
       return NO;
     }
 
@@ -61,10 +37,9 @@
                                                                             NSDictionary *bindings) {
       return snapshot.label.length > 0;
     }];
-    XCUIElement *firstKey = [[app.keyboard descendantsMatchingType:XCUIElementTypeKey]
+    XCUIElement *firstKey = [[keyboard descendantsMatchingType:XCUIElementTypeKey]
                              matchingPredicate:keySearchPredicate].allElementsBoundByIndex.firstObject;
-    return firstKey.exists
-      && (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"13.0") ? firstKey.hittable : firstKey.fb_isVisible);
+    return firstKey.exists && firstKey.hittable;
   };
   NSString* errMessage = @"The on-screen keyboard must be present to send keys";
   if (timeout <= 0) {
@@ -80,5 +55,70 @@
      spinUntilTrue:isKeyboardVisible
      error:error];
 }
+
+#if (!TARGET_OS_TV && __clang_major__ >= 15)
+
++ (NSString *)keyValueForName:(NSString *)name
+{
+  static dispatch_once_t onceKeys;
+  static NSDictionary<NSString *, NSString *> *keysMapping;
+  dispatch_once(&onceKeys, ^{
+    keysMapping = @{
+      @"XCUIKeyboardKeyDelete": XCUIKeyboardKeyDelete,
+      @"XCUIKeyboardKeyReturn": XCUIKeyboardKeyReturn,
+      @"XCUIKeyboardKeyEnter": XCUIKeyboardKeyEnter,
+      @"XCUIKeyboardKeyTab": XCUIKeyboardKeyTab,
+      @"XCUIKeyboardKeySpace": XCUIKeyboardKeySpace,
+      @"XCUIKeyboardKeyEscape": XCUIKeyboardKeyEscape,
+
+      @"XCUIKeyboardKeyUpArrow": XCUIKeyboardKeyUpArrow,
+      @"XCUIKeyboardKeyDownArrow": XCUIKeyboardKeyDownArrow,
+      @"XCUIKeyboardKeyLeftArrow": XCUIKeyboardKeyLeftArrow,
+      @"XCUIKeyboardKeyRightArrow": XCUIKeyboardKeyRightArrow,
+
+      @"XCUIKeyboardKeyF1": XCUIKeyboardKeyF1,
+      @"XCUIKeyboardKeyF2": XCUIKeyboardKeyF2,
+      @"XCUIKeyboardKeyF3": XCUIKeyboardKeyF3,
+      @"XCUIKeyboardKeyF4": XCUIKeyboardKeyF4,
+      @"XCUIKeyboardKeyF5": XCUIKeyboardKeyF5,
+      @"XCUIKeyboardKeyF6": XCUIKeyboardKeyF6,
+      @"XCUIKeyboardKeyF7": XCUIKeyboardKeyF7,
+      @"XCUIKeyboardKeyF8": XCUIKeyboardKeyF8,
+      @"XCUIKeyboardKeyF9": XCUIKeyboardKeyF9,
+      @"XCUIKeyboardKeyF10": XCUIKeyboardKeyF10,
+      @"XCUIKeyboardKeyF11": XCUIKeyboardKeyF11,
+      @"XCUIKeyboardKeyF12": XCUIKeyboardKeyF12,
+      @"XCUIKeyboardKeyF13": XCUIKeyboardKeyF13,
+      @"XCUIKeyboardKeyF14": XCUIKeyboardKeyF14,
+      @"XCUIKeyboardKeyF15": XCUIKeyboardKeyF15,
+      @"XCUIKeyboardKeyF16": XCUIKeyboardKeyF16,
+      @"XCUIKeyboardKeyF17": XCUIKeyboardKeyF17,
+      @"XCUIKeyboardKeyF18": XCUIKeyboardKeyF18,
+      @"XCUIKeyboardKeyF19": XCUIKeyboardKeyF19,
+
+      @"XCUIKeyboardKeyForwardDelete": XCUIKeyboardKeyForwardDelete,
+      @"XCUIKeyboardKeyHome": XCUIKeyboardKeyHome,
+      @"XCUIKeyboardKeyEnd": XCUIKeyboardKeyEnd,
+      @"XCUIKeyboardKeyPageUp": XCUIKeyboardKeyPageUp,
+      @"XCUIKeyboardKeyPageDown": XCUIKeyboardKeyPageDown,
+      @"XCUIKeyboardKeyClear": XCUIKeyboardKeyClear,
+      @"XCUIKeyboardKeyHelp": XCUIKeyboardKeyHelp,
+
+      @"XCUIKeyboardKeyCapsLock": XCUIKeyboardKeyCapsLock,
+      @"XCUIKeyboardKeyShift": XCUIKeyboardKeyShift,
+      @"XCUIKeyboardKeyControl": XCUIKeyboardKeyControl,
+      @"XCUIKeyboardKeyOption": XCUIKeyboardKeyOption,
+      @"XCUIKeyboardKeyCommand": XCUIKeyboardKeyCommand,
+      @"XCUIKeyboardKeyRightShift": XCUIKeyboardKeyRightShift,
+      @"XCUIKeyboardKeyRightControl": XCUIKeyboardKeyRightControl,
+      @"XCUIKeyboardKeyRightOption": XCUIKeyboardKeyRightOption,
+      @"XCUIKeyboardKeyRightCommand": XCUIKeyboardKeyRightCommand,
+      @"XCUIKeyboardKeySecondaryFn": XCUIKeyboardKeySecondaryFn
+    };
+  });
+  return keysMapping[name];
+}
+
+#endif
 
 @end
