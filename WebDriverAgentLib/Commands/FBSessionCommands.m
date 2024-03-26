@@ -298,7 +298,7 @@
         },
       @"build" : buildInfo.copy,
       @"Version":@("1.2"),
-	  @"device": [self.class deviceNameByUserInterfaceIdiom:[UIDevice currentDevice].userInterfaceIdiom]
+	    @"device": [self.class deviceNameByUserInterfaceIdiom:[UIDevice currentDevice].userInterfaceIdiom]
     }
   );
 }
