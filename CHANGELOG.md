@@ -1,3 +1,10 @@
+## [8.0.2](https://github.com/appium/WebDriverAgent/compare/v8.0.1...v8.0.2) (2024-03-26)
+
+
+### Miscellaneous Chores
+
+* **deps:** bump appium-ios-simulator from 5.5.3 to 6.0.0 ([#874](https://github.com/appium/WebDriverAgent/issues/874)) ([72f2a97](https://github.com/appium/WebDriverAgent/commit/72f2a97ec31dbb3c66e5f459e0d7fd417c197d5d))
+
 ## [8.0.1](https://github.com/appium/WebDriverAgent/compare/v8.0.0...v8.0.1) (2024-03-26)
 
 
