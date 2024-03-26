@@ -1,3 +1,10 @@
+## [8.1.0](https://github.com/appium/WebDriverAgent/compare/v8.0.2...v8.1.0) (2024-03-26)
+
+
+### Features
+
+* add updatedWDABundleIdSuffix to handle bundle id for updatedWDABundleId with usePreinstalledWDA ([#871](https://github.com/appium/WebDriverAgent/issues/871)) ([d79b624](https://github.com/appium/WebDriverAgent/commit/d79b6245966baaa57f7a1f785d7f9b4ea5a7f104))
+
 ## [8.0.2](https://github.com/appium/WebDriverAgent/compare/v8.0.1...v8.0.2) (2024-03-26)
 
 
