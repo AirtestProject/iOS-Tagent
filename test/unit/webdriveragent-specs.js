@@ -340,3 +340,45 @@ describe('setupCaching()', function () {
     });
   });
 });
+
+
+describe('usePreinstalledWDA related functions', function () {
+  describe('bundleIdForXctest', function () {
+    it('should have xctrunner automatically', function () {
+      const args = Object.assign({}, fakeConstructorArgs);
+      args.updatedWDABundleId = 'io.appium.wda';
+      const agent = new WebDriverAgent({}, args);
+      agent.bundleIdForXctest.should.equal('io.appium.wda.xctrunner');
+    });
+
+    it('should have xctrunner automatically with default bundle id', function () {
+      const args = Object.assign({}, fakeConstructorArgs);
+      const agent = new WebDriverAgent({}, args);
+      agent.bundleIdForXctest.should.equal('com.facebook.WebDriverAgentRunner.xctrunner');
+    });
+
+    it('should allow an empty string as xctrunner suffix', function () {
+      const args = Object.assign({}, fakeConstructorArgs);
+      args.updatedWDABundleId = 'io.appium.wda';
+      args.updatedWDABundleIdSuffix = '';
+      const agent = new WebDriverAgent({}, args);
+      agent.bundleIdForXctest.should.equal('io.appium.wda');
+    });
+
+    it('should allow an empty string as xctrunner suffix with default bundle id', function () {
+      const args = Object.assign({}, fakeConstructorArgs);
+      args.updatedWDABundleIdSuffix = '';
+      const agent = new WebDriverAgent({}, args);
+      agent.bundleIdForXctest.should.equal('com.facebook.WebDriverAgentRunner');
+    });
+
+    it('should have an arbitrary xctrunner suffix', function () {
+      const args = Object.assign({}, fakeConstructorArgs);
+      args.updatedWDABundleId = 'io.appium.wda';
+      args.updatedWDABundleIdSuffix = '.customsuffix';
+      const agent = new WebDriverAgent({}, args);
+      agent.bundleIdForXctest.should.equal('io.appium.wda.customsuffix');
+    });
+
+  });
+});
