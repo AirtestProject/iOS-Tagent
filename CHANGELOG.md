@@ -1,3 +1,10 @@
+## [8.2.0](https://github.com/appium/WebDriverAgent/compare/v8.1.0...v8.2.0) (2024-03-28)
+
+
+### Features
+
+* Add a capability to customize the default  state change timeout on app startup ([#877](https://github.com/appium/WebDriverAgent/issues/877)) ([98351c3](https://github.com/appium/WebDriverAgent/commit/98351c358367e67e63701612fd3702d53437e12e))
+
 ## [8.1.0](https://github.com/appium/WebDriverAgent/compare/v8.0.2...v8.1.0) (2024-03-26)
 
 
