@@ -1,3 +1,10 @@
+## [8.2.1](https://github.com/appium/WebDriverAgent/compare/v8.2.0...v8.2.1) (2024-03-28)
+
+
+### Miscellaneous Chores
+
+* wait for wda start in sim as well for preinstalled wda start ([#876](https://github.com/appium/WebDriverAgent/issues/876)) ([6c8920a](https://github.com/appium/WebDriverAgent/commit/6c8920adddb373b463259c3e6c14cb3c49ecbf2b))
+
 ## [8.2.0](https://github.com/appium/WebDriverAgent/compare/v8.1.0...v8.2.0) (2024-03-28)
 
 
