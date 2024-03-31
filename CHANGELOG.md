@@ -1,3 +1,10 @@
+## [8.3.1](https://github.com/appium/WebDriverAgent/compare/v8.3.0...v8.3.1) (2024-03-31)
+
+
+### Miscellaneous Chores
+
+* do not cleanup with this.usePrebuiltWDA ([#882](https://github.com/appium/WebDriverAgent/issues/882)) ([0436e95](https://github.com/appium/WebDriverAgent/commit/0436e95752826bee7786577ac1bc0d056af11bc8))
+
 ## [8.3.0](https://github.com/appium/WebDriverAgent/compare/v8.2.1...v8.3.0) (2024-03-29)
 
 
