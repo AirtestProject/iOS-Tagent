@@ -1,3 +1,10 @@
+## [8.4.0](https://github.com/appium/WebDriverAgent/compare/v8.3.1...v8.4.0) (2024-04-01)
+
+
+### Features
+
+* add system screen size/width in the system info endpoint ([#881](https://github.com/appium/WebDriverAgent/issues/881)) ([5ebc71c](https://github.com/appium/WebDriverAgent/commit/5ebc71c6ca2b364d44a44716e794885f8d3b6d9c))
+
 ## [8.3.1](https://github.com/appium/WebDriverAgent/compare/v8.3.0...v8.3.1) (2024-03-31)
 
 
