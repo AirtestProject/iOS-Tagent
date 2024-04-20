@@ -1,3 +1,10 @@
+## [8.5.5](https://github.com/appium/WebDriverAgent/compare/v8.5.4...v8.5.5) (2024-04-20)
+
+
+### Bug Fixes
+
+* xcode warning about com.facebook.wda.lib ([#892](https://github.com/appium/WebDriverAgent/issues/892)) ([6398079](https://github.com/appium/WebDriverAgent/commit/63980796d8f40bd68ffb5af4b085a2348e544a13))
+
 ## [8.5.4](https://github.com/appium/WebDriverAgent/compare/v8.5.3...v8.5.4) (2024-04-20)
 
 
