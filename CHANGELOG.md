@@ -1,3 +1,10 @@
+## [8.5.6](https://github.com/appium/WebDriverAgent/compare/v8.5.5...v8.5.6) (2024-04-20)
+
+
+### Bug Fixes
+
+* unit test for linux ([#894](https://github.com/appium/WebDriverAgent/issues/894)) ([3a90158](https://github.com/appium/WebDriverAgent/commit/3a9015898d70b177cb6cbfcaf412dfa3c4ec3865))
+
 ## [8.5.5](https://github.com/appium/WebDriverAgent/compare/v8.5.4...v8.5.5) (2024-04-20)
 
 
