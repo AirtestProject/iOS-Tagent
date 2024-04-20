@@ -1,3 +1,10 @@
+## [8.5.4](https://github.com/appium/WebDriverAgent/compare/v8.5.3...v8.5.4) (2024-04-20)
+
+
+### Miscellaneous Chores
+
+* remove old iOS/Xcode related test code and errors ([#890](https://github.com/appium/WebDriverAgent/issues/890)) ([2fd0dea](https://github.com/appium/WebDriverAgent/commit/2fd0dead0c86d6be08e040360dec9ea085ba0392))
+
 ## [8.5.3](https://github.com/appium/WebDriverAgent/compare/v8.5.2...v8.5.3) (2024-04-19)
 
 
