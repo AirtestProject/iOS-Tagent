@@ -43,11 +43,11 @@ describe('utils', function () {
         .withExactArgs(path.resolve(`${bootstrapPath}/${udid}_${sdkVersion}.xctestrun`))
         .returns(false);
       mocks.fs.expects('exists')
-        .withExactArgs(path.resolve(`${bootstrapPath}/WebDriverAgentRunner_iphoneos${sdkVersion}-${get_arch()}.xctestrun`))
+        .withExactArgs(path.resolve(`${bootstrapPath}/WebDriverAgentRunner_iphoneos${sdkVersion}-arm64.xctestrun`))
         .returns(true);
       mocks.fs.expects('copyFile')
         .withExactArgs(
-          path.resolve(`${bootstrapPath}/WebDriverAgentRunner_iphoneos${sdkVersion}-${get_arch()}.xctestrun`),
+          path.resolve(`${bootstrapPath}/WebDriverAgentRunner_iphoneos${sdkVersion}-arm64.xctestrun`),
           path.resolve(`${bootstrapPath}/${udid}_${sdkVersion}.xctestrun`)
         )
         .returns(true);
