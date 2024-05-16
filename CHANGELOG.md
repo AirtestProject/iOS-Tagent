@@ -1,3 +1,10 @@
+## [8.5.7](https://github.com/appium/WebDriverAgent/compare/v8.5.6...v8.5.7) (2024-05-16)
+
+
+### Miscellaneous Chores
+
+* Update dev dependencies ([e49dcf2](https://github.com/appium/WebDriverAgent/commit/e49dcf2afb0a10edc7085ac56d297234c00d57b0))
+
 ## [8.5.6](https://github.com/appium/WebDriverAgent/compare/v8.5.5...v8.5.6) (2024-04-20)
 
 
