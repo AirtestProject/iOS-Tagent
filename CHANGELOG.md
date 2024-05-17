@@ -1,3 +1,10 @@
+## [8.6.0](https://github.com/appium/WebDriverAgent/compare/v8.5.7...v8.6.0) (2024-05-17)
+
+
+### Features
+
+* support maxTypingFrequency in settings api ([#904](https://github.com/appium/WebDriverAgent/issues/904)) ([fa4776a](https://github.com/appium/WebDriverAgent/commit/fa4776a2bfa15cbec8bba35d8ed11318d9629934))
+
 ## [8.5.7](https://github.com/appium/WebDriverAgent/compare/v8.5.6...v8.5.7) (2024-05-16)
 
 
