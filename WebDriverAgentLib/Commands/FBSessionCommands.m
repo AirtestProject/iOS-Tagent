@@ -297,7 +297,7 @@
           @"wifiIP" : [XCUIDevice sharedDevice].fb_acturalWifiIPAddress ?: [NSNull null],
         },
       @"build" : buildInfo.copy,
-      @"Version":@("1.2"),
+      @"Version":@("1.3"),
 	    @"device": [self.class deviceNameByUserInterfaceIdiom:[UIDevice currentDevice].userInterfaceIdiom]
     }
   );
