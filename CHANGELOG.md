@@ -1,3 +1,9 @@
+## [8.7.1](https://github.com/appium/WebDriverAgent/compare/v8.7.0...v8.7.1) (2024-06-04)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump semantic-release from 23.1.1 to 24.0.0 and conventional-changelog-conventionalcommits to 8.0.0 ([#908](https://github.com/appium/WebDriverAgent/issues/908)) ([26019ec](https://github.com/appium/WebDriverAgent/commit/26019eca9b7331353e26a1014bc4afcecc0450f3))
+
 ## [8.7.0](https://github.com/appium/WebDriverAgent/compare/v8.6.0...v8.7.0) (2024-06-01)
 
 
