@@ -1,3 +1,9 @@
+## [8.7.2](https://github.com/appium/WebDriverAgent/compare/v8.7.1...v8.7.2) (2024-06-04)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump sinon from 17.0.2 to 18.0.0 ([#903](https://github.com/appium/WebDriverAgent/issues/903)) ([87e4ba5](https://github.com/appium/WebDriverAgent/commit/87e4ba5ce3868d99ac889795039936be119ef87a))
+
 ## [8.7.1](https://github.com/appium/WebDriverAgent/compare/v8.7.0...v8.7.1) (2024-06-04)
 
 ### Miscellaneous Chores
