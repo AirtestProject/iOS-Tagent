@@ -12,7 +12,6 @@
 #import <XCTest/XCUIDevice.h>
 #import <CoreLocation/CoreLocation.h>
 
-#import "FBApplication.h"
 #import "FBConfiguration.h"
 #import "FBKeyboard.h"
 #import "FBNotificationsHelper.h"
@@ -24,6 +23,7 @@
 #import "FBScreen.h"
 #import "FBSession.h"
 #import "FBXCodeCompatibility.h"
+#import "XCUIApplication.h"
 #import "XCUIApplication+FBHelpers.h"
 #import "XCUIDevice+FBHelpers.h"
 #import "XCUIElement.h"
@@ -53,7 +53,9 @@
     [[FBRoute GET:@"/wda/activeAppInfo"].withoutSession respondWithTarget:self action:@selector(handleActiveAppInfo:)],
 #if !TARGET_OS_TV // tvOS does not provide relevant APIs
     [[FBRoute POST:@"/wda/setPasteboard"] respondWithTarget:self action:@selector(handleSetPasteboard:)],
+    [[FBRoute POST:@"/wda/setPasteboard"].withoutSession respondWithTarget:self action:@selector(handleSetPasteboard:)],
     [[FBRoute POST:@"/wda/getPasteboard"] respondWithTarget:self action:@selector(handleGetPasteboard:)],
+    [[FBRoute POST:@"/wda/getPasteboard"].withoutSession respondWithTarget:self action:@selector(handleGetPasteboard:)],
     [[FBRoute GET:@"/wda/batteryInfo"] respondWithTarget:self action:@selector(handleGetBatteryInfo:)],
 #endif
     [[FBRoute POST:@"/wda/pressButton"] respondWithTarget:self action:@selector(handlePressButtonCommand:)],
@@ -66,10 +68,10 @@
 
     // modified start tag 
     [[FBRoute POST:@"/wda/performIoHidEvent"].withoutSession respondWithTarget:self action:@selector(handlePeformIOHIDEvent:)],
-    [[FBRoute POST:@"/wda/tap"] respondWithTarget:self action:@selector(handleDeviceTap:)],
-    [[FBRoute POST:@"/wda/tap"].withoutSession respondWithTarget:self action:@selector(handleDeviceTap:)],
-    [[FBRoute POST:@"/wda/swipe"] respondWithTarget:self action:@selector(handleDeviceSwipe:)],
-    [[FBRoute POST:@"/wda/swipe"].withoutSession respondWithTarget:self action:@selector(handleDeviceSwipe:)],
+    [[FBRoute POST:@"/wda/deviceTap"] respondWithTarget:self action:@selector(handleDeviceTap:)],
+    [[FBRoute POST:@"/wda/deviceTap"].withoutSession respondWithTarget:self action:@selector(handleDeviceTap:)],
+    [[FBRoute POST:@"/wda/deviceSwipe"] respondWithTarget:self action:@selector(handleDeviceSwipe:)],
+    [[FBRoute POST:@"/wda/deviceSwipe"].withoutSession respondWithTarget:self action:@selector(handleDeviceSwipe:)],
     // end tag
 
     [[FBRoute POST:@"/wda/expectNotification"] respondWithTarget:self action:@selector(handleExpectNotification:)],
@@ -82,6 +84,9 @@
     [[FBRoute GET:@"/wda/device/location"] respondWithTarget:self action:@selector(handleGetLocation:)],
     [[FBRoute GET:@"/wda/device/location"].withoutSession respondWithTarget:self action:@selector(handleGetLocation:)],
 #if !TARGET_OS_TV // tvOS does not provide relevant APIs
+#if __clang_major__ >= 15
+    [[FBRoute POST:@"/wda/element/:uuid/keyboardInput"] respondWithTarget:self action:@selector(handleKeyboardInput:)],
+#endif
     [[FBRoute GET:@"/wda/simulatedLocation"] respondWithTarget:self action:@selector(handleGetSimulatedLocation:)],
     [[FBRoute GET:@"/wda/simulatedLocation"].withoutSession respondWithTarget:self action:@selector(handleGetSimulatedLocation:)],
     [[FBRoute POST:@"/wda/simulatedLocation"] respondWithTarget:self action:@selector(handleSetSimulatedLocation:)],
@@ -180,7 +185,7 @@
 
 + (id<FBResponsePayload>)handleActiveAppInfo:(FBRouteRequest *)request
 {
-  XCUIApplication *app = request.session.activeApplication ?: FBApplication.fb_activeApplication;
+  XCUIApplication *app = request.session.activeApplication ?: XCUIApplication.fb_activeApplication;
   return FBResponseWithObject(@{
     @"pid": @(app.processID),
     @"bundleId": app.bundleID,
@@ -464,10 +469,8 @@
 #endif
   }];
 
-  if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")) {
-    // https://developer.apple.com/documentation/foundation/nsprocessinfothermalstate
-    deviceInfo[@"thermalState"] = @(NSProcessInfo.processInfo.thermalState);
-  }
+  // https://developer.apple.com/documentation/foundation/nsprocessinfothermalstate
+  deviceInfo[@"thermalState"] = @(NSProcessInfo.processInfo.thermalState);
 
   return FBResponseWithObject(deviceInfo);
 }
@@ -585,6 +588,74 @@
   }
   return FBResponseWithOK();
 }
+
+#if __clang_major__ >= 15
++ (id<FBResponsePayload>)handleKeyboardInput:(FBRouteRequest *)request
+{
+  FBElementCache *elementCache = request.session.elementCache;
+  BOOL hasElement = ![request.parameters[@"uuid"] isEqual:@"0"];
+  XCUIElement *destination = hasElement
+    ? [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]]
+    : request.session.activeApplication;
+  id keys = request.arguments[@"keys"];
+
+  if (![destination respondsToSelector:@selector(typeKey:modifierFlags:)]) {
+    NSString *message = @"typeKey API is only supported since Xcode15 and iPadOS 17";
+    return FBResponseWithStatus([FBCommandStatus unsupportedOperationErrorWithMessage:message
+                                                                            traceback:nil]);
+  }
+
+  if (![keys isKindOfClass:NSArray.class]) {
+    NSString *message = @"The 'keys' argument must be an array";
+    return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:message
+                                                                       traceback:nil]);
+  }
+  for (id item in (NSArray *)keys) {
+    if ([item isKindOfClass:NSString.class]) {
+      NSString *keyValue = [FBKeyboard keyValueForName:item] ?: item;
+      [destination typeKey:keyValue modifierFlags:XCUIKeyModifierNone];
+    } else if ([item isKindOfClass:NSDictionary.class]) {
+      id key = [(NSDictionary *)item objectForKey:@"key"];
+      if (![key isKindOfClass:NSString.class]) {
+        NSString *message = [NSString stringWithFormat:@"All dictionaries of 'keys' array must have the 'key' item of type string. Got '%@' instead in the item %@", key, item];
+        return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:message
+                                                                           traceback:nil]);
+      }
+      id modifiers = [(NSDictionary *)item objectForKey:@"modifierFlags"];
+      NSUInteger modifierFlags = XCUIKeyModifierNone;
+      if ([modifiers isKindOfClass:NSNumber.class]) {
+        modifierFlags = [(NSNumber *)modifiers unsignedIntValue];
+      }
+      NSString *keyValue = [FBKeyboard keyValueForName:item] ?: key;
+      [destination typeKey:keyValue modifierFlags:modifierFlags];
+    } else {
+      NSString *message = @"All items of the 'keys' array must be either dictionaries or strings";
+      return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:message
+                                                                         traceback:nil]);
+    }
+  }
+  return FBResponseWithOK();
+}
 #endif
+#endif
+
++ (id<FBResponsePayload>)handlePerformAccessibilityAudit:(FBRouteRequest *)request
+{
+  NSError *error;
+  NSArray *requestedTypes = request.arguments[@"auditTypes"];
+  NSMutableSet *typesSet = [NSMutableSet set];
+  if (nil == requestedTypes || 0 == [requestedTypes count]) {
+    [typesSet addObject:@"XCUIAccessibilityAuditTypeAll"];
+  } else {
+    [typesSet addObjectsFromArray:requestedTypes];
+  }
+  NSArray *result = [request.session.activeApplication fb_performAccessibilityAuditWithAuditTypesSet:typesSet.copy
+                                                                                               error:&error];
+  if (nil == result) {
+    return FBResponseWithStatus([FBCommandStatus unknownErrorWithMessage:error.description
+                                                               traceback:nil]);
+  }
+  return FBResponseWithObject(result);
+}
 
 @end

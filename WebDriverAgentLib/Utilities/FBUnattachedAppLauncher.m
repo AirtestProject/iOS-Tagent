@@ -8,6 +8,9 @@
  */
 
 #import "FBUnattachedAppLauncher.h"
+
+#import <MobileCoreServices/MobileCoreServices.h>
+
 #import "LSApplicationWorkspace.h"
 
 @implementation FBUnattachedAppLauncher

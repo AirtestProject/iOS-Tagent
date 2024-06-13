@@ -8,37 +8,20 @@
  */
 
 #import <XCTest/XCTest.h>
+@class UTType;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface FBScreenshot : NSObject
 
 /**
- Returns YES if the current OS SDK supports advanced screenshoting APIs (added since Xcode SDK 10)
- */
-+ (BOOL)isNewScreenshotAPISupported;
-
-/**
  Retrieves non-scaled screenshot of the whole screen
 
- @param quality The number in range 0-2, where 2 (JPG) is the lowest and 0 (PNG) is the highest quality.
+ @param quality The number in range 0-3, where 0 is PNG (lossless), 3 is HEIC (lossless), 1- low quality JPEG and 2 - high quality JPEG
  @param error If there is an error, upon return contains an NSError object that describes the problem.
- @return Device screenshot as PNG- or JPG-encoded data or nil in case of failure
+ @return Device screenshot as PNG-encoded data or nil in case of failure
  */
 + (nullable NSData *)takeInOriginalResolutionWithQuality:(NSUInteger)quality
-                                                   error:(NSError **)error;
-
-/**
- Retrieves non-scaled screenshot of the particular screen rectangle
-
- @param quality The number in range 0-2, where 2 (JPG) is the lowest and 0 (PNG) is the highest quality.
- @param rect The bounding rectange for the screenshot. The value is expected be non-scaled one.
-             CGRectNull could be used to take a screenshot of the full screen.
- @param error If there is an error, upon return contains an NSError object that describes the problem.
- @return Device screenshot as PNG- or JPG-encoded data or nil in case of failure
- */
-+ (nullable NSData *)takeInOriginalResolutionWithQuality:(NSUInteger)quality
-                                                    rect:(CGRect)rect
                                                    error:(NSError **)error;
 
 /**
@@ -46,14 +29,14 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param screenID The screen identifier to take the screenshot from
  @param compressionQuality Normalized screenshot quality value in range 0..1, where 1 is the best quality
- @param uti kUTType... constant, which defines the type of the returned screenshot image
+ @param uti UTType... constant, which defines the type of the returned screenshot image
  @param timeout how much time to allow for the screenshot to be taken
  @param error If there is an error, upon return contains an NSError object that describes the problem.
- @return Device screenshot as PNG- or JPG-encoded data or nil in case of failure
+ @return Device screenshot as PNG-, HEIC- or JPG-encoded data or nil in case of failure
  */
 + (nullable NSData *)takeInOriginalResolutionWithScreenID:(long long)screenID
                                        compressionQuality:(CGFloat)compressionQuality
-                                                      uti:(NSString *)uti
+                                                      uti:(UTType *)uti
                                                   timeout:(NSTimeInterval)timeout
                                                     error:(NSError **)error;
 

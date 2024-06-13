@@ -60,7 +60,7 @@ static bool fb_isLocked;
 
 - (BOOL)fb_goToHomescreenWithError:(NSError **)error
 {
-  return [FBApplication fb_switchToSystemApplicationWithError:error];
+  return [XCUIApplication fb_switchToSystemApplicationWithError:error];
 }
 
 - (BOOL)fb_lockScreen:(NSError **)error
@@ -90,11 +90,7 @@ static bool fb_isLocked;
   [self pressButton:XCUIDeviceButtonHome];
   [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:FBHomeButtonCoolOffTime]];
 #if !TARGET_OS_TV
-  if (SYSTEM_VERSION_LESS_THAN(@"10.0")) {
-    [[FBApplication fb_activeApplication] swipeRight];
-  } else {
-    [self pressButton:XCUIDeviceButtonHome];
-  }
+  [self pressButton:XCUIDeviceButtonHome];
 #else
   [self pressButton:XCUIDeviceButtonHome];
 #endif
@@ -142,7 +138,7 @@ static bool fb_isLocked;
       continue;
     }
     NSString *interfaceName = [NSString stringWithUTF8String:temp_addr->ifa_name];
-    if(![interfaceName containsString:@"en"]) {
+    if(![interfaceName isEqualToString:@"en0"]) {
       temp_addr = temp_addr->ifa_next;
       continue;
     }
@@ -423,6 +419,16 @@ static bool fb_isLocked;
     [invocation invoke];
     return YES;
   }
+
+#if __clang_major__ >= 15 || (__clang_major__ >= 14 && __clang_minor__ >= 0 && __clang_patchlevel__ >= 3)
+  // Xcode 14.3.1 can build these values.
+  // For iOS 17+
+  if ([self respondsToSelector:NSSelectorFromString(@"appearance")]) {
+    self.appearance = (XCUIDeviceAppearance) appearance;
+    return YES;
+  }
+#endif
+
   return [[[FBErrorBuilder builder]
            withDescriptionFormat:@"Current Xcode SDK does not support appearance changing"]
           buildError:error];
@@ -430,6 +436,14 @@ static bool fb_isLocked;
 
 - (NSNumber *)fb_getAppearance
 {
+#if __clang_major__ >= 15 || (__clang_major__ >= 14 && __clang_minor__ >= 0 && __clang_patchlevel__ >= 3)
+  // Xcode 14.3.1 can build these values.
+  // For iOS 17+
+  if ([self respondsToSelector:NSSelectorFromString(@"appearance")]) {
+    return [NSNumber numberWithLongLong:[self appearance]];
+  }
+#endif
+
   return [self respondsToSelector:@selector(appearanceMode)]
   ? [NSNumber numberWithLongLong:[self appearanceMode]]
   : nil;

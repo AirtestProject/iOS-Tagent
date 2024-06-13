@@ -24,7 +24,8 @@
     commandStatus = [FBCommandStatus noSuchDriverErrorWithMessage:exception.reason
                                                         traceback:traceback];
   } else if ([exception.name isEqualToString:FBInvalidArgumentException]
-             || [exception.name isEqualToString:FBElementAttributeUnknownException]) {
+             || [exception.name isEqualToString:FBElementAttributeUnknownException]
+             || [exception.name isEqualToString:FBApplicationMissingException]) {
     commandStatus = [FBCommandStatus invalidArgumentErrorWithMessage:exception.reason
                                                            traceback:traceback];
   } else if ([exception.name isEqualToString:FBApplicationCrashedException]
@@ -44,6 +45,9 @@
   } else if ([exception.name isEqualToString:FBTimeoutException]) {
     commandStatus = [FBCommandStatus timeoutErrorWithMessage:exception.reason
                                                    traceback:traceback];
+  } else if ([exception.name isEqualToString:FBSessionCreationException]) {
+    commandStatus = [FBCommandStatus sessionNotCreatedError:exception.reason
+                                                  traceback:traceback];
   } else {
     commandStatus = [FBCommandStatus unknownErrorWithMessage:exception.reason
                                                    traceback:traceback];

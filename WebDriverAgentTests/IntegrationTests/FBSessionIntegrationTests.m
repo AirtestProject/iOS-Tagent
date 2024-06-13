@@ -10,12 +10,14 @@
 #import <XCTest/XCTest.h>
 
 #import "FBIntegrationTestCase.h"
-#import "FBApplication.h"
+#import "FBExceptions.h"
 #import "FBMacros.h"
 #import "FBSession.h"
 #import "FBXCodeCompatibility.h"
 #import "FBTestMacros.h"
 #import "FBUnattachedAppLauncher.h"
+#import "XCUIApplication+FBHelpers.h"
+#import "XCUIApplication.h"
 
 @interface FBSession (Tests)
 
@@ -34,7 +36,7 @@ static NSString *const SETTINGS_BUNDLE_ID = @"com.apple.Preferences";
 {
   [super setUp];
   [self launchApplication];
-  FBApplication *app = [[FBApplication alloc] initWithBundleIdentifier:self.testedApplication.bundleID];
+  XCUIApplication *app = [[XCUIApplication alloc] initWithBundleIdentifier:self.testedApplication.bundleID];
   self.session = [FBSession initWithApplication:app];
 }
 
@@ -46,7 +48,7 @@ static NSString *const SETTINGS_BUNDLE_ID = @"com.apple.Preferences";
 
 - (void)testSettingsAppCanBeOpenedInScopeOfTheCurrentSession
 {
-  FBApplication *testedApp = FBApplication.fb_activeApplication;
+  XCUIApplication *testedApp = XCUIApplication.fb_activeApplication;
   [self.session launchApplicationWithBundleId:SETTINGS_BUNDLE_ID
                       shouldWaitForQuiescence:nil
                                     arguments:nil
@@ -60,7 +62,7 @@ static NSString *const SETTINGS_BUNDLE_ID = @"com.apple.Preferences";
 
 - (void)testSettingsAppCanBeReopenedInScopeOfTheCurrentSession
 {
-  FBApplication *systemApp = self.springboard;
+  XCUIApplication *systemApp = self.springboard;
   [self.session launchApplicationWithBundleId:SETTINGS_BUNDLE_ID
                       shouldWaitForQuiescence:nil
                                     arguments:nil
@@ -77,7 +79,7 @@ static NSString *const SETTINGS_BUNDLE_ID = @"com.apple.Preferences";
 
 - (void)testMainAppCanBeReactivatedInScopeOfTheCurrentSession
 {
-  FBApplication *testedApp = FBApplication.fb_activeApplication;
+  XCUIApplication *testedApp = XCUIApplication.fb_activeApplication;
   [self.session launchApplicationWithBundleId:SETTINGS_BUNDLE_ID
                       shouldWaitForQuiescence:nil
                                     arguments:nil
@@ -89,8 +91,8 @@ static NSString *const SETTINGS_BUNDLE_ID = @"com.apple.Preferences";
 
 - (void)testMainAppCanBeRestartedInScopeOfTheCurrentSession
 {
-  FBApplication *systemApp = self.springboard;
-  FBApplication *testedApp = [[FBApplication alloc] initWithBundleIdentifier:self.testedApplication.bundleID];
+  XCUIApplication *systemApp = self.springboard;
+  XCUIApplication *testedApp = [[XCUIApplication alloc] initWithBundleIdentifier:self.testedApplication.bundleID];
   [self.session terminateApplicationWithBundleId:testedApp.bundleID];
   FBAssertWaitTillBecomesTrue([self.session.activeApplication.bundleID isEqualToString:systemApp.bundleID]);
   [self.session launchApplicationWithBundleId:testedApp.bundleID
@@ -104,7 +106,29 @@ static NSString *const SETTINGS_BUNDLE_ID = @"com.apple.Preferences";
 {
   [FBUnattachedAppLauncher launchAppWithBundleId:SETTINGS_BUNDLE_ID];
   [self.session kill];
-  XCTAssertEqualObjects(SETTINGS_BUNDLE_ID, FBApplication.fb_activeApplication.bundleID);
+  XCTAssertEqualObjects(SETTINGS_BUNDLE_ID, XCUIApplication.fb_activeApplication.bundleID);
+}
+
+- (void)testAppWithInvalidBundleIDCannotBeStarted
+{
+  XCUIApplication *testedApp = [[XCUIApplication alloc] initWithBundleIdentifier:@"yolo"];
+  @try {
+    [testedApp launch];
+    XCTFail(@"An exception is expected to be thrown");
+  } @catch (NSException *exception) {
+    XCTAssertEqualObjects(FBApplicationMissingException, exception.name);
+  }
+}
+
+- (void)testAppWithInvalidBundleIDCannotBeActivated
+{
+  XCUIApplication *testedApp = [[XCUIApplication alloc] initWithBundleIdentifier:@"yolo"];
+  @try {
+    [testedApp activate];
+    XCTFail(@"An exception is expected to be thrown");
+  } @catch (NSException *exception) {
+    XCTAssertEqualObjects(FBApplicationMissingException, exception.name);
+  }
 }
 
 @end

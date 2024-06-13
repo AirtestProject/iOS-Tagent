@@ -18,20 +18,22 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol XCTestManager_ManagerInterface;
+@class FBScreenRecordingRequest, FBScreenRecordingPromise;
 
 @interface FBXCTestDaemonsProxy : NSObject
 
 + (id<XCTestManager_ManagerInterface>)testRunnerProxy;
-
-#if !TARGET_OS_TV
-+ (UIInterfaceOrientation)orientationWithApplication:(XCUIApplication *)application;
-#endif
 
 + (BOOL)synthesizeEventWithRecord:(XCSynthesizedEventRecord *)record
                             error:(NSError *__autoreleasing*)error;
 
 + (BOOL)openURL:(NSURL *)url usingApplication:(NSString *)bundleId error:(NSError **)error;
 + (BOOL)openDefaultApplicationForURL:(NSURL *)url error:(NSError **)error;
+
++ (nullable FBScreenRecordingPromise *)startScreenRecordingWithRequest:(FBScreenRecordingRequest *)request
+                                                                 error:(NSError **)error;
++ (BOOL)stopScreenRecordingWithUUID:(NSUUID *)uuid
+                              error:(NSError **)error;
 
 #if !TARGET_OS_TV
 + (BOOL)setSimulatedLocation:(CLLocation *)location error:(NSError **)error;

@@ -9,15 +9,14 @@
 
 #import "FBAlert.h"
 
-#import "FBApplication.h"
 #import "FBConfiguration.h"
 #import "FBErrorBuilder.h"
 #import "FBLogger.h"
 #import "FBXCElementSnapshotWrapper+Helpers.h"
 #import "FBXCodeCompatibility.h"
+#import "XCUIApplication.h"
 #import "XCUIApplication+FBAlert.h"
 #import "XCUIElement+FBClassChain.h"
-#import "XCUIElement+FBTap.h"
 #import "XCUIElement+FBTyping.h"
 #import "XCUIElement+FBUtilities.h"
 #import "XCUIElement+FBWebDriverAttributes.h"
@@ -190,11 +189,13 @@
       ? buttons.lastObject
       : buttons.firstObject;
   }
-  return nil == acceptButton
-    ? [[[FBErrorBuilder builder]
+  if (nil == acceptButton) {
+    return [[[FBErrorBuilder builder]
         withDescriptionFormat:@"Failed to find accept button for alert: %@", self.alertElement]
-     buildError:error]
-    : [acceptButton fb_tapWithError:error];
+       buildError:error];
+  }
+  [acceptButton tap];
+  return YES;
 }
 
 - (BOOL)dismissWithError:(NSError **)error
@@ -230,11 +231,13 @@
       : buttons.lastObject;
   }
 
-  return nil == dismissButton
-    ? [[[FBErrorBuilder builder]
+  if (nil == dismissButton) {
+    return [[[FBErrorBuilder builder]
         withDescriptionFormat:@"Failed to find dismiss button for alert: %@", self.alertElement]
-     buildError:error]
-    : [dismissButton fb_tapWithError:error];
+            buildError:error];
+  }
+  [dismissButton tap];
+  return YES;
 }
 
 - (BOOL)clickAlertButton:(NSString *)label error:(NSError **)error
@@ -251,21 +254,18 @@
              withDescriptionFormat:@"Failed to find button with label '%@' for alert: %@", label, self.alertElement]
             buildError:error];
   }
-  return [requestedButton fb_tapWithError:error];
+  [requestedButton tap];
+  return YES;
 }
 
 - (XCUIElement *)alertElement
 {
   if (nil == self.element) {
-    self.element = self.application.fb_alertElement;
-    if (nil == self.element) {
-      FBApplication *systemApp = FBApplication.fb_systemApplication;
-      for (FBApplication *activeApp in FBApplication.fb_activeApplications) {
-        if (systemApp.processID == activeApp.processID) {
-          self.element = activeApp.fb_alertElement;
-          break;
-        }
-      }
+    XCUIApplication *systemApp = XCUIApplication.fb_systemApplication;
+    if ([systemApp fb_isSameAppAs:self.application]) {
+      self.element = systemApp.fb_alertElement;
+    } else {
+      self.element = systemApp.fb_alertElement ?: self.application.fb_alertElement;
     }
   }
   return self.element;
