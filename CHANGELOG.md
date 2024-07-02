@@ -1,3 +1,9 @@
+## [8.7.6](https://github.com/appium/WebDriverAgent/compare/v8.7.5...v8.7.6) (2024-07-02)
+
+### Miscellaneous Chores
+
+* Simplify xcodebuild lines monitoring ([#916](https://github.com/appium/WebDriverAgent/issues/916)) ([87678f2](https://github.com/appium/WebDriverAgent/commit/87678f260c98b3a3bc3d37017e9ef39098ccb3c4))
+
 ## [8.7.5](https://github.com/appium/WebDriverAgent/compare/v8.7.4...v8.7.5) (2024-06-26)
 
 ### Bug Fixes
