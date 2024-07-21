@@ -1,3 +1,9 @@
+## [8.7.9](https://github.com/appium/WebDriverAgent/compare/v8.7.8...v8.7.9) (2024-07-21)
+
+### Miscellaneous Chores
+
+* keep error handling for the future possible usage ([#921](https://github.com/appium/WebDriverAgent/issues/921)) ([2f90739](https://github.com/appium/WebDriverAgent/commit/2f90739340d70073b48c703b36b9a313d3618972))
+
 ## [8.7.8](https://github.com/appium/WebDriverAgent/compare/v8.7.7...v8.7.8) (2024-07-18)
 
 ### Bug Fixes
