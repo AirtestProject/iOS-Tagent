@@ -1,3 +1,9 @@
+## [8.7.11](https://github.com/appium/WebDriverAgent/compare/v8.7.10...v8.7.11) (2024-07-29)
+
+### Bug Fixes
+
+* Respond to /health with a proper HTML ([#925](https://github.com/appium/WebDriverAgent/issues/925)) ([42c519f](https://github.com/appium/WebDriverAgent/commit/42c519f9df7beec81175fd38af388975d6f6b800))
+
 ## [8.7.10](https://github.com/appium/WebDriverAgent/compare/v8.7.9...v8.7.10) (2024-07-29)
 
 ### Miscellaneous Chores
