@@ -1,3 +1,9 @@
+## [8.7.10](https://github.com/appium/WebDriverAgent/compare/v8.7.9...v8.7.10) (2024-07-29)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @types/node from 20.14.13 to 22.0.0 ([#926](https://github.com/appium/WebDriverAgent/issues/926)) ([1699023](https://github.com/appium/WebDriverAgent/commit/1699023086a243c3d86ddae4da8342c6beda3f48))
+
 ## [8.7.9](https://github.com/appium/WebDriverAgent/compare/v8.7.8...v8.7.9) (2024-07-21)
 
 ### Miscellaneous Chores
