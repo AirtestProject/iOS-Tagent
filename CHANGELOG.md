@@ -1,3 +1,9 @@
+## [8.7.12](https://github.com/appium/WebDriverAgent/compare/v8.7.11...v8.7.12) (2024-08-02)
+
+### Miscellaneous Chores
+
+* Replace fancy-log dependency with appium logger ([#928](https://github.com/appium/WebDriverAgent/issues/928)) ([5d2ec24](https://github.com/appium/WebDriverAgent/commit/5d2ec249488655451e2d46384e560fee7e08e840))
+
 ## [8.7.11](https://github.com/appium/WebDriverAgent/compare/v8.7.10...v8.7.11) (2024-07-29)
 
 ### Bug Fixes
