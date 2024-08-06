@@ -1,3 +1,9 @@
+## [8.8.0](https://github.com/appium/WebDriverAgent/compare/v8.7.12...v8.8.0) (2024-08-06)
+
+### Features
+
+* Open the default URL in Safari upon session startup ([#929](https://github.com/appium/WebDriverAgent/issues/929)) ([97cf91d](https://github.com/appium/WebDriverAgent/commit/97cf91de34dc53e5f75f91829dc43224101c1b45))
+
 ## [8.7.12](https://github.com/appium/WebDriverAgent/compare/v8.7.11...v8.7.12) (2024-08-02)
 
 ### Miscellaneous Chores
