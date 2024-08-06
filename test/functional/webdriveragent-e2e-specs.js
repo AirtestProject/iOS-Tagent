@@ -8,7 +8,7 @@ import { retryInterval } from 'asyncbox';
 import { WebDriverAgent } from '../../lib/webdriveragent';
 import axios from 'axios';
 
-const MOCHA_TIMEOUT_MS = 60 * 1000 * 4;
+const MOCHA_TIMEOUT_MS = 60 * 1000 * 5;
 
 const SIM_DEVICE_NAME = 'webDriverAgentTest';
 const SIM_STARTUP_TIMEOUT_MS = MOCHA_TIMEOUT_MS;
@@ -59,6 +59,15 @@ describe('WebDriverAgent', function () {
         PLATFORM_VERSION
       );
       device = await getSimulator(simctl.udid);
+
+      // Prebuild WDA
+      const wda = new WebDriverAgent(xcodeVersion, {
+        iosSdkVersion: PLATFORM_VERSION,
+        platformVersion: PLATFORM_VERSION,
+        showXcodeLog: true,
+        device,
+      });
+      await wda.xcodebuild.start(true);
     });
 
     after(async function () {
