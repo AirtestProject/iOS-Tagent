@@ -1,3 +1,13 @@
+## [8.9.0](https://github.com/appium/WebDriverAgent/compare/v8.8.0...v8.9.0) (2024-08-07)
+
+### Features
+
+* Add idleTimeoutMs param to the openUrl call ([#933](https://github.com/appium/WebDriverAgent/issues/933)) ([5e98841](https://github.com/appium/WebDriverAgent/commit/5e98841f56eda6454d67d813b921bfcf98f1ff78))
+
+### Bug Fixes
+
+* Revert the logic to open the default URL in Safari via deeplink ([#932](https://github.com/appium/WebDriverAgent/issues/932)) ([7c51145](https://github.com/appium/WebDriverAgent/commit/7c5114518509c9a399845283eca7708248fb838f))
+
 ## [8.8.0](https://github.com/appium/WebDriverAgent/compare/v8.7.12...v8.8.0) (2024-08-06)
 
 ### Features
