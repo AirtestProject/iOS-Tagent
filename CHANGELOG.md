@@ -1,3 +1,9 @@
+## [8.9.1](https://github.com/appium/WebDriverAgent/compare/v8.9.0...v8.9.1) (2024-08-09)
+
+### Bug Fixes
+
+* Update swizzling of waitForQuiescenceIncludingAnimationsIdle: API for Xcode16-beta5 ([#935](https://github.com/appium/WebDriverAgent/issues/935)) ([2ccc436](https://github.com/appium/WebDriverAgent/commit/2ccc436991ca880a1dfdec688dc8167008fe382d))
+
 ## [8.9.0](https://github.com/appium/WebDriverAgent/compare/v8.8.0...v8.9.0) (2024-08-07)
 
 ### Features
