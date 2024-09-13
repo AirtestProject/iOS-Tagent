@@ -1,3 +1,9 @@
+## [8.9.2](https://github.com/appium/WebDriverAgent/compare/v8.9.1...v8.9.2) (2024-09-13)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump sinon from 18.0.1 to 19.0.1 ([#938](https://github.com/appium/WebDriverAgent/issues/938)) ([3ef0093](https://github.com/appium/WebDriverAgent/commit/3ef009317801dca47efe34bd048d3cab2e644ee2))
+
 ## [8.9.1](https://github.com/appium/WebDriverAgent/compare/v8.9.0...v8.9.1) (2024-08-09)
 
 ### Bug Fixes
