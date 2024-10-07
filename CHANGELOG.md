@@ -1,3 +1,9 @@
+## [8.9.3](https://github.com/appium/WebDriverAgent/compare/v8.9.2...v8.9.3) (2024-10-07)
+
+### Miscellaneous Chores
+
+* remove unused FBBaseActionsParser and cleanup imports in FBConfiguration ([#943](https://github.com/appium/WebDriverAgent/issues/943)) ([a2173d0](https://github.com/appium/WebDriverAgent/commit/a2173d05df8ef831310e805a8e6a8a8d17725201))
+
 ## [8.9.2](https://github.com/appium/WebDriverAgent/compare/v8.9.1...v8.9.2) (2024-09-13)
 
 ### Miscellaneous Chores
