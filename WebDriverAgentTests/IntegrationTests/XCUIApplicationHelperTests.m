@@ -111,7 +111,25 @@
   [set addObject:@"XCUIAccessibilityAuditTypeAll"];
   NSArray *auditIssues2 = [XCUIApplication.fb_activeApplication fb_performAccessibilityAuditWithAuditTypesSet:set.copy
                                                                                                       error:&error];
-  XCTAssertEqualObjects(auditIssues1, auditIssues2);
+  // 'elementDescription' is not in this list because it could have
+  // different object id's debug description in XCTest.
+  NSArray *checkKeys = @[
+    @"auditType",
+    @"compactDescription",
+    @"detailedDescription",
+    @"element",
+    @"elementAttributes"
+  ];
+
+  XCTAssertEqual([auditIssues1 count], [auditIssues2 count]);
+  for (int i = 1; i < [auditIssues1 count]; i++) {
+    for (NSString *k in checkKeys) {
+      XCTAssertEqualObjects(
+                            [auditIssues1[i] objectForKey:k],
+                            [auditIssues2[i] objectForKey:k]
+                            );
+    }
+  }
   XCTAssertNil(error);
 }
 
