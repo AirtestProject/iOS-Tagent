@@ -1,3 +1,9 @@
+## [8.10.0](https://github.com/appium/WebDriverAgent/compare/v8.9.4...v8.10.0) (2024-11-07)
+
+### Features
+
+* add useClearTextShortcut setting ([#952](https://github.com/appium/WebDriverAgent/issues/952)) ([61bc051](https://github.com/appium/WebDriverAgent/commit/61bc051180d691d26233c66a5a76ed20b7fa09d2))
+
 ## [8.9.4](https://github.com/appium/WebDriverAgent/compare/v8.9.3...v8.9.4) (2024-10-17)
 
 ### Bug Fixes
