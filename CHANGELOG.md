@@ -1,3 +1,9 @@
+## [8.10.1](https://github.com/appium/WebDriverAgent/compare/v8.10.0...v8.10.1) (2024-11-10)
+
+### Miscellaneous Chores
+
+* remove unnecessary lines ([#954](https://github.com/appium/WebDriverAgent/issues/954)) ([940df80](https://github.com/appium/WebDriverAgent/commit/940df80937381b481a2762fbf86b6249804591bd))
+
 ## [8.10.0](https://github.com/appium/WebDriverAgent/compare/v8.9.4...v8.10.0) (2024-11-07)
 
 ### Features
