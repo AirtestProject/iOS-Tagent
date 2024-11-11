@@ -1,3 +1,9 @@
+## [8.11.0](https://github.com/appium/WebDriverAgent/compare/v8.10.1...v8.11.0) (2024-11-11)
+
+### Features
+
+* Add support for excluded_attributes in JSON source hierarchy ([#953](https://github.com/appium/WebDriverAgent/issues/953)) ([6112223](https://github.com/appium/WebDriverAgent/commit/6112223b21026fae5545fe1b1433a09c67ff524b))
+
 ## [8.10.1](https://github.com/appium/WebDriverAgent/compare/v8.10.0...v8.10.1) (2024-11-10)
 
 ### Miscellaneous Chores
