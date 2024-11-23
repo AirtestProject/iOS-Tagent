@@ -13,8 +13,8 @@ jobs:
       matrix:
         test_targets:
           - HOST_OS: 'macos-15'
-            XCODE_VERSION: '16.0.0'
-            IOS_VERSION: '18.0'
+            XCODE_VERSION: '16.1.0'
+            IOS_VERSION: '18.1'
             IOS_MODEL: iPhone 16 Plus
           - HOST_OS: 'macos-14'
             XCODE_VERSION: '15.3'
