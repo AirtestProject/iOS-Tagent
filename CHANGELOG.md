@@ -1,3 +1,9 @@
+## [8.11.2](https://github.com/appium/WebDriverAgent/compare/v8.11.1...v8.11.2) (2024-12-03)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump mocha from 10.8.2 to 11.0.1 ([#959](https://github.com/appium/WebDriverAgent/issues/959)) ([55b49c8](https://github.com/appium/WebDriverAgent/commit/55b49c83581c9e88f70806d98015238de3104f19))
+
 ## [8.11.1](https://github.com/appium/WebDriverAgent/compare/v8.11.0...v8.11.1) (2024-11-11)
 
 ### Miscellaneous Chores
