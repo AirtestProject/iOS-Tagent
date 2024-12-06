@@ -1,3 +1,9 @@
+## [8.11.3](https://github.com/appium/WebDriverAgent/compare/v8.11.2...v8.11.3) (2024-12-06)
+
+### Miscellaneous Chores
+
+* **deps:** bump @appium/support from 5.1.8 to 6.0.0 ([#960](https://github.com/appium/WebDriverAgent/issues/960)) ([dbeb09c](https://github.com/appium/WebDriverAgent/commit/dbeb09c89f8c02e00a7bdffe7899650d435f3575))
+
 ## [8.11.2](https://github.com/appium/WebDriverAgent/compare/v8.11.1...v8.11.2) (2024-12-03)
 
 ### Miscellaneous Chores
