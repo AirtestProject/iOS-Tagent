@@ -1,3 +1,9 @@
+## [8.12.1](https://github.com/appium/WebDriverAgent/compare/v8.12.0...v8.12.1) (2025-01-03)
+
+### Miscellaneous Chores
+
+* Bump eslint ([#965](https://github.com/appium/WebDriverAgent/issues/965)) ([17f49ec](https://github.com/appium/WebDriverAgent/commit/17f49ec5a54e97b0ef0d20a3e39fc96b32575e43))
+
 ## [8.12.0](https://github.com/appium/WebDriverAgent/compare/v8.11.3...v8.12.0) (2024-12-13)
 
 ### Features
