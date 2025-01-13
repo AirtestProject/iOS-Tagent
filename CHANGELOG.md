@@ -1,3 +1,9 @@
+## [8.12.2](https://github.com/appium/WebDriverAgent/compare/v8.12.1...v8.12.2) (2025-01-13)
+
+### Miscellaneous Chores
+
+* Exclude element visibility and accessibility info from the accessibility audit details ([#968](https://github.com/appium/WebDriverAgent/issues/968)) ([f62afc3](https://github.com/appium/WebDriverAgent/commit/f62afc372c123bdd8dd7bb493f653bb128144d24))
+
 ## [8.12.1](https://github.com/appium/WebDriverAgent/compare/v8.12.0...v8.12.1) (2025-01-03)
 
 ### Miscellaneous Chores
