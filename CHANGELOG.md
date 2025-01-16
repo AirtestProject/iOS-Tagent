@@ -1,3 +1,13 @@
+## [9.0.0](https://github.com/appium/WebDriverAgent/compare/v8.12.2...v9.0.0) (2025-01-16)
+
+### ⚠ BREAKING CHANGES
+
+* snapshotTimeout and customSnapshotTimeout settings have been removed as a result of the custom snapshotting logic removal
+
+### Features
+
+* Refactor snapshotting mechanism ([#970](https://github.com/appium/WebDriverAgent/issues/970)) ([08f1306](https://github.com/appium/WebDriverAgent/commit/08f13060119c710f53b34a98c95683287c0365a0))
+
 ## [8.12.2](https://github.com/appium/WebDriverAgent/compare/v8.12.1...v8.12.2) (2025-01-13)
 
 ### Miscellaneous Chores
