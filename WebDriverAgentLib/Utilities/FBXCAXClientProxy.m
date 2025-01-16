@@ -37,12 +37,12 @@ static id FBAXClient = nil;
 
 - (id<FBXCElementSnapshot>)snapshotForElement:(id<FBXCAccessibilityElement>)element
                                    attributes:(NSArray<NSString *> *)attributes
-                                     maxDepth:(nullable NSNumber *)maxDepth
+                                      inDepth:(BOOL)inDepth
                                         error:(NSError **)error
 {
   NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:self.defaultParameters];
-  if (nil != maxDepth) {
-    parameters[FBSnapshotMaxDepthKey] = maxDepth;
+  if (!inDepth) {
+    parameters[FBSnapshotMaxDepthKey] = @1;
   }
 
   id result = [FBAXClient requestSnapshotForElement:element
@@ -76,15 +76,11 @@ static id FBAXClient = nil;
 
 - (NSDictionary *)attributesForElement:(id<FBXCAccessibilityElement>)element
                             attributes:(NSArray *)attributes
+                                 error:(NSError**)error;
 {
-  NSError *error = nil;
-  NSDictionary* result = [FBAXClient attributesForElement:element
-                                               attributes:attributes
-                                                    error:&error];
-  if (error) {
-    [FBLogger logFmt:@"Cannot retrieve element attribute(s) %@. Original error: %@", attributes, error.description];
-  }
-  return result;
+  return [FBAXClient attributesForElement:element
+                               attributes:attributes
+                                    error:error];
 }
 
 - (XCUIApplication *)monitoredApplicationWithProcessIdentifier:(int)pid

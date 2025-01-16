@@ -10,15 +10,19 @@
 #import "FBXCElementSnapshotWrapper+Helpers.h"
 
 #import "FBFindElementCommands.h"
+#import "FBErrorBuilder.h"
 #import "FBRunLoopSpinner.h"
 #import "FBLogger.h"
 #import "FBXCElementSnapshot.h"
+#import "FBXCTestDaemonsProxy.h"
 #import "FBXCAXClientProxy.h"
 #import "XCTestDriver.h"
 #import "XCTestPrivateSymbols.h"
 #import "XCUIElement.h"
 #import "XCUIElement+FBWebDriverAttributes.h"
 #import "XCUIHitPointResult.h"
+
+#define ATTRIBUTE_FETCH_WARN_TIME_LIMIT 0.05
 
 inline static BOOL isSnapshotTypeAmongstGivenTypes(id<FBXCElementSnapshot> snapshot,
                                                    NSArray<NSNumber *> *types);
@@ -65,10 +69,17 @@ inline static BOOL isSnapshotTypeAmongstGivenTypes(id<FBXCElementSnapshot> snaps
 }
 
 - (id)fb_attributeValue:(NSString *)attribute
+                  error:(NSError **)error
 {
+  NSDate *start = [NSDate date];
   NSDictionary *result = [FBXCAXClientProxy.sharedClient attributesForElement:[self accessibilityElement]
-                                                                   attributes:@[attribute]];
-  return result[attribute];
+                                                                   attributes:@[attribute]
+                                                                        error:error];
+  NSTimeInterval elapsed = ABS([start timeIntervalSinceNow]);
+  if (elapsed > ATTRIBUTE_FETCH_WARN_TIME_LIMIT) {
+    NSLog(@"! Fetching of %@ value for %@ took %@s", attribute, self.fb_description, @(elapsed));
+  }
+  return [result objectForKey:attribute];
 }
 
 inline static BOOL areValuesEqual(id value1, id value2);
@@ -138,29 +149,6 @@ inline static BOOL isNilOrEmpty(id value);
       targetCellSnapshot = [self fb_parentMatchingOneOfTypes:acceptableElementTypes];
   }
   return targetCellSnapshot;
-}
-
-- (CGRect)fb_visibleFrameWithFallback
-{
-  CGRect thisVisibleFrame = [self visibleFrame];
-  if (!CGRectIsEmpty(thisVisibleFrame)) {
-    return thisVisibleFrame;
-  }
-  
-  NSDictionary *visibleFrameDict = (NSDictionary*)[self fb_attributeValue:@"XC_kAXXCAttributeVisibleFrame"];
-  if (visibleFrameDict == nil) {
-    return thisVisibleFrame;
-  }
-  
-  id x = [visibleFrameDict objectForKey:@"X"];
-  id y = [visibleFrameDict objectForKey:@"Y"];
-  id height = [visibleFrameDict objectForKey:@"Height"];
-  id width = [visibleFrameDict objectForKey:@"Width"];
-  if (x != nil && y != nil && height != nil && width != nil) {
-    return CGRectMake([x doubleValue], [y doubleValue], [width doubleValue], [height doubleValue]);
-  }
-  
-  return thisVisibleFrame;
 }
 
 - (NSValue *)fb_hitPoint

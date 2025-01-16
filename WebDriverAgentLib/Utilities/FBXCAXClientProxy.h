@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id<FBXCElementSnapshot>)snapshotForElement:(id<FBXCAccessibilityElement>)element
                                             attributes:(nullable NSArray<NSString *> *)attributes
-                                              maxDepth:(nullable NSNumber *)maxDepth
+                                               inDepth:(BOOL)inDepth
                                                  error:(NSError **)error;
 
 - (NSArray<id<FBXCAccessibilityElement>> *)activeApplications;
@@ -39,8 +39,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)notifyWhenNoAnimationsAreActiveForApplication:(XCUIApplication *)application
                                                 reply:(void (^)(void))reply;
 
-- (NSDictionary *)attributesForElement:(id<FBXCAccessibilityElement>)element
-                            attributes:(NSArray *)attributes;
+- (nullable NSDictionary *)attributesForElement:(id<FBXCAccessibilityElement>)element
+                                     attributes:(NSArray *)attributes
+                                          error:(NSError**)error;
 
 - (XCUIApplication *)monitoredApplicationWithProcessIdentifier:(int)pid;
 

@@ -58,9 +58,11 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param attribute attribute's accessibility identifier. Can be one of
  `XC_kAXXCAttribute`-prefixed attribute names.
- @return value for given accessibility property identifier
+ @param error Error instance in case of a failure
+ @return value for given accessibility property identifier or nil in case of failure
  */
-- (nullable id)fb_attributeValue:(NSString *)attribute;
+- (nullable id)fb_attributeValue:(NSString *)attribute
+                           error:(NSError **)error;
 
 /**
  Method used to determine whether given element matches receiver by comparing it's parameters except frame.
@@ -86,13 +88,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**! Human-readable snapshot description */
 - (NSString *)fb_description;
-
-/**
- Returns the snapshot visibleFrame with a fallback to direct attribute retrieval from FBXCAXClient in case of a snapshot fault (nil visibleFrame)
- 
- @return the snapshot visibleFrame
- */
-- (CGRect)fb_visibleFrameWithFallback;
 
 /**
  Wrapper for Apple's hitpoint, thats resolves few known issues

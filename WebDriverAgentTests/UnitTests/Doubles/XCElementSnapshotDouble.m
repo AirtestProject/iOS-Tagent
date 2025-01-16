@@ -98,4 +98,14 @@
   return @[];
 }
 
+- (NSArray *)_allDescendants
+{
+  return @[];
+}
+
+- (CGRect)visibleFrame
+{
+  return CGRectZero;
+}
+
 @end

@@ -19,12 +19,13 @@ NS_ASSUME_NONNULL_BEGIN
  Gets the most recent snapshot of the current element. The element will be
  automatically resolved if the snapshot is not available yet.
  Calls to this method mutate the `lastSnapshot` instance property..
- Calls to this method reset the `fb_isResolvedFromCache` property value to `NO`.
 
+ @param inDepth Whether to resolve snapshot parents and children. Setting it to NO
+ would improve the snapshotting performance
  @return The recent snapshot of the element
  @throws FBStaleElementException if the element is not present in DOM and thus no snapshot could be made
  */
-- (id<FBXCElementSnapshot>)fb_takeSnapshot;
+- (id<FBXCElementSnapshot>)fb_takeSnapshot:(BOOL)inDepth;
 
 /**
  Extracts the cached element snapshot from its query.
@@ -35,40 +36,6 @@ NS_ASSUME_NONNULL_BEGIN
  @return Either the cached snapshot or nil
  */
 - (nullable id<FBXCElementSnapshot>)fb_cachedSnapshot;
-
-/**
- Gets the most recent snapshot of the current element and already resolves the accessibility attributes
- needed for creating the page source of this element. No additional calls to the accessibility layer
- are required.
- Calls to this method mutate the `lastSnapshot` instance property.
- Calls to this method reset the `fb_isResolvedFromCache` property value to `NO`.
-
- @param maxDepth The maximum depth of the snapshot. nil value means to use the default depth.
- with custom attributes cannot be resolved
- 
- @return The recent snapshot of the element with all attributes resolved or a snapshot with default
- attributes resolved if there was a failure while resolving additional attributes
- @throws FBStaleElementException if the element is not present in DOM and thus no snapshot could be made
- */
-- (nullable id<FBXCElementSnapshot>)fb_snapshotWithAllAttributesAndMaxDepth:(nullable NSNumber *)maxDepth;
-
-/**
- Gets the most recent snapshot of the current element with given attributes resolved.
- No additional calls to the accessibility layer are required.
- Calls to this method mutate the `lastSnapshot` instance property.
- Calls to this method reset the `fb_isResolvedFromCache` property value to `NO`.
-
- @param attributeNames The list of attribute names to resolve. Must be one of
- FB_...Name values exported by XCTestPrivateSymbols.h module.
- `nil` value means that only the default attributes must be extracted
- @param maxDepth The maximum depth of the snapshot. nil value means to use the default depth.
-
- @return The recent snapshot of the element with the given attributes resolved or a snapshot with default
- attributes resolved if there was a failure while resolving additional attributes
- @throws FBStaleElementException if the element is not present in DOM and thus no snapshot could be made
-*/
-- (nullable id<FBXCElementSnapshot>)fb_snapshotWithAttributes:(nullable NSArray<NSString *> *)attributeNames
-                                                      maxDepth:(nullable NSNumber *)maxDepth;
 
 /**
  Filters elements by matching them to snapshots from the corresponding array

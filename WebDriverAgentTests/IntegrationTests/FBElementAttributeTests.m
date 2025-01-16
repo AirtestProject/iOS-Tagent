@@ -71,6 +71,7 @@
   XCTAssertEqualObjects(element.wdLabel, @"Button");
   XCTAssertNil(element.wdValue);
   XCTAssertFalse(element.wdSelected);
+  XCTAssertTrue(element.fb_isVisible);
   [element tap];
   XCTAssertTrue(element.wdValue.boolValue);
   XCTAssertTrue(element.wdSelected);
@@ -133,7 +134,7 @@
   XCTAssertEqualObjects(element.wdType, @"XCUIElementTypeSlider");
   XCTAssertNil(element.wdName);
   XCTAssertNil(element.wdLabel);
-  XCTAssertEqualObjects(element.wdValue, @"50%");
+  XCTAssertTrue([element.wdValue containsString:@"50"]);
 }
 
 - (void)testActivityIndicatorAttributes

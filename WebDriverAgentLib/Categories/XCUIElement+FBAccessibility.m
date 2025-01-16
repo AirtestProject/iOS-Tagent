@@ -18,8 +18,7 @@
 
 - (BOOL)fb_isAccessibilityElement
 {
-  id<FBXCElementSnapshot> snapshot = [self fb_snapshotWithAttributes:@[FB_XCAXAIsElementAttributeName]
-                                                            maxDepth:@1];
+  id<FBXCElementSnapshot> snapshot = [self fb_takeSnapshot:NO];
   return [FBXCElementSnapshotWrapper ensureWrapped:snapshot].fb_isAccessibilityElement;
 }
 
@@ -33,8 +32,20 @@
   if (nil != isAccessibilityElement) {
     return isAccessibilityElement.boolValue;
   }
-  
-  return [(NSNumber *)[self fb_attributeValue:FB_XCAXAIsElementAttributeName] boolValue];
+
+  NSError *error;
+  NSNumber *attributeValue = [self fb_attributeValue:FB_XCAXAIsElementAttributeName
+                                               error:&error];
+  if (nil != attributeValue) {
+    NSMutableDictionary *updatedValue = [NSMutableDictionary dictionaryWithDictionary:self.additionalAttributes ?: @{}];
+    [updatedValue setObject:attributeValue forKey:FB_XCAXAIsElementAttribute];
+    self.snapshot.additionalAttributes = updatedValue.copy;
+    return [attributeValue boolValue];
+  }
+
+  NSLog(@"Cannot determine accessibility of '%@' natively: %@. Defaulting to: %@",
+        self.fb_description, error.description, @(NO));
+  return NO;
 }
 
 @end
