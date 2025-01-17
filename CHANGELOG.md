@@ -1,3 +1,9 @@
+## [9.0.1](https://github.com/appium/WebDriverAgent/compare/v9.0.0...v9.0.1) (2025-01-17)
+
+### Miscellaneous Chores
+
+* Optimize stable instance retrieval ([#973](https://github.com/appium/WebDriverAgent/issues/973)) ([f2c752d](https://github.com/appium/WebDriverAgent/commit/f2c752db4707b3864efb62b95b64abb487d28e4b))
+
 ## [9.0.0](https://github.com/appium/WebDriverAgent/compare/v8.12.2...v9.0.0) (2025-01-16)
 
 ### ⚠ BREAKING CHANGES
