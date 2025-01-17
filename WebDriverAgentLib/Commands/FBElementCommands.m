@@ -35,6 +35,7 @@
 #import "XCUIElement+FBWebDriverAttributes.h"
 #import "XCUIElement+FBTVFocuse.h"
 #import "XCUIElement+FBResolve.h"
+#import "XCUIElement+FBUID.h"
 #import "FBElementTypeTransformer.h"
 #import "XCUIElement.h"
 #import "XCUIElementQuery.h"
@@ -264,7 +265,9 @@
   if (focusedElement != nil) {
     FBElementCache *elementCache = request.session.elementCache;
     BOOL useNativeCachingStrategy = request.session.useNativeCachingStrategy;
-    NSString *focusedUUID = [elementCache storeElement:(useNativeCachingStrategy ? focusedElement : focusedElement.fb_stableInstance)];
+    NSString *focusedUUID = [elementCache storeElement:(useNativeCachingStrategy
+                                                        ? focusedElement
+                                                        : [focusedElement fb_stableInstanceWithUid:focusedElement.fb_uid])];
     if (focusedUUID && [focusedUUID isEqualToString:(id)request.parameters[@"uuid"]]) {
       isFocused = YES;
     }
