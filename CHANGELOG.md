@@ -1,3 +1,9 @@
+## [9.0.2](https://github.com/appium/WebDriverAgent/compare/v9.0.1...v9.0.2) (2025-02-03)
+
+### Bug Fixes
+
+* update docs link in xcodebuild error message ([#978](https://github.com/appium/WebDriverAgent/issues/978)) ([ea3863a](https://github.com/appium/WebDriverAgent/commit/ea3863a67d5cfa8bc2e48a1dc2c59052acd47937))
+
 ## [9.0.1](https://github.com/appium/WebDriverAgent/compare/v9.0.0...v9.0.1) (2025-01-17)
 
 ### Miscellaneous Chores
