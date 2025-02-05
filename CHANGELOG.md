@@ -1,3 +1,9 @@
+## [9.0.3](https://github.com/appium/WebDriverAgent/compare/v9.0.2...v9.0.3) (2025-02-05)
+
+### Bug Fixes
+
+* add nullable signature ([#979](https://github.com/appium/WebDriverAgent/issues/979)) ([34b303c](https://github.com/appium/WebDriverAgent/commit/34b303c4e226d6a75a45a14eee7ca5e253e67737))
+
 ## [9.0.2](https://github.com/appium/WebDriverAgent/compare/v9.0.1...v9.0.2) (2025-02-03)
 
 ### Bug Fixes
