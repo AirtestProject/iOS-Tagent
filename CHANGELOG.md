@@ -1,3 +1,9 @@
+## [9.0.4](https://github.com/appium/WebDriverAgent/compare/v9.0.3...v9.0.4) (2025-02-21)
+
+### Bug Fixes
+
+* Accept reqBasePath proxy option ([#982](https://github.com/appium/WebDriverAgent/issues/982)) ([19efbdd](https://github.com/appium/WebDriverAgent/commit/19efbdd69ff9edff20c0c318bd39c29963d4d51d))
+
 ## [9.0.3](https://github.com/appium/WebDriverAgent/compare/v9.0.2...v9.0.3) (2025-02-05)
 
 ### Bug Fixes
