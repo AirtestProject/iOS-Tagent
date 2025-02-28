@@ -1,3 +1,9 @@
+## [9.0.6](https://github.com/appium/WebDriverAgent/compare/v9.0.5...v9.0.6) (2025-02-28)
+
+### Bug Fixes
+
+* optimize LRU cache ([#985](https://github.com/appium/WebDriverAgent/issues/985)) ([46dc417](https://github.com/appium/WebDriverAgent/commit/46dc417da9f4a843838b414c0b154d6f478dbc0b))
+
 ## [9.0.5](https://github.com/appium/WebDriverAgent/compare/v9.0.4...v9.0.5) (2025-02-26)
 
 ### Bug Fixes
