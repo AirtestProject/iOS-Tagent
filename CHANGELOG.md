@@ -1,3 +1,9 @@
+## [9.1.0](https://github.com/appium/WebDriverAgent/compare/v9.0.6...v9.1.0) (2025-03-09)
+
+### Features
+
+* add placeholderValue ([#987](https://github.com/appium/WebDriverAgent/issues/987)) ([8c3a1cb](https://github.com/appium/WebDriverAgent/commit/8c3a1cb30655ed8d1a77d25bbeca71ee48c2ec3e))
+
 ## [9.0.6](https://github.com/appium/WebDriverAgent/compare/v9.0.5...v9.0.6) (2025-02-28)
 
 ### Bug Fixes
