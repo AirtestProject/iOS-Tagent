@@ -100,6 +100,10 @@
 
 @end
 
+@interface FBPlaceholderValueAttribute : FBElementAttribute
+
+@end
+
 #if TARGET_OS_TV
 
 @interface FBFocusedAttribute : FBElementAttribute
@@ -491,6 +495,7 @@ static NSString *const FBAbstractMethodInvocationException = @"AbstractMethodInv
            FBHeightAttribute.class,
            FBIndexAttribute.class,
            FBHittableAttribute.class,
+           FBPlaceholderValueAttribute.class,
           ];
 }
 
@@ -712,4 +717,19 @@ static NSString *const FBAbstractMethodInvocationException = @"AbstractMethodInv
   }
   return rc;
 }
+@end
+
+
+@implementation FBPlaceholderValueAttribute
+
++ (NSString *)name
+{
+  return @"placeholderValue";
+}
+
++ (NSString *)valueForElement:(id<FBElement>)element
+{
+  return element.wdPlaceholderValue;
+}
+
 @end
