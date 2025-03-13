@@ -1,3 +1,9 @@
+## [9.2.0](https://github.com/appium/WebDriverAgent/compare/v9.1.0...v9.2.0) (2025-03-13)
+
+### Features
+
+* Add 'limitXpathContextScope' setting ([#988](https://github.com/appium/WebDriverAgent/issues/988)) ([9c9d8af](https://github.com/appium/WebDriverAgent/commit/9c9d8af9c98ba7b2843a42f54354b78e126d2d27))
+
 ## [9.1.0](https://github.com/appium/WebDriverAgent/compare/v9.0.6...v9.1.0) (2025-03-09)
 
 ### Features
