@@ -1,3 +1,9 @@
+## [9.3.0](https://github.com/appium/WebDriverAgent/compare/v9.2.0...v9.3.0) (2025-03-21)
+
+### Features
+
+* Add /window/rect W3C endpoint ([#991](https://github.com/appium/WebDriverAgent/issues/991)) ([34f9510](https://github.com/appium/WebDriverAgent/commit/34f95107997bdec63219a2fd917de899de3e198c))
+
 ## [9.2.0](https://github.com/appium/WebDriverAgent/compare/v9.1.0...v9.2.0) (2025-03-13)
 
 ### Features
