@@ -1,3 +1,9 @@
+## [9.3.1](https://github.com/appium/WebDriverAgent/compare/v9.3.0...v9.3.1) (2025-03-25)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump sinon from 19.0.5 to 20.0.0 ([#994](https://github.com/appium/WebDriverAgent/issues/994)) ([f55462f](https://github.com/appium/WebDriverAgent/commit/f55462f4fa63314dfea48670d17ee54dc5fe2d96))
+
 ## [9.3.0](https://github.com/appium/WebDriverAgent/compare/v9.2.0...v9.3.0) (2025-03-21)
 
 ### Features
