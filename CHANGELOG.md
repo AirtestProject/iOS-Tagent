@@ -1,3 +1,9 @@
+## [9.3.3](https://github.com/appium/WebDriverAgent/compare/v9.3.2...v9.3.3) (2025-03-27)
+
+### Bug Fixes
+
+* Properly set snapshot lookup scope if limitXpathContextScope is disabled ([#996](https://github.com/appium/WebDriverAgent/issues/996)) ([03ca7cd](https://github.com/appium/WebDriverAgent/commit/03ca7cd27b7cd92a45b344eb661db973c5dde809))
+
 ## [9.3.2](https://github.com/appium/WebDriverAgent/compare/v9.3.1...v9.3.2) (2025-03-26)
 
 ### Bug Fixes
