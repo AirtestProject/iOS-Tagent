@@ -1,3 +1,9 @@
+## [9.4.0](https://github.com/appium/WebDriverAgent/compare/v9.3.3...v9.4.0) (2025-04-02)
+
+### Features
+
+* Always apply the native snapshotting strategy for XCUIApplication instances ([#998](https://github.com/appium/WebDriverAgent/issues/998)) ([60f5aef](https://github.com/appium/WebDriverAgent/commit/60f5aeffdda85faffd60aba416dc9d92987f19ac))
+
 ## [9.3.3](https://github.com/appium/WebDriverAgent/compare/v9.3.2...v9.3.3) (2025-03-27)
 
 ### Bug Fixes
