@@ -1,3 +1,9 @@
+## [9.4.1](https://github.com/appium/WebDriverAgent/compare/v9.4.0...v9.4.1) (2025-04-05)
+
+### Miscellaneous Chores
+
+* bump appium-ios-simulator ([445741d](https://github.com/appium/WebDriverAgent/commit/445741d03313019016d4232f49e656d50f673f16))
+
 ## [9.4.0](https://github.com/appium/WebDriverAgent/compare/v9.3.3...v9.4.0) (2025-04-02)
 
 ### Features
