@@ -1,3 +1,9 @@
+## [9.5.1](https://github.com/appium/WebDriverAgent/compare/v9.5.0...v9.5.1) (2025-04-10)
+
+### Bug Fixes
+
+* Make sure we don't store element snapshot in the cache ([#1001](https://github.com/appium/WebDriverAgent/issues/1001)) ([cfe052b](https://github.com/appium/WebDriverAgent/commit/cfe052bb3adb3f3b24d0a34f386c60cf1516b308))
+
 ## [9.5.0](https://github.com/appium/WebDriverAgent/compare/v9.4.1...v9.5.0) (2025-04-10)
 
 ### Features
