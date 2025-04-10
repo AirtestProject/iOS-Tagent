@@ -1,3 +1,9 @@
+## [9.5.0](https://github.com/appium/WebDriverAgent/compare/v9.4.1...v9.5.0) (2025-04-10)
+
+### Features
+
+* Add support for the autoClickAlertSelector setting ([#1002](https://github.com/appium/WebDriverAgent/issues/1002)) ([fd31b95](https://github.com/appium/WebDriverAgent/commit/fd31b9589199d0a7bc76919f6aa7c7c74c498b90))
+
 ## [9.4.1](https://github.com/appium/WebDriverAgent/compare/v9.4.0...v9.4.1) (2025-04-05)
 
 ### Miscellaneous Chores
