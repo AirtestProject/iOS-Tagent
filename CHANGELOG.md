@@ -1,3 +1,9 @@
+## [9.6.0](https://github.com/appium/WebDriverAgent/compare/v9.5.2...v9.6.0) (2025-04-20)
+
+### Features
+
+* Split custom and standard snapshotting methods ([#1008](https://github.com/appium/WebDriverAgent/issues/1008)) ([8358856](https://github.com/appium/WebDriverAgent/commit/8358856f5968977b13d5cbdafac97f3053dae56e))
+
 ## [9.5.2](https://github.com/appium/WebDriverAgent/compare/v9.5.1...v9.5.2) (2025-04-19)
 
 ### Bug Fixes
