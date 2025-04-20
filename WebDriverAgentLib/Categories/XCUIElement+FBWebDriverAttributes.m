@@ -28,12 +28,16 @@
 
 - (id<FBXCElementSnapshot>)fb_snapshotForAttributeName:(NSString *)name
 {
-  BOOL inDepth = [name isEqualToString:FBStringify(XCUIElement, isWDAccessible)]
+  // https://github.com/appium/appium-xcuitest-driver/issues/2552
+  BOOL isValueRequest = [name isEqualToString:FBStringify(XCUIElement, wdValue)];
+  if ([self isKindOfClass:XCUIApplication.class] && !isValueRequest) {
+    return [self fb_standardSnapshot];
+  }
+  BOOL isCustomSnapshot = [name isEqualToString:FBStringify(XCUIElement, isWDAccessible)]
     || [name isEqualToString:FBStringify(XCUIElement, isWDAccessibilityContainer)]
-    // To retrice entire text https://github.com/appium/appium-xcuitest-driver/issues/2552
-    || [name isEqualToString:FBStringify(XCUIElement, wdValue)]
-    || [name isEqualToString:FBStringify(XCUIElement, wdIndex)];
-  return [self fb_takeSnapshot:inDepth];
+    || [name isEqualToString:FBStringify(XCUIElement, wdIndex)]
+    || isValueRequest;
+  return isCustomSnapshot ? [self fb_customSnapshot] : [self fb_standardSnapshot];
 }
 
 - (id)fb_valueForWDAttributeName:(NSString *)name
@@ -66,6 +70,15 @@
   return [self valueForKey:[FBElementUtils wdAttributeNameForAttributeName:name]];
 }
 
+- (BOOL)fb_supportsInnerText
+{
+  XCUIElementType elementType = self.elementType;
+  return elementType == XCUIElementTypeTextView
+    || elementType == XCUIElementTypeTextField
+    || elementType == XCUIElementTypeSearchField
+    || elementType == XCUIElementTypeSecureTextField;
+}
+
 - (NSString *)wdValue
 {
   id value = self.value;
@@ -78,10 +91,7 @@
     value = FBFirstNonEmptyValue(value, isSelected);
   } else if (elementType == XCUIElementTypeSwitch) {
     value = @([value boolValue]);
-  } else if (elementType == XCUIElementTypeTextView ||
-             elementType == XCUIElementTypeTextField ||
-             elementType == XCUIElementTypeSearchField ||
-             elementType == XCUIElementTypeSecureTextField) {
+  } else if (self.fb_supportsInnerText) {
     NSString *placeholderValue = self.placeholderValue;
     value = FBFirstNonEmptyValue(value, placeholderValue);
   }
@@ -109,21 +119,18 @@
 
 - (NSString *)wdLabel
 {
-  NSString *label = self.label;
   XCUIElementType elementType = self.elementType;
-  if (elementType == XCUIElementTypeTextField || elementType == XCUIElementTypeSecureTextField ) {
-    return label;
-  }
-  return FBTransferEmptyStringToNil(label);
+  return (elementType == XCUIElementTypeTextField
+          || elementType == XCUIElementTypeSecureTextField)
+    ? self.label
+    : FBTransferEmptyStringToNil(self.label);
 }
 
 - (NSString *)wdPlaceholderValue
 {
-  NSString *placehlderValue = self.placeholderValue;
-  if (nil != placehlderValue) {
-    return placehlderValue;
-  }
-  return FBTransferEmptyStringToNil(placehlderValue);
+  return self.fb_supportsInnerText
+    ? self.placeholderValue
+    : FBTransferEmptyStringToNil(self.placeholderValue);
 }
 
 - (NSString *)wdType
