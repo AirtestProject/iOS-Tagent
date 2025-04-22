@@ -1,3 +1,9 @@
+## [9.6.1](https://github.com/appium/WebDriverAgent/compare/v9.6.0...v9.6.1) (2025-04-22)
+
+### Bug Fixes
+
+* allow setting precise resolution for the MJPEG stream ([#1009](https://github.com/appium/WebDriverAgent/issues/1009)) ([3f86eda](https://github.com/appium/WebDriverAgent/commit/3f86edafda42d955929f7cca870e2b8da54ae930))
+
 ## [9.6.0](https://github.com/appium/WebDriverAgent/compare/v9.5.2...v9.6.0) (2025-04-20)
 
 ### Features
