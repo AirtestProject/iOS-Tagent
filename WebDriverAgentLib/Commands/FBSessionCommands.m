@@ -383,7 +383,7 @@
     [FBConfiguration setScreenshotQuality:[[settings objectForKey:FB_SETTING_SCREENSHOT_QUALITY] unsignedIntegerValue]];
   }
   if (nil != [settings objectForKey:FB_SETTING_MJPEG_SCALING_FACTOR]) {
-    [FBConfiguration setMjpegScalingFactor:[[settings objectForKey:FB_SETTING_MJPEG_SCALING_FACTOR] unsignedIntegerValue]];
+    [FBConfiguration setMjpegScalingFactor:[[settings objectForKey:FB_SETTING_MJPEG_SCALING_FACTOR] floatValue]];
   }
   if (nil != [settings objectForKey:FB_SETTING_MJPEG_FIX_ORIENTATION]) {
     [FBConfiguration setMjpegShouldFixOrientation:[[settings objectForKey:FB_SETTING_MJPEG_FIX_ORIENTATION] boolValue]];

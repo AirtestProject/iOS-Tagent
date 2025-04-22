@@ -37,7 +37,7 @@ static BOOL FBShouldUseTestManagerForVisibilityDetection = NO;
 static BOOL FBShouldUseSingletonTestManager = YES;
 static BOOL FBShouldRespectSystemAlerts = NO;
 
-static NSUInteger FBMjpegScalingFactor = 100;
+static CGFloat FBMjpegScalingFactor = 100.0;
 static BOOL FBMjpegShouldFixOrientation = NO;
 static NSUInteger FBMjpegServerScreenshotQuality = 25;
 static NSUInteger FBMjpegServerFramerate = 10;
@@ -149,12 +149,12 @@ static UIInterfaceOrientation FBScreenshotOrientation;
   return DefaultMjpegServerPort;
 }
 
-+ (NSUInteger)mjpegScalingFactor
++ (CGFloat)mjpegScalingFactor
 {
   return FBMjpegScalingFactor;
 }
 
-+ (void)setMjpegScalingFactor:(NSUInteger)scalingFactor {
++ (void)setMjpegScalingFactor:(CGFloat)scalingFactor {
   FBMjpegScalingFactor = scalingFactor;
 }
 
