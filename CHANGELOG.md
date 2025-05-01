@@ -1,3 +1,9 @@
+## [9.6.2](https://github.com/appium/WebDriverAgent/compare/v9.6.1...v9.6.2) (2025-05-01)
+
+### Bug Fixes
+
+* release element screenshot data ([#1013](https://github.com/appium/WebDriverAgent/issues/1013)) ([a85f327](https://github.com/appium/WebDriverAgent/commit/a85f3271991556941234fbc888528051b1569db1))
+
 ## [9.6.1](https://github.com/appium/WebDriverAgent/compare/v9.6.0...v9.6.1) (2025-04-22)
 
 ### Bug Fixes
