@@ -1,3 +1,9 @@
+## [9.6.3](https://github.com/appium/WebDriverAgent/compare/v9.6.2...v9.6.3) (2025-05-18)
+
+### Miscellaneous Chores
+
+* Move the FBDoesElementSupportInnerText helper to a separate utility file ([#1018](https://github.com/appium/WebDriverAgent/issues/1018)) ([f17b07d](https://github.com/appium/WebDriverAgent/commit/f17b07d03abb6c2100405fda04326b7c35bfb48b))
+
 ## [9.6.2](https://github.com/appium/WebDriverAgent/compare/v9.6.1...v9.6.2) (2025-05-01)
 
 ### Bug Fixes
