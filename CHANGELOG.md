@@ -1,3 +1,9 @@
+## [9.7.0](https://github.com/appium/WebDriverAgent/compare/v9.6.3...v9.7.0) (2025-05-20)
+
+### Features
+
+* add placeholderValue to page source tree ([#1016](https://github.com/appium/WebDriverAgent/issues/1016)) ([509c207](https://github.com/appium/WebDriverAgent/commit/509c207b1366dd8582ba273edcdf77bfb30f53c9))
+
 ## [9.6.3](https://github.com/appium/WebDriverAgent/compare/v9.6.2...v9.6.3) (2025-05-18)
 
 ### Miscellaneous Chores
