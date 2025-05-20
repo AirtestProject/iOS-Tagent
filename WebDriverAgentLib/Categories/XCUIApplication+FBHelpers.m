@@ -37,6 +37,7 @@
 #import "XCUIElement+FBUtilities.h"
 #import "XCUIElement+FBWebDriverAttributes.h"
 #import "XCUIElementQuery.h"
+#import "FBElementHelpers.h"
 
 static NSString* const FBUnknownBundleId = @"unknown";
 
@@ -45,6 +46,7 @@ static NSString* const FBExclusionAttributeEnabled = @"enabled";
 static NSString* const FBExclusionAttributeVisible = @"visible";
 static NSString* const FBExclusionAttributeAccessible = @"accessible";
 static NSString* const FBExclusionAttributeFocused = @"focused";
+static NSString* const FBExclusionAttributePlaceholderValue = @"placeholderValue";
 
 
 _Nullable id extractIssueProperty(id issue, NSString *propertyName) {
@@ -201,28 +203,15 @@ NSDictionary<NSString *, NSString *> *customExclusionAttributesMap(void) {
   info[@"label"] = FBValueOrNull(wrappedSnapshot.wdLabel);
   info[@"rect"] = wrappedSnapshot.wdRect;
   
-  NSDictionary<NSString *, NSString * (^)(void)> *attributeBlocks = @{
-      FBExclusionAttributeFrame: ^{
-          return NSStringFromCGRect(wrappedSnapshot.wdFrame);
-      },
-      FBExclusionAttributeEnabled: ^{
-          return [@([wrappedSnapshot isWDEnabled]) stringValue];
-      },
-      FBExclusionAttributeVisible: ^{
-          return [@([wrappedSnapshot isWDVisible]) stringValue];
-      },
-      FBExclusionAttributeAccessible: ^{
-          return [@([wrappedSnapshot isWDAccessible]) stringValue];
-      },
-      FBExclusionAttributeFocused: ^{
-          return [@([wrappedSnapshot isWDFocused]) stringValue];
-      }
-  };
+  NSDictionary<NSString *, NSString *(^)(void)> *attributeBlocks = [self fb_attributeBlockMapForWrappedSnapshot:wrappedSnapshot];
+
+  NSSet *nonPrefixedKeys = [NSSet setWithObjects:FBExclusionAttributeFrame,
+                            FBExclusionAttributePlaceholderValue, nil];
 
   for (NSString *key in attributeBlocks) {
       if (excludedAttributes == nil || ![excludedAttributes containsObject:key]) {
           NSString *value = ((NSString * (^)(void))attributeBlocks[key])();
-          if ([key isEqualToString:FBExclusionAttributeFrame]) {
+          if ([nonPrefixedKeys containsObject:key]) {
               info[key] = value;
           } else {
               info[[NSString stringWithFormat:@"is%@", [key capitalizedString]]] = value;
@@ -246,6 +235,43 @@ NSDictionary<NSString *, NSString *> *customExclusionAttributesMap(void) {
     }
   }
   return info;
+}
+
+// Helper used by `dictionaryForElement:` to assemble attribute value blocks,
+// including both common attributes and conditionally included ones like placeholderValue.
++ (NSDictionary<NSString *, NSString *(^)(void)> *)fb_attributeBlockMapForWrappedSnapshot:(FBXCElementSnapshotWrapper *)wrappedSnapshot
+
+{
+  // Base attributes common to every element
+  NSMutableDictionary<NSString *, NSString *(^)(void)> *blocks =
+  [@{
+    FBExclusionAttributeFrame: ^{
+    return NSStringFromCGRect(wrappedSnapshot.wdFrame);
+  },
+    FBExclusionAttributeEnabled: ^{
+    return [@([wrappedSnapshot isWDEnabled]) stringValue];
+  },
+    FBExclusionAttributeVisible: ^{
+    return [@([wrappedSnapshot isWDVisible]) stringValue];
+  },
+    FBExclusionAttributeAccessible: ^{
+    return [@([wrappedSnapshot isWDAccessible]) stringValue];
+  },
+    FBExclusionAttributeFocused: ^{
+    return [@([wrappedSnapshot isWDFocused]) stringValue];
+  }
+  } mutableCopy];
+  
+  XCUIElementType elementType = wrappedSnapshot.elementType;
+  
+  // Text-input placeholder (only for elements that support inner text)
+  if (FBDoesElementSupportInnerText(elementType)) {
+    blocks[FBExclusionAttributePlaceholderValue] = ^{
+      return (NSString *)FBValueOrNull(wrappedSnapshot.wdPlaceholderValue);
+    };
+  }
+  
+  return [blocks copy];
 }
 
 + (NSDictionary *)accessibilityInfoForElement:(id<FBXCElementSnapshot>)snapshot
