@@ -1,3 +1,9 @@
+## [9.7.1](https://github.com/appium/WebDriverAgent/compare/v9.7.0...v9.7.1) (2025-05-21)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump conventional-changelog-conventionalcommits ([#1019](https://github.com/appium/WebDriverAgent/issues/1019)) ([7108f7f](https://github.com/appium/WebDriverAgent/commit/7108f7f79575a1758bc7f05bd4ef790fd7694784))
+
 ## [9.7.0](https://github.com/appium/WebDriverAgent/compare/v9.6.3...v9.7.0) (2025-05-20)
 
 ### Features
