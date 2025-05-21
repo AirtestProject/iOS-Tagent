@@ -1,3 +1,9 @@
+## [9.8.0](https://github.com/appium/WebDriverAgent/compare/v9.7.1...v9.8.0) (2025-05-21)
+
+### Features
+
+* Add a native frame property of the element ([#1017](https://github.com/appium/WebDriverAgent/issues/1017)) ([09214c4](https://github.com/appium/WebDriverAgent/commit/09214c4228ed5a49c02adead452cb0bb8dd83b6d))
+
 ## [9.7.1](https://github.com/appium/WebDriverAgent/compare/v9.7.0...v9.7.1) (2025-05-21)
 
 ### Miscellaneous Chores
