@@ -1,3 +1,9 @@
+## [9.9.0](https://github.com/appium/WebDriverAgent/compare/v9.8.0...v9.9.0) (2025-05-26)
+
+### Features
+
+* Use another snapshotting mechanism for the hittable attribute calculation ([#1022](https://github.com/appium/WebDriverAgent/issues/1022)) ([13c9f45](https://github.com/appium/WebDriverAgent/commit/13c9f453d890ad9b78fa7c47728ebae33880966a))
+
 ## [9.8.0](https://github.com/appium/WebDriverAgent/compare/v9.7.1...v9.8.0) (2025-05-21)
 
 ### Features
