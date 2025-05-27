@@ -48,6 +48,7 @@ static NSString* const FBExclusionAttributeAccessible = @"accessible";
 static NSString* const FBExclusionAttributeFocused = @"focused";
 static NSString* const FBExclusionAttributePlaceholderValue = @"placeholderValue";
 static NSString* const FBExclusionAttributeNativeFrame = @"nativeFrame";
+static NSString* const FBExclusionAttributeTraits = @"traits";
 
 _Nullable id extractIssueProperty(id issue, NSString *propertyName) {
   SEL selector = NSSelectorFromString(propertyName);
@@ -209,6 +210,7 @@ NSDictionary<NSString *, NSString *> *customExclusionAttributesMap(void) {
                             FBExclusionAttributeFrame,
                             FBExclusionAttributePlaceholderValue,
                             FBExclusionAttributeNativeFrame,
+                            FBExclusionAttributeTraits,
                             nil];
 
   for (NSString *key in attributeBlocks) {
@@ -265,6 +267,9 @@ NSDictionary<NSString *, NSString *> *customExclusionAttributesMap(void) {
   },
     FBExclusionAttributeFocused: ^{
     return [@([wrappedSnapshot isWDFocused]) stringValue];
+  },
+    FBExclusionAttributeTraits: ^{
+    return wrappedSnapshot.wdTraits;
   }
   } mutableCopy];
   

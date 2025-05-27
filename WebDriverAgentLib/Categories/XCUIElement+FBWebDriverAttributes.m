@@ -22,6 +22,7 @@
 #import "FBElementUtils.h"
 #import "XCTestPrivateSymbols.h"
 #import "XCUIHitPointResult.h"
+#import "FBAccessibilityTraits.h"
 
 #define BROKEN_RECT CGRectMake(-1, -1, 0, 0)
 
@@ -157,6 +158,22 @@
   // the current property is provided to represent the element's
   // actual rendered frame.
   return self.frame;
+}
+
+/**
+ Returns a comma-separated string of accessibility traits for the element.
+ This method converts the element's accessibility traits bitmask into human-readable strings
+ using FBAccessibilityTraitsToStringsArray. The traits represent various accessibility
+ characteristics of the element such as Button, Link, Image, etc.
+ You can find the list of possible traits in the Apple documentation:
+ https://developer.apple.com/documentation/uikit/uiaccessibilitytraits?language=objc
+ 
+ @return A comma-separated string of accessibility traits, or an empty string if no traits are set
+ */
+- (NSString *)wdTraits
+{
+  NSArray<NSString *> *traits = FBAccessibilityTraitsToStringsArray(self.snapshot.traits);
+  return [traits componentsJoinedByString:@", "];
 }
 
 - (BOOL)isWDVisible

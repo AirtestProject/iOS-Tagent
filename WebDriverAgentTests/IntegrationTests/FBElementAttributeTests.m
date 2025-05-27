@@ -96,6 +96,52 @@
   XCTAssertEqual(element2.wdIndex, 0);
 }
 
+- (void)testAccessibilityTraits
+{
+  XCUIElement *button = self.testedApplication.buttons.firstMatch;
+  XCTAssertTrue(button.exists);
+  NSArray *buttonTraits = [button.wdTraits componentsSeparatedByString:@", "];
+  NSArray *expectedButtonTraits = @[@"Button"];
+  XCTAssertEqual(buttonTraits.count, expectedButtonTraits.count, @"Button should have exactly 1 trait");
+  XCTAssertEqualObjects(buttonTraits, expectedButtonTraits);
+  XCTAssertEqualObjects(button.wdType, @"XCUIElementTypeButton");
+  
+  XCUIElement *toggle = self.testedApplication.switches.firstMatch;
+  XCTAssertTrue(toggle.exists);
+  
+  // iOS 17.0 specific traits if available
+  NSArray *toggleTraits = [toggle.wdTraits componentsSeparatedByString:@", "];
+  NSArray *expectedToggleTraits;
+  
+  #if __clang_major__ >= 16
+  if (@available(iOS 17.0, *)) {
+    expectedToggleTraits = @[@"ToggleButton", @"Button"];
+    XCTAssertEqual(toggleTraits.count, 2, @"Toggle should have exactly 2 traits on iOS 17+");
+  }
+  #else
+  expectedToggleTraits = @[@"Button"];
+  XCTAssertEqual(toggleTraits.count, 1, @"Toggle should have exactly 1 trait on iOS < 17");
+  #endif
+  XCTAssertEqualObjects(toggleTraits, expectedToggleTraits);
+  XCTAssertEqualObjects(toggle.wdType, @"XCUIElementTypeSwitch");
+  
+  XCUIElement *slider = self.testedApplication.sliders.firstMatch;
+  XCTAssertTrue(slider.exists);
+  NSArray *sliderTraits = [slider.wdTraits componentsSeparatedByString:@", "];
+  NSArray *expectedSliderTraits = @[@"Adjustable"];
+  XCTAssertEqual(sliderTraits.count, expectedSliderTraits.count, @"Slider should have exactly 1 trait");
+  XCTAssertEqualObjects(sliderTraits, expectedSliderTraits);
+  XCTAssertEqualObjects(slider.wdType, @"XCUIElementTypeSlider");
+  
+  XCUIElement *picker = self.testedApplication.pickerWheels.firstMatch;
+  XCTAssertTrue(picker.exists);
+  NSArray *pickerTraits = [picker.wdTraits componentsSeparatedByString:@", "];
+  NSArray *expectedPickerTraits = @[@"Adjustable"];
+  XCTAssertEqual(pickerTraits.count, expectedPickerTraits.count, @"Picker should have exactly 1 trait");
+  XCTAssertEqualObjects(pickerTraits, expectedPickerTraits);
+  XCTAssertEqualObjects(picker.wdType, @"XCUIElementTypePickerWheel");
+}
+
 - (void)testTextFieldAttributes
 {
   XCUIElement *element = self.testedApplication.textFields[@"Value"];
