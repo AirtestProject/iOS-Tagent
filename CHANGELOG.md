@@ -1,3 +1,13 @@
+## [9.10.0](https://github.com/appium/WebDriverAgent/compare/v9.9.0...v9.10.0) (2025-05-27)
+
+### Features
+
+* Add accessibility traits of the element ([#1020](https://github.com/appium/WebDriverAgent/issues/1020)) ([9465aaf](https://github.com/appium/WebDriverAgent/commit/9465aafd5e81ef57be7f78e9f2e188d3c1ba1bee))
+
+### Bug Fixes
+
+* Use native snapshots if hittable attribute is requested in xPath ([#1023](https://github.com/appium/WebDriverAgent/issues/1023)) ([49d26cb](https://github.com/appium/WebDriverAgent/commit/49d26cb02a8515d1a1b52b65b7cb65512dfd749b))
+
 ## [9.9.0](https://github.com/appium/WebDriverAgent/compare/v9.8.0...v9.9.0) (2025-05-26)
 
 ### Features
