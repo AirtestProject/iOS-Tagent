@@ -1,3 +1,9 @@
+## [9.10.1](https://github.com/appium/WebDriverAgent/compare/v9.10.0...v9.10.1) (2025-05-30)
+
+### Miscellaneous Chores
+
+* Make sure the same import style is used everywhere ([#1024](https://github.com/appium/WebDriverAgent/issues/1024)) ([1c50072](https://github.com/appium/WebDriverAgent/commit/1c50072457a8b82eec3684029386ccfa9432eccc))
+
 ## [9.10.0](https://github.com/appium/WebDriverAgent/compare/v9.9.0...v9.10.0) (2025-05-27)
 
 ### Features
