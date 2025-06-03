@@ -1,3 +1,9 @@
+## [9.11.0](https://github.com/appium/WebDriverAgent/compare/v9.10.1...v9.11.0) (2025-06-03)
+
+### Features
+
+* Add includeHittableInSource setting for including real hittable attribute in XML source ([#1026](https://github.com/appium/WebDriverAgent/issues/1026)) ([0fa4e74](https://github.com/appium/WebDriverAgent/commit/0fa4e7417404b5975445d381d111753fe681edd4))
+
 ## [9.10.1](https://github.com/appium/WebDriverAgent/compare/v9.10.0...v9.10.1) (2025-05-30)
 
 ### Miscellaneous Chores
