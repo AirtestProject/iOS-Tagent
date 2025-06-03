@@ -147,7 +147,10 @@ static NSString *const topNodeIndexPath = @"top";
 
     if (rc >= 0) {
       [self waitUntilStableWithElement:root];
-      rc = [self xmlRepresentationWithRootElement:[self snapshotWithRoot:root useNative:NO]
+      // If 'includeHittableInPageSource' setting is enabled, then use native snapshots
+      // to calculate a more accurate value for the 'hittable' attribute.
+      rc = [self xmlRepresentationWithRootElement:[self snapshotWithRoot:root
+                                                        useNative:FBConfiguration.includeHittableInPageSource]
                                            writer:writer
                                      elementStore:nil
                                             query:nil
@@ -354,9 +357,11 @@ static NSString *const topNodeIndexPath = @"top";
   NSMutableSet<Class> *includedAttributes;
   if (nil == query) {
     includedAttributes = [NSMutableSet setWithArray:FBElementAttribute.supportedAttributes];
-    // The hittable attribute is expensive to calculate for each snapshot item
-    // thus we only include it when requested by an xPath query
-    [includedAttributes removeObject:FBHittableAttribute.class];
+    if (!FBConfiguration.includeHittableInPageSource) {
+      // The hittable attribute is expensive to calculate for each snapshot item
+      // thus we only include it when requested explicitly
+      [includedAttributes removeObject:FBHittableAttribute.class];
+    }
     if (nil != excludedAttributes) {
       for (NSString *excludedAttributeName in excludedAttributes) {
         for (Class supportedAttribute in FBElementAttribute.supportedAttributes) {

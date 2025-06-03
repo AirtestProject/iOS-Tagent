@@ -332,6 +332,17 @@ typedef NS_ENUM(NSInteger, FBConfigurationKeyboardPreference) {
  */
 + (void)resetSessionSettings;
 
+/**
+ * Whether to calculate `hittable` attribute using native APIs
+ * instead of legacy heuristics.
+ * This flag improves accuracy, but may affect performance.
+ * Disabled by default.
+ *
+ * @param enabled Either YES or NO
+ */
++ (void)setincludeHittableInPageSource:(BOOL)enabled;
++ (BOOL)includeHittableInPageSource;
+
 @end
 
 NS_ASSUME_NONNULL_END
