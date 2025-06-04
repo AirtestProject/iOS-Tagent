@@ -1,3 +1,9 @@
+## [9.12.0](https://github.com/appium/WebDriverAgent/compare/v9.11.0...v9.12.0) (2025-06-04)
+
+### Features
+
+* add accessibility traits to XML page source ([#1028](https://github.com/appium/WebDriverAgent/issues/1028)) ([2df6649](https://github.com/appium/WebDriverAgent/commit/2df6649cb532d65a8c14633591b76c90185644cb))
+
 ## [9.11.0](https://github.com/appium/WebDriverAgent/compare/v9.10.1...v9.11.0) (2025-06-03)
 
 ### Features
