@@ -108,4 +108,8 @@
   return CGRectZero;
 }
 
+- (UIAccessibilityTraits)traits
+{
+  return UIAccessibilityTraitButton;
+}
 @end
