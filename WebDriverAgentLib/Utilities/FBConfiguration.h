@@ -340,8 +340,24 @@ typedef NS_ENUM(NSInteger, FBConfigurationKeyboardPreference) {
  *
  * @param enabled Either YES or NO
  */
-+ (void)setincludeHittableInPageSource:(BOOL)enabled;
++ (void)setIncludeHittableInPageSource:(BOOL)enabled;
 + (BOOL)includeHittableInPageSource;
+
+/**
+ * Whether to include `nativeFrame` attribute in the XML page source.
+ *
+ * When enabled, the XML representation will contain the precise rendered
+ * frame of the UI element.
+ *
+ * This value is more accurate than the legacy `wdFrame`, which applies rounding
+ * and may introduce inconsistencies in size and position calculations.
+ *
+ * The value is disabled by default to avoid potential performance overhead.
+ *
+ * @param enabled Either YES or NO
+ */
++ (void)setIncludeNativeFrameInPageSource:(BOOL)enabled;
++ (BOOL)includeNativeFrameInPageSource;
 
 @end
 

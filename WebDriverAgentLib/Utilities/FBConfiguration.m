@@ -61,7 +61,8 @@ static BOOL FBLimitXpathContextScope = YES;
 #if !TARGET_OS_TV
 static UIInterfaceOrientation FBScreenshotOrientation;
 #endif
-static BOOL FBShouldincludeHittableInPageSource = NO;
+static BOOL FBShouldIncludeHittableInPageSource = NO;
+static BOOL FBShouldIncludeNativeFrameInPageSource = NO;
 
 @implementation FBConfiguration
 
@@ -643,14 +644,24 @@ static BOOL FBShouldincludeHittableInPageSource = NO;
   return NO;
 }
 
-+ (void)setincludeHittableInPageSource:(BOOL)enabled
++ (void)setIncludeHittableInPageSource:(BOOL)enabled
 {
-  FBShouldincludeHittableInPageSource = enabled;
+  FBShouldIncludeHittableInPageSource = enabled;
 }
 
 + (BOOL)includeHittableInPageSource
 {
-  return FBShouldincludeHittableInPageSource;
+  return FBShouldIncludeHittableInPageSource;
+}
+
++ (void)setIncludeNativeFrameInPageSource:(BOOL)enabled
+{
+  FBShouldIncludeNativeFrameInPageSource = enabled;
+}
+
++ (BOOL)includeNativeFrameInPageSource
+{
+  return FBShouldIncludeNativeFrameInPageSource;
 }
 
 @end

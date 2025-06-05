@@ -105,6 +105,10 @@
 
 @end
 
+@interface FBNativeFrameAttribute : FBElementAttribute
+
+@end
+
 @interface FBTraitsAttribute : FBElementAttribute
 
 @end
@@ -366,6 +370,10 @@ static NSString *const topNodeIndexPath = @"top";
       // thus we only include it when requested explicitly
       [includedAttributes removeObject:FBHittableAttribute.class];
     }
+    if (!FBConfiguration.includeNativeFrameInPageSource) {
+      // Include nativeFrame only when requested
+      [includedAttributes removeObject:FBNativeFrameAttribute.class];
+    }
     if (nil != excludedAttributes) {
       for (NSString *excludedAttributeName in excludedAttributes) {
         for (Class supportedAttribute in FBElementAttribute.supportedAttributes) {
@@ -588,6 +596,7 @@ static NSString *const FBAbstractMethodInvocationException = @"AbstractMethodInv
            FBHittableAttribute.class,
            FBPlaceholderValueAttribute.class,
            FBTraitsAttribute.class,
+           FBNativeFrameAttribute.class,
           ];
 }
 
@@ -823,7 +832,19 @@ static NSString *const FBAbstractMethodInvocationException = @"AbstractMethodInv
 {
   return element.wdPlaceholderValue;
 }
+@end
 
+@implementation FBNativeFrameAttribute
+
++ (NSString *)name
+{
+  return @"nativeFrame";
+}
+
++ (NSString *)valueForElement:(id<FBElement>)element
+{
+  return NSStringFromCGRect(element.wdNativeFrame);
+}
 @end
 
 @implementation FBTraitsAttribute

@@ -37,3 +37,4 @@ NSString* const FB_SETTING_USE_CLEAR_TEXT_SHORTCUT = @"useClearTextShortcut";
 NSString* const FB_SETTING_LIMIT_XPATH_CONTEXT_SCOPE = @"limitXPathContextScope";
 NSString* const FB_SETTING_AUTO_CLICK_ALERT_SELECTOR = @"autoClickAlertSelector";
 NSString* const FB_SETTING_INCLUDE_HITTABLE_IN_PAGE_SOURCE = @"includeHittableInPageSource";
+NSString* const FB_SETTING_INCLUDE_NATIVE_FRAME_IN_PAGE_SOURCE = @"includeNativeFrameInPageSource";

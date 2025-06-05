@@ -354,6 +354,7 @@
       FB_SETTING_RESPECT_SYSTEM_ALERTS: @([FBConfiguration shouldRespectSystemAlerts]),
       FB_SETTING_USE_CLEAR_TEXT_SHORTCUT: @([FBConfiguration useClearTextShortcut]),
       FB_SETTING_INCLUDE_HITTABLE_IN_PAGE_SOURCE: @([FBConfiguration includeHittableInPageSource]),
+      FB_SETTING_INCLUDE_NATIVE_FRAME_IN_PAGE_SOURCE: @([FBConfiguration includeNativeFrameInPageSource]),
       FB_SETTING_LIMIT_XPATH_CONTEXT_SCOPE: @([FBConfiguration limitXpathContextScope]),
 #if !TARGET_OS_TV
       FB_SETTING_SCREENSHOT_ORIENTATION: [FBConfiguration humanReadableScreenshotOrientation],
@@ -457,7 +458,10 @@
     [FBConfiguration setUseClearTextShortcut:[[settings objectForKey:FB_SETTING_USE_CLEAR_TEXT_SHORTCUT] boolValue]];
   }
   if (nil != [settings objectForKey:FB_SETTING_INCLUDE_HITTABLE_IN_PAGE_SOURCE]) {
-    [FBConfiguration setincludeHittableInPageSource:[[settings objectForKey:FB_SETTING_INCLUDE_HITTABLE_IN_PAGE_SOURCE] boolValue]];
+    [FBConfiguration setIncludeHittableInPageSource:[[settings objectForKey:FB_SETTING_INCLUDE_HITTABLE_IN_PAGE_SOURCE] boolValue]];
+  }
+  if (nil != [settings objectForKey:FB_SETTING_INCLUDE_NATIVE_FRAME_IN_PAGE_SOURCE]) {
+    [FBConfiguration setIncludeNativeFrameInPageSource:[[settings objectForKey:FB_SETTING_INCLUDE_NATIVE_FRAME_IN_PAGE_SOURCE] boolValue]];
   }
   if (nil != [settings objectForKey:FB_SETTING_LIMIT_XPATH_CONTEXT_SCOPE]) {
     [FBConfiguration setLimitXpathContextScope:[[settings objectForKey:FB_SETTING_LIMIT_XPATH_CONTEXT_SCOPE] boolValue]];
