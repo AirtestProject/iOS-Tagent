@@ -1,3 +1,9 @@
+## [9.13.0](https://github.com/appium/WebDriverAgent/compare/v9.12.0...v9.13.0) (2025-06-05)
+
+### Features
+
+* expose nativeFrame attribute in XML page source ([#1029](https://github.com/appium/WebDriverAgent/issues/1029)) ([5b56a45](https://github.com/appium/WebDriverAgent/commit/5b56a453f836cbc4358ce24ae43032658467c35c))
+
 ## [9.12.0](https://github.com/appium/WebDriverAgent/compare/v9.11.0...v9.12.0) (2025-06-04)
 
 ### Features
