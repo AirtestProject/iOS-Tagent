@@ -1,3 +1,9 @@
+## [9.14.1](https://github.com/appium/WebDriverAgent/compare/v9.14.0...v9.14.1) (2025-06-09)
+
+### Miscellaneous Chores
+
+* add -Wno-reserved-identifier option ([#1032](https://github.com/appium/WebDriverAgent/issues/1032)) ([005dc21](https://github.com/appium/WebDriverAgent/commit/005dc216d9f41757763fe5b1714b68697fa8ee30))
+
 ## [9.14.0](https://github.com/appium/WebDriverAgent/compare/v9.13.0...v9.14.0) (2025-06-09)
 
 ### Features
