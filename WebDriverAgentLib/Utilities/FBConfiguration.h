@@ -359,6 +359,18 @@ typedef NS_ENUM(NSInteger, FBConfigurationKeyboardPreference) {
 + (void)setIncludeNativeFrameInPageSource:(BOOL)enabled;
 + (BOOL)includeNativeFrameInPageSource;
 
+/**
+ * Whether to include `minValue`/`maxValue` attributes in the page source.
+ * These attributes are retrieved from native element snapshots and represent
+ * value boundaries for elements like sliders or progress indicators.
+ * This may affect performance if used on many elements.
+ * Disabled by default.
+ *
+ * @param enabled Either YES or NO
+ */
++ (void)setIncludeMinMaxValueInPageSource:(BOOL)enabled;
++ (BOOL)includeMinMaxValueInPageSource;
+
 @end
 
 NS_ASSUME_NONNULL_END
