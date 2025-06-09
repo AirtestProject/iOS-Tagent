@@ -1,3 +1,9 @@
+## [9.14.0](https://github.com/appium/WebDriverAgent/compare/v9.13.0...v9.14.0) (2025-06-09)
+
+### Features
+
+* add minimum and maximum value attributes to page source ([#1031](https://github.com/appium/WebDriverAgent/issues/1031)) ([0e4e7e7](https://github.com/appium/WebDriverAgent/commit/0e4e7e7c483b9196edae576481f4e37f99fc8705))
+
 ## [9.13.0](https://github.com/appium/WebDriverAgent/compare/v9.12.0...v9.13.0) (2025-06-05)
 
 ### Features
