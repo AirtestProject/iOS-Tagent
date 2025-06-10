@@ -1,3 +1,9 @@
+## [9.14.2](https://github.com/appium/WebDriverAgent/compare/v9.14.1...v9.14.2) (2025-06-10)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @types/node from 22.15.31 to 24.0.0 ([#1033](https://github.com/appium/WebDriverAgent/issues/1033)) ([e9705d9](https://github.com/appium/WebDriverAgent/commit/e9705d964e63222daaf0710bd3b860ca2ba6850f))
+
 ## [9.14.1](https://github.com/appium/WebDriverAgent/compare/v9.14.0...v9.14.1) (2025-06-09)
 
 ### Miscellaneous Chores
