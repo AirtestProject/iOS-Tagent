@@ -1,3 +1,9 @@
+## [9.14.3](https://github.com/appium/WebDriverAgent/compare/v9.14.2...v9.14.3) (2025-06-13)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump sinon from 20.0.0 to 21.0.0 ([#1034](https://github.com/appium/WebDriverAgent/issues/1034)) ([5b205f4](https://github.com/appium/WebDriverAgent/commit/5b205f493f35cd1744cf9e33bce21e0f9e7c3bea))
+
 ## [9.14.2](https://github.com/appium/WebDriverAgent/compare/v9.14.1...v9.14.2) (2025-06-10)
 
 ### Miscellaneous Chores
