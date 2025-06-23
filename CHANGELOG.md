@@ -1,3 +1,9 @@
+## [9.14.4](https://github.com/appium/WebDriverAgent/compare/v9.14.3...v9.14.4) (2025-06-23)
+
+### Miscellaneous Chores
+
+* include wda sim prebuilt for gh release ([#1038](https://github.com/appium/WebDriverAgent/issues/1038)) ([4423ecb](https://github.com/appium/WebDriverAgent/commit/4423ecb4f23c50343d8ffbf56a7753b985cbab81))
+
 ## [9.14.3](https://github.com/appium/WebDriverAgent/compare/v9.14.2...v9.14.3) (2025-06-13)
 
 ### Miscellaneous Chores
