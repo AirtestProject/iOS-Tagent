@@ -1,19 +1,19 @@
 #!/bin/bash
 
-# To run build script for CI
-
 xcodebuild clean build-for-testing \
   -project WebDriverAgent.xcodeproj \
-  -derivedDataPath wda_build \
+  -derivedDataPath $DERIVED_DATA_PATH \
   -scheme $SCHEME \
   -destination "$DESTINATION" \
   CODE_SIGNING_ALLOWED=NO ARCHS=$ARCHS
 
-# simulator needs to build entire build files
+pushd $WD
 
-pushd wda_build
-# to remove unnecessary space consuming files
-rm -rf Build/Intermediates.noindex
-zip -r $ZIP_PKG_NAME Build
+# The reason why here excludes several frameworks are:
+# - Xcode 16 started generating 5.9MB of 'Testing.framework', but it might not be necessary for WDA.
+# - libXCTestSwiftSupport is used for Swift testing. WDA doesn't include Swift stuff, thus this is not needed.
+zip -r $ZIP_PKG_NAME $SCHEME-Runner.app \
+    -x "$SCHEME-Runner.app/Frameworks/Testing.framework*" \
+       "$SCHEME-Runner.app/Frameworks/libXCTestSwiftSupport.dylib"
 popd
-mv wda_build/$ZIP_PKG_NAME ./
+mv $WD/$ZIP_PKG_NAME ./
