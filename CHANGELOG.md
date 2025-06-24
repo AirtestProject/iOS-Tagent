@@ -1,3 +1,9 @@
+## [9.14.6](https://github.com/appium/WebDriverAgent/compare/v9.14.5...v9.14.6) (2025-06-24)
+
+### Miscellaneous Chores
+
+* add missing arch ([#1039](https://github.com/appium/WebDriverAgent/issues/1039)) ([a8dd958](https://github.com/appium/WebDriverAgent/commit/a8dd958bd92ef685bc1798ec04e92080b798d7d2))
+
 ## [9.14.5](https://github.com/appium/WebDriverAgent/compare/v9.14.4...v9.14.5) (2025-06-24)
 
 ### Miscellaneous Chores
