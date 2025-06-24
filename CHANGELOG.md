@@ -1,3 +1,9 @@
+## [9.14.5](https://github.com/appium/WebDriverAgent/compare/v9.14.4...v9.14.5) (2025-06-24)
+
+### Miscellaneous Chores
+
+* keep entire app for simulators ([d2bbcc6](https://github.com/appium/WebDriverAgent/commit/d2bbcc6d7af6b8eea076e24cd18429b74eeaffd6))
+
 ## [9.14.4](https://github.com/appium/WebDriverAgent/compare/v9.14.3...v9.14.4) (2025-06-23)
 
 ### Miscellaneous Chores
