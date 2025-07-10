@@ -1,3 +1,9 @@
+## [9.15.0](https://github.com/appium/WebDriverAgent/compare/v9.14.6...v9.15.0) (2025-07-10)
+
+### Features
+
+* HTTPS support for wda-client if webDriverAgentUrl is set ([#1042](https://github.com/appium/WebDriverAgent/issues/1042)) ([f7c4193](https://github.com/appium/WebDriverAgent/commit/f7c41939c793cdbc62e9c14d8eb91e06957bb566))
+
 ## [9.14.6](https://github.com/appium/WebDriverAgent/compare/v9.14.5...v9.14.6) (2025-06-24)
 
 ### Miscellaneous Chores
