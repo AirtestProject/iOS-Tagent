@@ -1,3 +1,9 @@
+## [9.15.1](https://github.com/appium/WebDriverAgent/compare/v9.15.0...v9.15.1) (2025-07-17)
+
+### Miscellaneous Chores
+
+* Remove the redundant check after activating the system app ([#1043](https://github.com/appium/WebDriverAgent/issues/1043)) ([33ccba1](https://github.com/appium/WebDriverAgent/commit/33ccba1ab3bc2980349f8553fd30aa5b08141b6b))
+
 ## [9.15.0](https://github.com/appium/WebDriverAgent/compare/v9.14.6...v9.15.0) (2025-07-10)
 
 ### Features
