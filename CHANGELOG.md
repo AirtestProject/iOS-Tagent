@@ -1,3 +1,9 @@
+## [9.15.2](https://github.com/appium/WebDriverAgent/compare/v9.15.1...v9.15.2) (2025-08-04)
+
+### Miscellaneous Chores
+
+* bump appium-ios-device to 2.9.0 ([#1047](https://github.com/appium/WebDriverAgent/issues/1047)) ([305019d](https://github.com/appium/WebDriverAgent/commit/305019d4dde89853e44c58170e17ec23c89de2f3))
+
 ## [9.15.1](https://github.com/appium/WebDriverAgent/compare/v9.15.0...v9.15.1) (2025-07-17)
 
 ### Miscellaneous Chores
