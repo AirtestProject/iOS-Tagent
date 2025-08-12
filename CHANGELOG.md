@@ -1,3 +1,9 @@
+## [9.15.3](https://github.com/appium/WebDriverAgent/compare/v9.15.2...v9.15.3) (2025-08-12)
+
+### Miscellaneous Chores
+
+* Cache application instances for their PIDs ([#1049](https://github.com/appium/WebDriverAgent/issues/1049)) ([e9cbf64](https://github.com/appium/WebDriverAgent/commit/e9cbf640c21243c304b476a497f33802e0501a7d))
+
 ## [9.15.2](https://github.com/appium/WebDriverAgent/compare/v9.15.1...v9.15.2) (2025-08-04)
 
 ### Miscellaneous Chores
