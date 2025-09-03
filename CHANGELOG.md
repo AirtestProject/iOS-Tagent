@@ -1,3 +1,9 @@
+## [10.1.0](https://github.com/appium/WebDriverAgent/compare/v10.0.1...v10.1.0) (2025-09-03)
+
+### Features
+
+* Add process and bundle identifiers to the application node in the XML source ([#1055](https://github.com/appium/WebDriverAgent/issues/1055)) ([088cff2](https://github.com/appium/WebDriverAgent/commit/088cff2b2bc19ddde698ec06f1db37c6989cf392))
+
 ## [10.0.1](https://github.com/appium/WebDriverAgent/compare/v10.0.0...v10.0.1) (2025-08-23)
 
 ### Miscellaneous Chores
