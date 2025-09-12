@@ -1,3 +1,9 @@
+## [10.1.1](https://github.com/appium/WebDriverAgent/compare/v10.1.0...v10.1.1) (2025-09-12)
+
+### Miscellaneous Chores
+
+* remove patents file ([#1061](https://github.com/appium/WebDriverAgent/issues/1061)) ([b001c4e](https://github.com/appium/WebDriverAgent/commit/b001c4e39ef71cb8b91ef7391b418f32a7ebe21c))
+
 ## [10.1.0](https://github.com/appium/WebDriverAgent/compare/v10.0.1...v10.1.0) (2025-09-03)
 
 ### Features
