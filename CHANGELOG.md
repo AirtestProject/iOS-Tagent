@@ -1,3 +1,9 @@
+## [10.1.2](https://github.com/appium/WebDriverAgent/compare/v10.1.1...v10.1.2) (2025-10-08)
+
+### Miscellaneous Chores
+
+* Skip staleness checks for subelement lookups ([#1063](https://github.com/appium/WebDriverAgent/issues/1063)) ([ada7760](https://github.com/appium/WebDriverAgent/commit/ada77604f9fa9bfc85c61cabbd2a9f4de00aceb9))
+
 ## [10.1.1](https://github.com/appium/WebDriverAgent/compare/v10.1.0...v10.1.1) (2025-09-12)
 
 ### Miscellaneous Chores
