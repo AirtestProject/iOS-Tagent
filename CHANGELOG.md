@@ -1,3 +1,9 @@
+## [10.1.3](https://github.com/appium/WebDriverAgent/compare/v10.1.2...v10.1.3) (2025-10-17)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump semantic-release from 24.2.9 to 25.0.0 ([#1064](https://github.com/appium/WebDriverAgent/issues/1064)) ([6c2cffa](https://github.com/appium/WebDriverAgent/commit/6c2cffa4ee6fcd0c86ae7aa171f25cb800908932))
+
 ## [10.1.2](https://github.com/appium/WebDriverAgent/compare/v10.1.1...v10.1.2) (2025-10-08)
 
 ### Miscellaneous Chores
