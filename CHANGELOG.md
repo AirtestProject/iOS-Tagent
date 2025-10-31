@@ -1,3 +1,9 @@
+## [10.2.0](https://github.com/appium/WebDriverAgent/compare/v10.1.4...v10.2.0) (2025-10-31)
+
+### Features
+
+* Let binding IP address to be configurable via USE_IP environment variable ([#1066](https://github.com/appium/WebDriverAgent/issues/1066)) ([70ed7cf](https://github.com/appium/WebDriverAgent/commit/70ed7cf0a74e0df3763b99f6155a7923dde17c9d))
+
 ## [10.1.4](https://github.com/appium/WebDriverAgent/compare/v10.1.3...v10.1.4) (2025-10-31)
 
 ### Miscellaneous Chores
