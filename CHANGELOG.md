@@ -1,3 +1,9 @@
+## [10.1.4](https://github.com/appium/WebDriverAgent/compare/v10.1.3...v10.1.4) (2025-10-31)
+
+### Miscellaneous Chores
+
+* Improve type declarations ([#1065](https://github.com/appium/WebDriverAgent/issues/1065)) ([5aadcb8](https://github.com/appium/WebDriverAgent/commit/5aadcb8fa99459e7f8852f75d2549a76f3e55b07))
+
 ## [10.1.3](https://github.com/appium/WebDriverAgent/compare/v10.1.2...v10.1.3) (2025-10-17)
 
 ### Miscellaneous Chores
