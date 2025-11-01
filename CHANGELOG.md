@@ -1,3 +1,9 @@
+## [10.2.1](https://github.com/appium/WebDriverAgent/compare/v10.2.0...v10.2.1) (2025-11-01)
+
+### Miscellaneous Chores
+
+* update xcodebuild commands for the new binding ip capability ([#1067](https://github.com/appium/WebDriverAgent/issues/1067)) ([d12f421](https://github.com/appium/WebDriverAgent/commit/d12f4214b958855022c21b4d700b6726740294c1))
+
 ## [10.2.0](https://github.com/appium/WebDriverAgent/compare/v10.1.4...v10.2.0) (2025-10-31)
 
 ### Features
