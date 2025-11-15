@@ -1,3 +1,9 @@
+## [10.2.2](https://github.com/appium/WebDriverAgent/compare/v10.2.1...v10.2.2) (2025-11-15)
+
+### Miscellaneous Chores
+
+* publish via trusted publisher ([#1068](https://github.com/appium/WebDriverAgent/issues/1068)) ([6321379](https://github.com/appium/WebDriverAgent/commit/6321379d3e97dfa846bf0ff6f0b8e8b9ef85ba1c))
+
 ## [10.2.1](https://github.com/appium/WebDriverAgent/compare/v10.2.0...v10.2.1) (2025-11-01)
 
 ### Miscellaneous Chores
