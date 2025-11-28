@@ -3,15 +3,10 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import <Foundation/Foundation.h>
-
-#import "AXSettings.h"
-#import "UIKeyboardImpl.h"
-#import "TIPreferencesController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -66,6 +61,10 @@ extern NSString *const FBSnapshotMaxDepthKey;
 + (void)setShouldUseSingletonTestManager:(BOOL)value;
 + (BOOL)shouldUseSingletonTestManager;
 
+/* Enforces WDA to verify the presense of system alerts while checking for an active app */
++ (void)setShouldRespectSystemAlerts:(BOOL)value;
++ (BOOL)shouldRespectSystemAlerts;
+
 /**
  * Extract switch value from arguments
  *
@@ -104,6 +103,14 @@ extern NSString *const FBSnapshotMaxDepthKey;
 + (void)setMjpegServerFramerate:(NSUInteger)framerate;
 
 /**
+ Whether to limit the XPath scope to descendant items only while performing a lookup
+ in an element context. Enabled by default. Being disabled, allows to use XPath locators
+ like ".." in order to match parent items of the current context root.
+ */
++ (BOOL)limitXpathContextScope;
++ (void)setLimitXpathContextScope:(BOOL)enabled;
+
+/**
  The quality of display screenshots. The higher quality you set is the bigger screenshot size is.
  The highest quality value is 0 (lossless PNG) or 3 (lossless HEIC). The lowest quality is 2 (highly compressed JPEG).
  The default quality value is 3 (lossless HEIC).
@@ -118,6 +125,12 @@ extern NSString *const FBSnapshotMaxDepthKey;
 + (NSRange)bindingPortRange;
 
 /**
+ The IP address that the HTTP Server should bind to on launch.
+ Returns nil if not specified, which causes the server to listen on all interfaces.
+ */
++ (NSString * _Nullable)bindingIPAddress;
+
+/**
  The port number where the background screenshots broadcaster is supposed to run
  */
 + (NSInteger)mjpegServerPort;
@@ -128,8 +141,8 @@ extern NSString *const FBSnapshotMaxDepthKey;
  ! Setting this to a value less than 100, especially together with orientation fixing enabled
  ! may lead to WDA process termination because of an excessive CPU usage.
  */
-+ (NSUInteger)mjpegScalingFactor;
-+ (void)setMjpegScalingFactor:(NSUInteger)scalingFactor;
++ (CGFloat)mjpegScalingFactor;
++ (void)setMjpegScalingFactor:(CGFloat)scalingFactor;
 
 /**
  YES if verbose logging is enabled. NO otherwise.
@@ -176,14 +189,6 @@ typedef NS_ENUM(NSInteger, FBConfigurationKeyboardPreference) {
  */
 + (void)setKeyboardPrediction:(BOOL)isEnabled;
 + (FBConfigurationKeyboardPreference)keyboardPrediction;
-
-/**
- * The maximum time to wait until accessibility snapshot is taken
- *
- * @param timeout The number of float seconds to wait (15 seconds by default)
- */
-+ (void)setCustomSnapshotTimeout:(NSTimeInterval)timeout;
-+ (NSTimeInterval)customSnapshotTimeout;
 
 /**
  Sets maximum depth for traversing elements tree from parents to children while requesting XCElementSnapshot.
@@ -283,6 +288,21 @@ typedef NS_ENUM(NSInteger, FBConfigurationKeyboardPreference) {
 + (void)setDismissAlertButtonSelector:(NSString *)classChainSelector;
 + (NSString *)dismissAlertButtonSelector;
 
+/**
+ Sets class chain selector to apply for an automated alert click
+ */
++ (void)setAutoClickAlertSelector:(NSString *)classChainSelector;
++ (NSString *)autoClickAlertSelector;
+
+/**
+ * Whether to use HIDEvent for text clear.
+ * By default this is enabled and HIDEvent is used for text clear.
+ *
+ * @param enabled Either YES or NO
+ */
++ (void)setUseClearTextShortcut:(BOOL)enabled;
++ (BOOL)useClearTextShortcut;
+
 #if !TARGET_OS_TV
 /**
  Set the screenshot orientation for iOS
@@ -316,6 +336,45 @@ typedef NS_ENUM(NSInteger, FBConfigurationKeyboardPreference) {
  Resets all session-specific settings to their default values
  */
 + (void)resetSessionSettings;
+
+/**
+ * Whether to calculate `hittable` attribute using native APIs
+ * instead of legacy heuristics.
+ * This flag improves accuracy, but may affect performance.
+ * Disabled by default.
+ *
+ * @param enabled Either YES or NO
+ */
++ (void)setIncludeHittableInPageSource:(BOOL)enabled;
++ (BOOL)includeHittableInPageSource;
+
+/**
+ * Whether to include `nativeFrame` attribute in the XML page source.
+ *
+ * When enabled, the XML representation will contain the precise rendered
+ * frame of the UI element.
+ *
+ * This value is more accurate than the legacy `wdFrame`, which applies rounding
+ * and may introduce inconsistencies in size and position calculations.
+ *
+ * The value is disabled by default to avoid potential performance overhead.
+ *
+ * @param enabled Either YES or NO
+ */
++ (void)setIncludeNativeFrameInPageSource:(BOOL)enabled;
++ (BOOL)includeNativeFrameInPageSource;
+
+/**
+ * Whether to include `minValue`/`maxValue` attributes in the page source.
+ * These attributes are retrieved from native element snapshots and represent
+ * value boundaries for elements like sliders or progress indicators.
+ * This may affect performance if used on many elements.
+ * Disabled by default.
+ *
+ * @param enabled Either YES or NO
+ */
++ (void)setIncludeMinMaxValueInPageSource:(BOOL)enabled;
++ (BOOL)includeMinMaxValueInPageSource;
 
 @end
 

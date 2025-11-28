@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "FBW3CActionsSynthesizer.h"
@@ -410,17 +409,12 @@ static NSString *const FB_KEY_ACTIONS = @"actions";
           currentItemIndex:(NSUInteger)currentItemIndex
 {
   NSInteger balance = 1;
-  BOOL isSelfMetaModifier = FBIsMetaModifier(self.value);
   for (NSInteger index = currentItemIndex - 1; index >= 0; index--) {
     FBW3CKeyItem *item = [allItems objectAtIndex:index];
     BOOL isKeyDown = [item isKindOfClass:FBKeyDownItem.class];
     BOOL isKeyUp = !isKeyDown && [item isKindOfClass:FBKeyUpItem.class];
     if (!isKeyUp && !isKeyDown) {
-      if (isSelfMetaModifier) {
-        continue;
-      } else {
-        break;
-      }
+      break;
     }
 
     NSString *value = [item performSelector:@selector(value)];
@@ -432,32 +426,6 @@ static NSString *const FB_KEY_ACTIONS = @"actions";
     }
   }
   return 0 == balance;
-}
-
-- (NSUInteger)collectModifersWithItems:(NSArray *)allItems
-                      currentItemIndex:(NSUInteger)currentItemIndex
-{
-  NSUInteger modifiers = 0;
-  for (NSUInteger index = 0; index < currentItemIndex; index++) {
-    FBW3CKeyItem *item = [allItems objectAtIndex:index];
-    BOOL isKeyDown = [item isKindOfClass:FBKeyDownItem.class];
-    BOOL isKeyUp = !isKeyDown && [item isKindOfClass:FBKeyUpItem.class];
-    if (!isKeyUp && !isKeyDown) {
-      continue;
-    }
-
-    NSString *value = [item performSelector:@selector(value)];
-    NSUInteger modifier = FBToMetaModifier(value);
-    if (modifier > 0) {
-      if (isKeyDown) {
-        modifiers |= modifier;
-      } else if (item.offset < self.offset) {
-        // only cancel the modifier if it is not in the same group
-        modifiers &= ~modifier;
-      }
-    }
-  }
-  return modifiers;
 }
 
 - (NSString *)collectTextWithItems:(NSArray *)allItems
@@ -473,12 +441,8 @@ static NSString *const FB_KEY_ACTIONS = @"actions";
     }
 
     NSString *value = [item performSelector:@selector(value)];
-    if (FBIsMetaModifier(value)) {
-      continue;
-    }
-
     if (isKeyUp) {
-      [result addObject:value];
+      [result addObject:FBMapIfSpecialCharacter(value)];
     }
   }
   return [result.reverseObjectEnumerator.allObjects componentsJoinedByString:@""];
@@ -497,10 +461,6 @@ static NSString *const FB_KEY_ACTIONS = @"actions";
     return nil;
   }
 
-  if (FBIsMetaModifier(self.value)) {
-    return @[];
-  }
-
   BOOL isLastKeyUpInGroup = currentItemIndex == allItems.count - 1
     || [[allItems objectAtIndex:currentItemIndex + 1] isKindOfClass:FBKeyPauseItem.class];
   if (!isLastKeyUpInGroup) {
@@ -510,10 +470,6 @@ static NSString *const FB_KEY_ACTIONS = @"actions";
   NSString *text = [self collectTextWithItems:allItems currentItemIndex:currentItemIndex];
   NSTimeInterval offset = FBMillisToSeconds(self.offset);
   XCPointerEventPath *resultPath = [[XCPointerEventPath alloc] initForTextInput];
-  // TODO: Figure out how meta modifiers could be applied
-  // TODO: The current approach throws zero division error on execution
-  // NSUInteger modifiers = [self collectModifersWithItems:allItems currentItemIndex:currentItemIndex];
-  // [resultPath setModifiers:modifiers mergeWithCurrentModifierFlags:NO atOffset:0];
   [resultPath typeText:text
               atOffset:offset
            typingSpeed:FBConfiguration.maxTypingFrequency
@@ -555,17 +511,12 @@ static NSString *const FB_KEY_ACTIONS = @"actions";
         currentItemIndex:(NSUInteger)currentItemIndex
 {
   NSInteger balance = 1;
-  BOOL isSelfMetaModifier = FBIsMetaModifier(self.value);
   for (NSUInteger index = currentItemIndex + 1; index < allItems.count; index++) {
     FBW3CKeyItem *item = [allItems objectAtIndex:index];
     BOOL isKeyDown = [item isKindOfClass:FBKeyDownItem.class];
     BOOL isKeyUp = !isKeyDown && [item isKindOfClass:FBKeyUpItem.class];
     if (!isKeyUp && !isKeyDown) {
-      if (isSelfMetaModifier) {
-        continue;
-      } else {
-        break;
-      }
+      break;
     }
 
     NSString *value = [item performSelector:@selector(value)];
@@ -709,7 +660,7 @@ static NSString *const FB_KEY_ACTIONS = @"actions";
     if ([origin isKindOfClass:XCUIElement.class]) {
       instance = origin;
     } else if ([origin isKindOfClass:NSString.class]) {
-      instance = [self.elementCache elementForUUID:(NSString *)origin];
+      instance = [self.elementCache elementForUUID:(NSString *)origin checkStaleness:YES];
     } else {
       [result addObject:actionItem];
       continue;
@@ -819,7 +770,7 @@ static NSString *const FB_KEY_ACTIONS = @"actions";
 
   NSArray<NSDictionary<NSString *, id> *> *actionItems = [actionDescription objectForKey:FB_KEY_ACTIONS];
   if (nil == actionItems || 0 == actionItems.count) {
-   NSString *description = [NSString stringWithFormat:@"It is mandatory to have at least one gesture item defined for each action. Action with id '%@' contains none", actionId];
+    NSString *description = [NSString stringWithFormat:@"It is mandatory to have at least one gesture item defined for each action. Action with id '%@' contains none", actionId];
     if (error) {
       *error = [[FBErrorBuilder.builder withDescription:description] build];
     }
@@ -900,7 +851,20 @@ static NSString *const FB_KEY_ACTIONS = @"actions";
         *error = [[FBErrorBuilder.builder withDescription:description] build];
       }
       return nil;
+    }    
+    NSArray<NSDictionary<NSString *, id> *> *actionItems = [action objectForKey:FB_KEY_ACTIONS];
+    if (nil == actionItems) {
+     NSString *description = [NSString stringWithFormat:@"It is mandatory to have at least one item defined for each action. Action with id '%@' contains none", actionId];
+      if (error) {
+        *error = [[FBErrorBuilder.builder withDescription:description] build];
+      }
+      return nil;
     }
+    if (0 == actionItems.count) {
+      [FBLogger logFmt:@"Action items in the action id '%@' had an empty array. Skipping the action.", actionId];
+      continue;
+    }
+
     [actionIds addObject:actionId];
     [actionsMapping setObject:action forKey:actionId];
   }

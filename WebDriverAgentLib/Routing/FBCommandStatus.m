@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "FBCommandStatus.h"
@@ -107,6 +106,11 @@ static NSString *const FB_NO_SUCH_DRIVER_MSG = @"A session is either terminated 
     _value = nil;
   }
   return self;
+}
+
+- (BOOL)hasError
+{
+  return self.statusCode != kHTTPStatusCodeOK;
 }
 
 + (instancetype)ok

@@ -1,16 +1,26 @@
 import { getXctestrunFilePath, getAdditionalRunContent, getXctestrunFileName } from '../../lib/utils';
 import { PLATFORM_NAME_IOS, PLATFORM_NAME_TVOS } from '../../lib/constants';
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import { withMocks } from '@appium/test-support';
 import { fs } from '@appium/support';
 import path from 'path';
 import { fail } from 'assert';
+import { arch } from 'os';
 
-chai.should();
-chai.use(chaiAsPromised);
+function get_arch() {
+  return arch() === 'arm64' ? 'arm64' : 'x86_64';
+}
 
 describe('utils', function () {
+  let chai;
+
+  before(async function() {
+    chai = await import('chai');
+    const chaiAsPromised = await import('chai-as-promised');
+
+    chai.should();
+    chai.use(chaiAsPromised.default);
+  });
+
   describe('#getXctestrunFilePath', withMocks({fs}, function (mocks) {
     const platformVersion = '12.0';
     const sdkVersion = '12.2';
@@ -56,7 +66,7 @@ describe('utils', function () {
         .withExactArgs(path.resolve(`${bootstrapPath}/${udid}_${sdkVersion}.xctestrun`))
         .returns(false);
       mocks.fs.expects('exists')
-        .withExactArgs(path.resolve(`${bootstrapPath}/WebDriverAgentRunner_iphonesimulator${sdkVersion}-x86_64.xctestrun`))
+        .withExactArgs(path.resolve(`${bootstrapPath}/WebDriverAgentRunner_iphonesimulator${sdkVersion}-${get_arch()}.xctestrun`))
         .returns(false);
       mocks.fs.expects('exists')
         .withExactArgs(path.resolve(`${bootstrapPath}/${udid}_${platformVersion}.xctestrun`))
@@ -73,17 +83,17 @@ describe('utils', function () {
         .withExactArgs(path.resolve(`${bootstrapPath}/${udid}_${sdkVersion}.xctestrun`))
         .returns(false);
       mocks.fs.expects('exists')
-        .withExactArgs(path.resolve(`${bootstrapPath}/WebDriverAgentRunner_iphonesimulator${sdkVersion}-x86_64.xctestrun`))
+        .withExactArgs(path.resolve(`${bootstrapPath}/WebDriverAgentRunner_iphonesimulator${sdkVersion}-${get_arch()}.xctestrun`))
         .returns(false);
       mocks.fs.expects('exists')
         .withExactArgs(path.resolve(`${bootstrapPath}/${udid}_${platformVersion}.xctestrun`))
         .returns(false);
       mocks.fs.expects('exists')
-        .withExactArgs(path.resolve(`${bootstrapPath}/WebDriverAgentRunner_iphonesimulator${platformVersion}-x86_64.xctestrun`))
+        .withExactArgs(path.resolve(`${bootstrapPath}/WebDriverAgentRunner_iphonesimulator${platformVersion}-${get_arch()}.xctestrun`))
         .returns(true);
       mocks.fs.expects('copyFile')
         .withExactArgs(
-          path.resolve(`${bootstrapPath}/WebDriverAgentRunner_iphonesimulator${platformVersion}-x86_64.xctestrun`),
+          path.resolve(`${bootstrapPath}/WebDriverAgentRunner_iphonesimulator${platformVersion}-${get_arch()}.xctestrun`),
           path.resolve(`${bootstrapPath}/${udid}_${platformVersion}.xctestrun`)
         )
         .returns(true);
@@ -94,7 +104,7 @@ describe('utils', function () {
     });
 
     it('should raise an exception because of no files', async function () {
-      const expected = path.resolve(`${bootstrapPath}/WebDriverAgentRunner_iphonesimulator${sdkVersion}-x86_64.xctestrun`);
+      const expected = path.resolve(`${bootstrapPath}/WebDriverAgentRunner_iphonesimulator${sdkVersion}-${get_arch()}.xctestrun`);
       mocks.fs.expects('exists').exactly(4).returns(false);
 
       const deviceInfo = {isRealDevice: false, udid, platformVersion};
@@ -140,7 +150,7 @@ describe('utils', function () {
       const deviceInfo = {isRealDevice: false, udid, platformVersion, platformName};
 
       getXctestrunFileName(deviceInfo, '10.2.0').should.equal(
-        'WebDriverAgentRunner_iphonesimulator10.2.0-x86_64.xctestrun');
+        `WebDriverAgentRunner_iphonesimulator10.2.0-${get_arch()}.xctestrun`);
     });
 
     it('should return tvos format, real device', function () {
@@ -156,7 +166,7 @@ describe('utils', function () {
       const deviceInfo = {isRealDevice: false, udid, platformVersion, platformName};
 
       getXctestrunFileName(deviceInfo, '10.2.0').should.equal(
-        'WebDriverAgentRunner_tvOS_appletvsimulator10.2.0-x86_64.xctestrun');
+        `WebDriverAgentRunner_tvOS_appletvsimulator10.2.0-${get_arch()}.xctestrun`);
     });
   });
 });

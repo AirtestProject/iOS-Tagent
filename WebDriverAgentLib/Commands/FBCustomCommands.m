@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "FBCustomCommands.h"
@@ -15,6 +14,7 @@
 #import "FBConfiguration.h"
 #import "FBKeyboard.h"
 #import "FBNotificationsHelper.h"
+#import "FBMathUtils.h"
 #import "FBPasteboard.h"
 #import "FBResponsePayload.h"
 #import "FBRoute.h"
@@ -49,6 +49,7 @@
     [[FBRoute GET:@"/wda/locked"].withoutSession respondWithTarget:self action:@selector(handleIsLocked:)],
     [[FBRoute GET:@"/wda/locked"] respondWithTarget:self action:@selector(handleIsLocked:)],
     [[FBRoute GET:@"/wda/screen"] respondWithTarget:self action:@selector(handleGetScreen:)],
+    [[FBRoute GET:@"/wda/screen"].withoutSession respondWithTarget:self action:@selector(handleGetScreen:)],
     [[FBRoute GET:@"/wda/activeAppInfo"] respondWithTarget:self action:@selector(handleActiveAppInfo:)],
     [[FBRoute GET:@"/wda/activeAppInfo"].withoutSession respondWithTarget:self action:@selector(handleActiveAppInfo:)],
 #if !TARGET_OS_TV // tvOS does not provide relevant APIs
@@ -148,10 +149,22 @@
 
 + (id<FBResponsePayload>)handleGetScreen:(FBRouteRequest *)request
 {
-  FBSession *session = request.session;
-  CGSize statusBarSize = [FBScreen statusBarSizeForApplication:session.activeApplication];
+  XCUIApplication *app = XCUIApplication.fb_systemApplication;
+
+  XCUIElement *mainStatusBar = app.statusBars.allElementsBoundByIndex.firstObject;
+  CGSize statusBarSize = (nil == mainStatusBar) ? CGSizeZero : mainStatusBar.frame.size;
+
+#if TARGET_OS_TV
+  CGSize screenSize = app.frame.size;
+#else
+  CGSize screenSize = FBAdjustDimensionsForApplication(app.wdFrame.size, app.interfaceOrientation);
+#endif
+
   return FBResponseWithObject(
                               @{
+    @"screenSize":@{@"width": @(screenSize.width),
+                    @"height": @(screenSize.height)
+    },
     @"statusBarSize": @{@"width": @(statusBarSize.width),
                         @"height": @(statusBarSize.height),
     },
@@ -595,7 +608,8 @@
   FBElementCache *elementCache = request.session.elementCache;
   BOOL hasElement = ![request.parameters[@"uuid"] isEqual:@"0"];
   XCUIElement *destination = hasElement
-    ? [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]]
+    ? [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]
+                    checkStaleness:YES]
     : request.session.activeApplication;
   id keys = request.arguments[@"keys"];
 

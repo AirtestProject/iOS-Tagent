@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import <XCTest/XCTest.h>
@@ -19,6 +18,23 @@
 #import "XCUIApplication+FBHelpers.h"
 #import "XCUIElement+FBIsVisible.h"
 #import "FBXCodeCompatibility.h"
+
+void calculateMaxTreeDepth(NSDictionary *tree, NSNumber *currentDepth, NSNumber** maxDepth) {
+  if (nil == maxDepth) {
+    return;
+  }
+
+  NSArray *children = tree[@"children"];
+  if (nil == children || 0 == children.count) {
+    return;
+  }
+  for (NSDictionary *child in children) {
+    if (currentDepth.integerValue > [*maxDepth integerValue]) {
+      *maxDepth = currentDepth;
+    }
+    calculateMaxTreeDepth(child, @(currentDepth.integerValue + 1), maxDepth);
+  }
+}
 
 @interface XCUIApplicationHelperTests : FBIntegrationTestCase
 @end
@@ -40,8 +56,19 @@
 
 - (void)testApplicationTree
 {
-  XCTAssertNotNil(self.testedApplication.fb_tree);
+  NSDictionary *tree = self.testedApplication.fb_tree;
+  XCTAssertNotNil(tree);
+  NSNumber *maxDepth;
+  calculateMaxTreeDepth(tree, @0, &maxDepth);
+  XCTAssertGreaterThan(maxDepth.integerValue, 3);
   XCTAssertNotNil(self.testedApplication.fb_accessibilityTree);
+}
+
+- (void)testApplicationTreeAttributesFiltering
+{
+  NSDictionary *applicationTree = [self.testedApplication fb_tree:[NSSet setWithArray:@[@"visible"]]];
+  XCTAssertNotNil(applicationTree);
+  XCTAssertNil([applicationTree objectForKey:@"isVisible"], @"'isVisible' key should not be present in the application tree");
 }
 
 - (void)testDeactivateApplication
@@ -111,7 +138,25 @@
   [set addObject:@"XCUIAccessibilityAuditTypeAll"];
   NSArray *auditIssues2 = [XCUIApplication.fb_activeApplication fb_performAccessibilityAuditWithAuditTypesSet:set.copy
                                                                                                       error:&error];
-  XCTAssertEqualObjects(auditIssues1, auditIssues2);
+  // 'elementDescription' is not in this list because it could have
+  // different object id's debug description in XCTest.
+  NSArray *checkKeys = @[
+    @"auditType",
+    @"compactDescription",
+    @"detailedDescription",
+    @"element",
+    @"elementAttributes"
+  ];
+
+  XCTAssertEqual([auditIssues1 count], [auditIssues2 count]);
+  for (int i = 1; i < [auditIssues1 count]; i++) {
+    for (NSString *k in checkKeys) {
+      XCTAssertEqualObjects(
+                            [auditIssues1[i] objectForKey:k],
+                            [auditIssues2[i] objectForKey:k]
+                            );
+    }
+  }
   XCTAssertNil(error);
 }
 

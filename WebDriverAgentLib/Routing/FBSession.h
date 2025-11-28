@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import <Foundation/Foundation.h>
@@ -13,6 +12,9 @@
 @class XCUIApplication;
 
 NS_ASSUME_NONNULL_BEGIN
+
+/** Bundle identifier of Mobile Safari browser */
+extern NSString* const FB_SAFARI_BUNDLE_ID;
 
 /**
  Class that represents testing session
@@ -117,6 +119,22 @@ NS_ASSUME_NONNULL_BEGIN
          for more details on possible enum values
  */
 - (NSUInteger)applicationStateWithBundleId:(NSString *)bundleIdentifier;
+
+/**
+ Allows to enable automated session alerts monitoring.
+ Repeated calls are ignored if alerts monitoring has been already enabled.
+
+ @returns YES if the actual alerts monitoring state has been changed
+ */
+- (BOOL)enableAlertsMonitor;
+
+/**
+ Allows to disable automated alerts monitoring
+ Repeated calls are ignored if alerts monitoring has been already disabled.
+
+ @returns YES if the actual alerts monitoring state has been changed
+ */
+- (BOOL)disableAlertsMonitor;
 
 @end
 

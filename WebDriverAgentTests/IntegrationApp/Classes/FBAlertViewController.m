@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "FBAlertViewController.h"
@@ -37,7 +36,14 @@
 
 - (IBAction)createNotificationAlert:(UIButton *)sender
 {
-  [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil]];
+  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound|UNAuthorizationOptionAlert|UNAuthorizationOptionBadge) 
+                        completionHandler:^(BOOL granted, NSError * _Nullable error)
+   {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [[UIApplication sharedApplication] registerForRemoteNotifications];
+    });
+  }];
 }
 
 - (IBAction)createCameraRollAccessAlert:(UIButton *)sender

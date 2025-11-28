@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import <objc/runtime.h>
@@ -22,14 +21,14 @@
 {
   return [FBElementUtils idWithAccessibilityElement:([self isKindOfClass:XCUIApplication.class]
                                                      ? [(XCUIApplication *)self accessibilityElement]
-                                                     : [self fb_takeSnapshot].accessibilityElement)];
+                                                     : [self fb_standardSnapshot].accessibilityElement)];
 }
 
 - (NSString *)fb_uid
 {
   return [self isKindOfClass:XCUIApplication.class]
     ? [FBElementUtils uidWithAccessibilityElement:[(XCUIApplication *)self accessibilityElement]]
-    : [FBXCElementSnapshotWrapper ensureWrapped:[self fb_takeSnapshot]].fb_uid;
+    : [FBXCElementSnapshotWrapper ensureWrapped:[self fb_standardSnapshot]].fb_uid;
 }
 
 @end
@@ -42,6 +41,7 @@ static void swizzled_validatePredicateWithExpressionsAllowed(id self, SEL _cmd, 
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-load-method"
+#pragma clang diagnostic ignored "-Wcast-function-type-strict"
 + (void)load
 {
   Class XCElementSnapshotCls = objc_lookUpClass("XCElementSnapshot");

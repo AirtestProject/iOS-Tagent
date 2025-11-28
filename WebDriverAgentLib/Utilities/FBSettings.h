@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import <Foundation/Foundation.h>
@@ -22,9 +21,6 @@ extern NSString* const FB_SETTING_MJPEG_SCALING_FACTOR;
 extern NSString* const FB_SETTING_SCREENSHOT_QUALITY;
 extern NSString* const FB_SETTING_KEYBOARD_AUTOCORRECTION;
 extern NSString* const FB_SETTING_KEYBOARD_PREDICTION;
-// This setting is deprecated. Please use CUSTOM_SNAPSHOT_TIMEOUT instead
-extern NSString* const FB_SETTING_SNAPSHOT_TIMEOUT;
-extern NSString* const FB_SETTING_CUSTOM_SNAPSHOT_TIMEOUT;
 extern NSString* const FB_SETTING_SNAPSHOT_MAX_DEPTH;
 extern NSString* const FB_SETTING_USE_FIRST_MATCH;
 extern NSString* const FB_SETTING_BOUND_ELEMENTS_BY_INDEX;
@@ -38,6 +34,13 @@ extern NSString* const FB_SETTING_DISMISS_ALERT_BUTTON_SELECTOR;
 extern NSString* const FB_SETTING_SCREENSHOT_ORIENTATION;
 extern NSString* const FB_SETTING_WAIT_FOR_IDLE_TIMEOUT;
 extern NSString* const FB_SETTING_ANIMATION_COOL_OFF_TIMEOUT;
-
+extern NSString* const FB_SETTING_MAX_TYPING_FREQUENCY;
+extern NSString* const FB_SETTING_RESPECT_SYSTEM_ALERTS;
+extern NSString* const FB_SETTING_USE_CLEAR_TEXT_SHORTCUT;
+extern NSString* const FB_SETTING_LIMIT_XPATH_CONTEXT_SCOPE;
+extern NSString* const FB_SETTING_AUTO_CLICK_ALERT_SELECTOR;
+extern NSString *const FB_SETTING_INCLUDE_HITTABLE_IN_PAGE_SOURCE;
+extern NSString *const FB_SETTING_INCLUDE_NATIVE_FRAME_IN_PAGE_SOURCE;
+extern NSString *const FB_SETTING_INCLUDE_MIN_MAX_VALUE_IN_PAGE_SOURCE;
 
 NS_ASSUME_NONNULL_END

@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import <XCTest/XCTest.h>
@@ -26,13 +25,6 @@
 - (void)testScreenScale
 {
   XCTAssertTrue([FBScreen scale] >= 2);
-}
-
-- (void)testStatusBarSize
-{
-  CGSize statusBarSize = [FBScreen statusBarSizeForApplication:self.testedApplication];
-  BOOL statusBarSizeIsZero = CGSizeEqualToSize(CGSizeZero, statusBarSize);
-  XCTAssertFalse(statusBarSizeIsZero);
 }
 
 @end

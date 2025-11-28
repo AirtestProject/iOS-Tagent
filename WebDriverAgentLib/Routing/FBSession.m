@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "FBSession.h"
@@ -25,6 +24,7 @@
 #import "FBXCTestDaemonsProxy.h"
 #import "XCUIApplication+FBQuiescence.h"
 #import "XCUIElement.h"
+#import "XCUIElement+FBClassChain.h"
 
 /*!
  The intial value for the default application property.
@@ -32,6 +32,8 @@
  automated algorithm to determine the active on-screen application
  */
 NSString *const FBDefaultApplicationAuto = @"auto";
+
+NSString *const FB_SAFARI_BUNDLE_ID = @"com.apple.mobilesafari";
 
 @interface FBSession ()
 @property (nullable, nonatomic) XCUIApplication *testedApplication;
@@ -51,6 +53,22 @@ NSString *const FBDefaultApplicationAuto = @"auto";
 
 - (void)didDetectAlert:(FBAlert *)alert
 {
+  NSString *autoClickAlertSelector = FBConfiguration.autoClickAlertSelector;
+  if ([autoClickAlertSelector length] > 0) {
+    @try {
+      NSArray<XCUIElement*> *matches = [alert.alertElement fb_descendantsMatchingClassChain:autoClickAlertSelector
+                                                                shouldReturnAfterFirstMatch:YES];
+      if (matches.count > 0) {
+          [[matches objectAtIndex:0] tap];
+      }
+    } @catch (NSException *e) {
+      [FBLogger logFmt:@"Could not click at the alert element '%@'. Original error: %@",
+       autoClickAlertSelector, e.description];
+    }
+    // This setting has priority over other settings if enabled
+    return;
+  }
+
   if (nil == self.defaultAlertAction || 0 == self.defaultAlertAction.length) {
     return;
   }
@@ -123,11 +141,32 @@ static FBSession *_activeSession = nil;
                  defaultAlertAction:(NSString *)defaultAlertAction
 {
   FBSession *session = [self.class initWithApplication:application];
-  session.alertsMonitor = [[FBAlertsMonitor alloc] init];
-  session.alertsMonitor.delegate = (id<FBAlertsMonitorDelegate>)session;
   session.defaultAlertAction = [defaultAlertAction lowercaseString];
-  [session.alertsMonitor enable];
+  [session enableAlertsMonitor];
   return session;
+}
+
+- (BOOL)enableAlertsMonitor
+{
+  if (nil != self.alertsMonitor) {
+    return NO;
+  }
+
+  self.alertsMonitor = [[FBAlertsMonitor alloc] init];
+  self.alertsMonitor.delegate = (id<FBAlertsMonitorDelegate>)self;
+  [self.alertsMonitor enable];
+  return YES;
+}
+
+- (BOOL)disableAlertsMonitor
+{
+  if (nil == self.alertsMonitor) {
+    return NO;
+  }
+
+  [self.alertsMonitor disable];
+  self.alertsMonitor = nil;
+  return YES;
 }
 
 - (void)kill
@@ -136,10 +175,7 @@ static FBSession *_activeSession = nil;
     return;
   }
 
-  if (nil != self.alertsMonitor) {
-    [self.alertsMonitor disable];
-    self.alertsMonitor = nil;
-  }
+  [self disableAlertsMonitor];
 
   FBScreenRecordingPromise *activeScreenRecording = FBScreenRecordingContainer.sharedInstance.screenRecordingPromise;
   if (nil != activeScreenRecording) {
@@ -176,6 +212,18 @@ static FBSession *_activeSession = nil;
   if (nil != self.testedApplication) {
     XCUIApplicationState testedAppState = self.testedApplication.state;
     if (testedAppState >= XCUIApplicationStateRunningForeground) {
+      NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"%K == %@ OR %K IN {%@, %@}",
+                                      @"elementType", @(XCUIElementTypeAlert), 
+                                      // To look for `SBTransientOverlayWindow` elements. See https://github.com/appium/WebDriverAgent/pull/946
+                                      @"identifier", @"SBTransientOverlayWindow",
+                                      // To look for 'criticalAlertSetting' elements https://developer.apple.com/documentation/usernotifications/unnotificationsettings/criticalalertsetting
+                                      // See https://github.com/appium/appium/issues/20835
+                                      @"NotificationShortLookView"];
+      if ([FBConfiguration shouldRespectSystemAlerts]
+          && [[XCUIApplication.fb_systemApplication descendantsMatchingType:XCUIElementTypeAny]
+              matchingPredicate:searchPredicate].count > 0) {
+        return XCUIApplication.fb_systemApplication;
+      }
       return (XCUIApplication *)self.testedApplication;
     }
     if (self.isTestedApplicationExpectedToRun && testedAppState <= XCUIApplicationStateNotRunning) {

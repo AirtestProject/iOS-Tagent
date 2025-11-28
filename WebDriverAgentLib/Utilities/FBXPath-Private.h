@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import <WebDriverAgentLib/FBXPath.h>
@@ -25,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
  If `query` argument is assigned then `excludedAttributes` argument is effectively ignored.
  @return zero if the method has completed successfully
  */
-+ (int)xmlRepresentationWithRootElement:(id<FBElement>)root
++ (int)xmlRepresentationWithRootElement:(id<FBXCElementSnapshot>)root
                                  writer:(xmlTextWriterPtr)writer
                            elementStore:(nullable NSMutableDictionary *)elementStore
                                   query:(nullable NSString*)query
@@ -45,9 +44,12 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param xpathQuery actual query. Should be valid XPath 1.0-compatible expression
  @param document libxml2-compatible document pointer
+ @param contextNode Optonal context node instance
  @return pointer to a libxml2-compatible structure with set of matched nodes or NULL in case of failure
  */
-+ (xmlXPathObjectPtr)evaluate:(NSString *)xpathQuery document:(xmlDocPtr)doc;
++ (xmlXPathObjectPtr)evaluate:(NSString *)xpathQuery
+                     document:(xmlDocPtr)doc
+                  contextNode:(nullable xmlNodePtr)contextNode;
 
 @end
 

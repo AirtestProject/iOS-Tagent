@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "XCTIssue+FBPatcher.h"
@@ -20,6 +19,8 @@ static _Bool swizzledShouldInterruptTest(id self, SEL _cmd)
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-load-method"
+#pragma clang diagnostic ignored "-Wcast-function-type-strict"
+
 + (void)load
 {
   SEL originalShouldInterruptTest = NSSelectorFromString(@"shouldInterruptTest");
@@ -28,6 +29,7 @@ static _Bool swizzledShouldInterruptTest(id self, SEL _cmd)
   if (nil == originalShouldInterruptTestMethod) return;
   method_setImplementation(originalShouldInterruptTestMethod, (IMP)swizzledShouldInterruptTest);
 }
+
 #pragma clang diagnostic pop
 
 @end

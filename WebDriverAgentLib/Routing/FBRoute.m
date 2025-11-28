@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "FBRoute.h"
@@ -39,7 +38,10 @@ static NSString *const FBRouteSessionPrefix = @"/session/:sessionID";
 - (void)mountRequest:(FBRouteRequest *)request intoResponse:(RouteResponse *)response
 {
   [self decorateRequest:request];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-strict"
   id<FBResponsePayload> (*requestMsgSend)(id, SEL, FBRouteRequest *) = ((id<FBResponsePayload>(*)(id, SEL, FBRouteRequest *))objc_msgSend);
+#pragma clang diagnostic pop
   id<FBResponsePayload> payload = requestMsgSend(self.target, self.action, request);
   [payload dispatchWithResponse:response];
 }

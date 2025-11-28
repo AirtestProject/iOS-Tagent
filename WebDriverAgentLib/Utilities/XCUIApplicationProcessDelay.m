@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "XCUIApplicationProcessDelay.h"
@@ -61,7 +60,10 @@ static NSLock * lock = nil;
     [FBLogger log:@"Could not find method -[XCUIApplicationProcess setEventLoopHasIdled:]"];
     return;
   }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-strict"
   orig_set_event_loop_has_idled = (void(*)(id, SEL, BOOL)) method_getImplementation(original);
+#pragma clang diagnostic pop
   Method replace = class_getClassMethod([XCUIApplicationProcessDelay class], @selector(setEventLoopHasIdled:));
   method_setImplementation(original, method_getImplementation(replace));
   isSwizzled = YES;

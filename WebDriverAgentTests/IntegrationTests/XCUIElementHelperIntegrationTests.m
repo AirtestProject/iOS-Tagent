@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import <XCTest/XCTest.h>
@@ -41,9 +40,10 @@
   [allElements addObjectsFromArray:windows];
   
   NSMutableArray<id<FBXCElementSnapshot>> *buttonSnapshots = [NSMutableArray array];
-  [buttonSnapshots addObject:[buttons.firstObject fb_takeSnapshot]];
-  
-  NSArray<XCUIElement *> *result = [self.testedApplication fb_filterDescendantsWithSnapshots:buttonSnapshots selfUID:nil onlyChildren:NO];
+  [buttonSnapshots addObject:[buttons.firstObject fb_customSnapshot]];
+
+  NSArray<XCUIElement *> *result = [self.testedApplication fb_filterDescendantsWithSnapshots:buttonSnapshots
+                                                                                onlyChildren:NO];
   XCTAssertEqual(1, result.count);
   XCTAssertEqual([result.firstObject elementType], XCUIElementTypeButton);
 }

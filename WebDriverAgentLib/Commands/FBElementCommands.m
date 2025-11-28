@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "FBElementCommands.h"
@@ -35,6 +34,7 @@
 #import "XCUIElement+FBWebDriverAttributes.h"
 #import "XCUIElement+FBTVFocuse.h"
 #import "XCUIElement+FBResolve.h"
+#import "XCUIElement+FBUID.h"
 #import "FBElementTypeTransformer.h"
 #import "XCUIElement.h"
 #import "XCUIElementQuery.h"
@@ -52,6 +52,7 @@
   return
   @[
     [[FBRoute GET:@"/window/size"] respondWithTarget:self action:@selector(handleGetWindowSize:)],
+    [[FBRoute GET:@"/window/rect"] respondWithTarget:self action:@selector(handleGetWindowRect:)],
     [[FBRoute GET:@"/window/size"].withoutSession respondWithTarget:self action:@selector(handleGetWindowSize:)],
     [[FBRoute GET:@"/element/:uuid/enabled"] respondWithTarget:self action:@selector(handleGetEnabled:)],
     [[FBRoute GET:@"/element/:uuid/rect"] respondWithTarget:self action:@selector(handleGetRect:)],
@@ -126,38 +127,22 @@
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
-  BOOL isEnabled = [FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot].isWDEnabled;
-  return FBResponseWithObject(isEnabled ? @YES : @NO);
+  return FBResponseWithObject(@(element.isWDEnabled));
 }
 
 + (id<FBResponsePayload>)handleGetRect:(FBRouteRequest *)request
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
-  return FBResponseWithObject([FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot].wdRect);
+  return FBResponseWithObject(element.wdRect);
 }
 
 + (id<FBResponsePayload>)handleGetAttribute:(FBRouteRequest *)request
 {
   FBElementCache *elementCache = request.session.elementCache;
   NSString *attributeName = request.parameters[@"name"];
-  NSString *wdAttributeName = [FBElementUtils wdAttributeNameForAttributeName:attributeName];
-  NSArray *additionalAttributes = nil;
-  NSNumber *maxDepth = nil;
-  if ([wdAttributeName isEqualToString:FBStringify(XCUIElement, isWDVisible)]) {
-    additionalAttributes = @[FB_XCAXAIsVisibleAttributeName];
-    maxDepth = @1;
-  } else if ([wdAttributeName isEqualToString:FBStringify(XCUIElement, isWDEnabled)]) {
-    additionalAttributes = @[FB_XCAXAIsElementAttributeName];
-    maxDepth = @1;
-  } else if ([wdAttributeName isEqualToString:FBStringify(XCUIElement, isWDAccessibilityContainer)]) {
-    additionalAttributes = @[FB_XCAXAIsElementAttributeName];
-  }
-  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]
-                       resolveForAdditionalAttributes:additionalAttributes
-                                          andMaxDepth:maxDepth];
-  FBXCElementSnapshotWrapper *wrappedSnapshot = [FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot];
-  id attributeValue = [wrappedSnapshot fb_valueForWDAttributeName:attributeName];
+  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
+  id attributeValue = [element fb_valueForWDAttributeName:attributeName];
   return FBResponseWithObject(attributeValue ?: [NSNull null]);
 }
 
@@ -165,7 +150,9 @@
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
-  FBXCElementSnapshotWrapper *wrappedSnapshot = [FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot];
+  // https://github.com/appium/appium-xcuitest-driver/issues/2552
+  id<FBXCElementSnapshot> snapshot = [element fb_customSnapshot];
+  FBXCElementSnapshotWrapper *wrappedSnapshot = [FBXCElementSnapshotWrapper ensureWrapped:snapshot];
   id text = FBFirstNonEmptyValue(wrappedSnapshot.wdValue, wrappedSnapshot.wdLabel);
   return FBResponseWithObject(text ?: @"");
 }
@@ -173,48 +160,43 @@
 + (id<FBResponsePayload>)handleGetDisplayed:(FBRouteRequest *)request
 {
   FBElementCache *elementCache = request.session.elementCache;
-  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]
-                       resolveForAdditionalAttributes:@[FB_XCAXAIsVisibleAttributeName]
-                                          andMaxDepth:@1];
-  return FBResponseWithObject(@([FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot].isWDVisible));
+  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
+  return FBResponseWithObject(@(element.isWDVisible));
 }
 
 + (id<FBResponsePayload>)handleGetAccessible:(FBRouteRequest *)request
 {
   FBElementCache *elementCache = request.session.elementCache;
-  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]
-                       resolveForAdditionalAttributes:@[FB_XCAXAIsElementAttributeName]
-                                          andMaxDepth:@1];
-  return FBResponseWithObject(@([FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot].isWDAccessible));
+  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
+  return FBResponseWithObject(@(element.isWDAccessible));
 }
 
 + (id<FBResponsePayload>)handleGetIsAccessibilityContainer:(FBRouteRequest *)request
 {
   FBElementCache *elementCache = request.session.elementCache;
-  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]
-                       resolveForAdditionalAttributes:@[FB_XCAXAIsElementAttributeName]
-                                          andMaxDepth:nil];
-  return FBResponseWithObject(@([FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot].isWDAccessibilityContainer));
+  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
+  return FBResponseWithObject(@(element.isWDAccessibilityContainer));
 }
 
 + (id<FBResponsePayload>)handleGetName:(FBRouteRequest *)request
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
-  return FBResponseWithObject([FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot].wdType);
+  return FBResponseWithObject(element.wdType);
 }
 
 + (id<FBResponsePayload>)handleGetSelected:(FBRouteRequest *)request
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
-  return FBResponseWithObject(@([FBXCElementSnapshotWrapper ensureWrapped:element.lastSnapshot].wdSelected));
+  return FBResponseWithObject(@(element.wdSelected));
 }
 
 + (id<FBResponsePayload>)handleSetValue:(FBRouteRequest *)request
 {
   FBElementCache *elementCache = request.session.elementCache;
-  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
+  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]
+                                       checkStaleness:YES];
   id value = request.arguments[@"value"] ?: request.arguments[@"text"];
   if (!value) {
     return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:@"Neither 'value' nor 'text' parameter is provided" traceback:nil]);
@@ -222,7 +204,7 @@
   NSString *textToType = [value isKindOfClass:NSArray.class]
     ? [value componentsJoinedByString:@""]
     : value;
-  XCUIElementType elementType = [(id<FBXCElementSnapshot>)element.lastSnapshot elementType];
+  XCUIElementType elementType = [element elementType];
 #if !TARGET_OS_TV
   if (elementType == XCUIElementTypePickerWheel) {
     [element adjustToPickerWheelValue:textToType];
@@ -251,7 +233,7 @@
 + (id<FBResponsePayload>)handleClick:(FBRouteRequest *)request
 {
   FBElementCache *elementCache = request.session.elementCache;
-  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
+  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"] checkStaleness:YES];
 #if TARGET_OS_IOS
   [element tap];
 #elif TARGET_OS_TV
@@ -285,7 +267,10 @@
   if (focusedElement != nil) {
     FBElementCache *elementCache = request.session.elementCache;
     BOOL useNativeCachingStrategy = request.session.useNativeCachingStrategy;
-    NSString *focusedUUID = [elementCache storeElement:(useNativeCachingStrategy ? focusedElement : focusedElement.fb_stableInstance)];
+    NSString *focusedUUID = [elementCache storeElement:(useNativeCachingStrategy
+                                                        ? focusedElement
+                                                        : [focusedElement fb_stableInstanceWithUid:focusedElement.fb_uid])];
+    focusedElement.lastSnapshot = nil;
     if (focusedUUID && [focusedUUID isEqualToString:(id)request.parameters[@"uuid"]]) {
       isFocused = YES;
     }
@@ -352,12 +337,8 @@
 {
   FBElementCache *elementCache = request.session.elementCache;
   XCUIElement *element = [self targetFromRequest:request];
-  if (![element respondsToSelector:@selector(pressForDuration:thenDragToElement:withVelocity:thenHoldForDuration:)]) {
-    return FBResponseWithStatus([FBCommandStatus unsupportedOperationErrorWithMessage:@"This method is only supported in Xcode 12 and above"
-                                                                            traceback:nil]);
-  }
   [element pressForDuration:[request.arguments[@"pressDuration"] doubleValue]
-          thenDragToElement:[elementCache elementForUUID:(NSString *)request.arguments[@"toElement"]]
+          thenDragToElement:[elementCache elementForUUID:(NSString *)request.arguments[@"toElement"] checkStaleness:YES]
                withVelocity:[request.arguments[@"velocity"] doubleValue]
         thenHoldForDuration:[request.arguments[@"holdDuration"] doubleValue]];
   return FBResponseWithOK();
@@ -370,10 +351,6 @@
                                      (CGFloat)[request.arguments[@"fromY"] doubleValue]);
   XCUICoordinate *startCoordinate = [self.class gestureCoordinateWithOffset:startOffset
                                                                     element:session.activeApplication];
-  if (![startCoordinate respondsToSelector:@selector(pressForDuration:thenDragToCoordinate:withVelocity:thenHoldForDuration:)]) {
-    return FBResponseWithStatus([FBCommandStatus unsupportedOperationErrorWithMessage:@"This method is only supported in Xcode 12 and above"
-                                                                            traceback:nil]);
-  }
   CGVector endOffset = CGVectorMake((CGFloat)[request.arguments[@"toX"] doubleValue],
                                     (CGFloat)[request.arguments[@"toY"] doubleValue]);
   XCUICoordinate *endCoordinate = [self.class gestureCoordinateWithOffset:endOffset
@@ -449,10 +426,7 @@
 
 + (id<FBResponsePayload>)handleDrag:(FBRouteRequest *)request
 {
-  NSString *elementUdid = (NSString *)request.parameters[@"uuid"];
-  XCUIElement *target = nil == elementUdid
-    ? request.session.activeApplication
-    : [request.session.elementCache elementForUUID:elementUdid];
+  XCUIElement *target = [self targetFromRequest:request];
   CGVector startOffset = CGVectorMake([request.arguments[@"fromX"] doubleValue],
                                       [request.arguments[@"fromY"] doubleValue]);
   XCUICoordinate *startCoordinate = [self.class gestureCoordinateWithOffset:startOffset element:target];
@@ -554,10 +528,10 @@
 {
   XCUIApplication *app = request.session.activeApplication ?: XCUIApplication.fb_activeApplication;
 
-#if TARGET_OS_TV
-  CGSize screenSize = app.frame.size;
-#else
   CGRect frame = app.wdFrame;
+#if TARGET_OS_TV
+  CGSize screenSize = frame.size;
+#else
   CGSize screenSize = FBAdjustDimensionsForApplication(frame.size, app.interfaceOrientation);
 #endif
   return FBResponseWithObject(@{
@@ -566,18 +540,44 @@
   });
 }
 
+
++ (id<FBResponsePayload>)handleGetWindowRect:(FBRouteRequest *)request
+{
+  XCUIApplication *app = request.session.activeApplication ?: XCUIApplication.fb_activeApplication;
+
+  CGRect frame = app.wdFrame;
+#if TARGET_OS_TV
+  CGSize screenSize = frame.size;
+#else
+  CGSize screenSize = FBAdjustDimensionsForApplication(frame.size, app.interfaceOrientation);
+#endif
+  return FBResponseWithObject(@{
+    @"x": @(frame.origin.x),
+    @"y": @(frame.origin.y),
+    @"width": @(screenSize.width),
+    @"height": @(screenSize.height),
+  });
+}
+
 + (id<FBResponsePayload>)handleElementScreenshot:(FBRouteRequest *)request
 {
-  FBElementCache *elementCache = request.session.elementCache;
-  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
-  NSData *screenshotData = [element.screenshot PNGRepresentation];
-  if (nil == screenshotData) {
-    NSString *errMsg = [NSString stringWithFormat:@"Cannot take a screenshot of %@", element.description];
-    return FBResponseWithStatus([FBCommandStatus unableToCaptureScreenErrorWithMessage:errMsg
-                                                                             traceback:nil]);
+  @autoreleasepool {
+    FBElementCache *elementCache = request.session.elementCache;
+    XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]
+                                        checkStaleness:YES];
+    NSData *screenshotData = nil;
+    @autoreleasepool {
+      screenshotData = [element.screenshot PNGRepresentation];
+      if (nil == screenshotData) {
+        NSString *errMsg = [NSString stringWithFormat:@"Cannot take a screenshot of %@", element.description];
+        return FBResponseWithStatus([FBCommandStatus unableToCaptureScreenErrorWithMessage:errMsg
+                                                                                traceback:nil]);
+      }
+    }
+    NSString *screenshot = [screenshotData base64EncodedStringWithOptions:0];
+    screenshotData = nil;
+    return FBResponseWithObject(screenshot);
   }
-  NSString *screenshot = [screenshotData base64EncodedStringWithOptions:0];
-  return FBResponseWithObject(screenshot);
 }
 
 
@@ -589,8 +589,9 @@ static const NSInteger DEFAULT_MAX_PICKER_ATTEMPTS = 25;
 + (id<FBResponsePayload>)handleWheelSelect:(FBRouteRequest *)request
 {
   FBElementCache *elementCache = request.session.elementCache;
-  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]];
-  if ([element.lastSnapshot elementType] != XCUIElementTypePickerWheel) {
+  XCUIElement *element = [elementCache elementForUUID:(NSString *)request.parameters[@"uuid"]
+                                       checkStaleness:YES];
+  if ([element elementType] != XCUIElementTypePickerWheel) {
     NSString *errMsg = [NSString stringWithFormat:@"The element is expected to be a valid Picker Wheel control. '%@' was given instead", element.wdType];
     return FBResponseWithStatus([FBCommandStatus invalidArgumentErrorWithMessage:errMsg
                                                                        traceback:[NSString stringWithFormat:@"%@", NSThread.callStackSymbols]]);
@@ -696,7 +697,7 @@ static const NSInteger DEFAULT_MAX_PICKER_ATTEMPTS = 25;
   NSString *elementUuid = (NSString *)request.parameters[@"uuid"];
   return nil == elementUuid
     ? request.session.activeApplication
-    : [elementCache elementForUUID:elementUuid];
+    : [elementCache elementForUUID:elementUuid checkStaleness:YES];
 }
 
 #endif

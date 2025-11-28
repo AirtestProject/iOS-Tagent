@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "FBCapabilities.h"
@@ -23,3 +22,4 @@ NSString* const FB_CAP_ARGUMENTS = @"arguments";
 NSString* const FB_CAP_ENVIRNOMENT = @"environment";
 NSString* const FB_CAP_USE_NATIVE_CACHING_STRATEGY = @"useNativeCachingStrategy";
 NSString* const FB_CAP_FORCE_SIMULATOR_SOFTWARE_KEYBOARD_PRESENCE = @"forceSimulatorSoftwareKeyboardPresence";
+NSString* const FB_CAP_APP_LAUNCH_STATE_TIMEOUT_SEC = @"appLaunchStateTimeoutSec";
