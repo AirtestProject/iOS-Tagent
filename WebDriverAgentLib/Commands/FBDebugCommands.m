@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "FBDebugCommands.h"
@@ -54,7 +53,12 @@ static NSString *const SOURCE_FORMAT_DESCRIPTION = @"description";
           withExcludedAttributes:excludedAttributes]
          withScope:sourceScope]];
   } else if ([sourceType caseInsensitiveCompare:SOURCE_FORMAT_JSON] == NSOrderedSame) {
-    result = application.fb_tree;
+    NSString *excludedAttributesString = request.parameters[@"excluded_attributes"];
+    NSSet<NSString *> *excludedAttributes = (excludedAttributesString == nil)
+          ? nil
+          : [NSSet setWithArray:[excludedAttributesString componentsSeparatedByString:@","]];
+
+    result = [application fb_tree:excludedAttributes];
   } else if ([sourceType caseInsensitiveCompare:SOURCE_FORMAT_DESCRIPTION] == NSOrderedSame) {
     result = application.fb_descriptionRepresentation;
   } else {

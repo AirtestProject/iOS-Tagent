@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import <Foundation/Foundation.h>
@@ -19,7 +18,6 @@
 @property (nonatomic, readwrite, nullable) id lastSnapshot;
 @property (nonatomic, assign) BOOL fb_isObstructedByAlert;
 @property (nonatomic, readonly, nonnull) NSString *fb_cacheId;
-@property (nonatomic, nullable) NSNumber *fb_isResolvedFromCache;
 @property (nonatomic, readwrite, copy, nonnull) NSDictionary *wdRect;
 @property (nonatomic, readwrite, assign) CGRect wdFrame;
 @property (nonatomic, readwrite, copy, nonnull) NSString *wdUID;
@@ -29,17 +27,21 @@
 @property (nonatomic, strong, readwrite, nullable) NSString *wdValue;
 @property (nonatomic, readwrite, getter=isWDEnabled) BOOL wdEnabled;
 @property (nonatomic, readwrite, getter=isWDSelected) BOOL wdSelected;
+@property (nonatomic, readwrite, assign) CGRect wdNativeFrame;
 @property (nonatomic, readwrite) NSUInteger wdIndex;
 @property (nonatomic, readwrite, getter=isWDVisible) BOOL wdVisible;
 @property (nonatomic, readwrite, getter=isWDAccessible) BOOL wdAccessible;
 @property (nonatomic, readwrite, getter = isWDFocused) BOOL wdFocused;
 @property (nonatomic, readwrite, getter = isWDHittable) BOOL wdHittable;
+@property (nonatomic, copy, readwrite, nullable) NSString *wdPlaceholderValue;
 @property (copy, nonnull) NSArray *children;
 @property (nonatomic, readwrite, assign) XCUIElementType elementType;
 @property (nonatomic, readwrite, getter=isWDAccessibilityContainer) BOOL wdAccessibilityContainer;
+@property (nonatomic, copy, readwrite, nullable) NSString *wdTraits;
 
 - (void)resolve;
-- (id _Nonnull)fb_takeSnapshot;
+- (id _Nonnull)fb_standardSnapshot;
+- (id _Nonnull)fb_customSnapshot;
 - (nullable id)query;
 
 // Checks

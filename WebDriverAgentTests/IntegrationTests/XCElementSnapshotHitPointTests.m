@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "FBIntegrationTestCase.h"
@@ -23,7 +22,8 @@
   [self launchApplication];
   [self goToAttributesPage];
   XCUIElement *dstBtn = self.testedApplication.buttons[@"not_accessible"];
-  CGPoint hitPoint = [FBXCElementSnapshotWrapper ensureWrapped:dstBtn.fb_takeSnapshot].fb_hitPoint.CGPointValue;
+  CGPoint hitPoint = [FBXCElementSnapshotWrapper
+                      ensureWrapped:[dstBtn fb_standardSnapshot]].fb_hitPoint.CGPointValue;
   XCTAssertTrue(hitPoint.x > 0 && hitPoint.y > 0);
 }
 

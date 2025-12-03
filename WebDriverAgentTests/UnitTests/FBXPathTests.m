@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import <XCTest/XCTest.h>
@@ -21,7 +20,7 @@
 
 @implementation FBXPathTests
 
-- (NSString *)xmlStringWithElement:(id<FBElement>)element
+- (NSString *)xmlStringWithElement:(id<FBXCElementSnapshot>)snapshot
                         xpathQuery:(nullable NSString *)query
                excludingAttributes:(nullable NSArray<NSString *> *)excludedAttributes
 {
@@ -33,7 +32,7 @@
   xmlChar *xmlbuff = NULL;
   int rc = xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL);
   if (rc >= 0) {
-    rc = [FBXPath xmlRepresentationWithRootElement:element
+    rc = [FBXPath xmlRepresentationWithRootElement:snapshot
                                             writer:writer
                                       elementStore:elementStore
                                              query:query
@@ -60,11 +59,12 @@
 {
   XCElementSnapshotDouble *snapshot = [XCElementSnapshotDouble new];
   id<FBElement> element = (id<FBElement>)[FBXCElementSnapshotWrapper ensureWrapped:(id)snapshot];
-  NSString *resultXml = [self xmlStringWithElement:element
+  NSString *resultXml = [self xmlStringWithElement:(id<FBXCElementSnapshot>)element
                                         xpathQuery:nil
                                excludingAttributes:nil];
-  NSString *expectedXml = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<%@ type=\"%@\" value=\"%@\" name=\"%@\" label=\"%@\" enabled=\"%@\" visible=\"%@\" accessible=\"%@\" x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" index=\"%lu\" private_indexPath=\"top\"/>\n",
-                           element.wdType, element.wdType, element.wdValue, element.wdName, element.wdLabel, FBBoolToString(element.wdEnabled), FBBoolToString(element.wdVisible), FBBoolToString(element.wdAccessible), element.wdRect[@"x"], element.wdRect[@"y"], element.wdRect[@"width"], element.wdRect[@"height"], element.wdIndex];
+  NSLog(@"[DefaultXPath] Result XML:\n%@", resultXml);
+  NSString *expectedXml = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<%@ type=\"%@\" value=\"%@\" name=\"%@\" label=\"%@\" enabled=\"%@\" visible=\"%@\" accessible=\"%@\" x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" index=\"%lu\" traits=\"%@\" private_indexPath=\"top\"/>\n",
+                           element.wdType, element.wdType, element.wdValue, element.wdName, element.wdLabel, FBBoolToString(element.wdEnabled), FBBoolToString(element.wdVisible), FBBoolToString(element.wdAccessible), element.wdRect[@"x"], element.wdRect[@"y"], element.wdRect[@"width"], element.wdRect[@"height"], element.wdIndex, element.wdTraits];
   XCTAssertTrue([resultXml isEqualToString: expectedXml]);
 }
 
@@ -72,9 +72,9 @@
 {
   XCElementSnapshotDouble *snapshot = [XCElementSnapshotDouble new];
   id<FBElement> element = (id<FBElement>)[FBXCElementSnapshotWrapper ensureWrapped:(id)snapshot];
-  NSString *resultXml = [self xmlStringWithElement:element
+  NSString *resultXml = [self xmlStringWithElement:(id<FBXCElementSnapshot>)element
                                         xpathQuery:nil
-                               excludingAttributes:@[@"type", @"visible", @"value", @"index"]];
+                               excludingAttributes:@[@"type", @"visible", @"value", @"index", @"traits", @"nativeFrame"]];
   NSString *expectedXml = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<%@ name=\"%@\" label=\"%@\" enabled=\"%@\" accessible=\"%@\" x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" private_indexPath=\"top\"/>\n",
                            element.wdType, element.wdName, element.wdLabel, FBBoolToString(element.wdEnabled), FBBoolToString(element.wdAccessible), element.wdRect[@"x"], element.wdRect[@"y"], element.wdRect[@"width"], element.wdRect[@"height"]];
   XCTAssertEqualObjects(resultXml, expectedXml);
@@ -86,11 +86,11 @@
   snapshot.value = @"йоло<>&\"";
   snapshot.label = @"a\nb";
   id<FBElement> element = (id<FBElement>)[FBXCElementSnapshotWrapper ensureWrapped:(id)snapshot];
-  NSString *resultXml = [self xmlStringWithElement:element
+  NSString *resultXml = [self xmlStringWithElement:(id<FBXCElementSnapshot>)element
                                         xpathQuery:[NSString stringWithFormat:@"//%@[@*]", element.wdType]
                                excludingAttributes:@[@"visible"]];
-  NSString *expectedXml = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<%@ type=\"%@\" value=\"%@\" name=\"%@\" label=\"%@\" enabled=\"%@\" visible=\"%@\" accessible=\"%@\" x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" index=\"%lu\" hittable=\"%@\" private_indexPath=\"top\"/>\n",
-                           element.wdType, element.wdType, @"йоло&lt;&gt;&amp;&quot;", element.wdName, @"a&#10;b", FBBoolToString(element.wdEnabled), FBBoolToString(element.wdVisible), FBBoolToString(element.wdAccessible), element.wdRect[@"x"], element.wdRect[@"y"], element.wdRect[@"width"], element.wdRect[@"height"], element.wdIndex, FBBoolToString(element.wdHittable)];
+  NSString *expectedXml = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<%@ type=\"%@\" value=\"%@\" name=\"%@\" label=\"%@\" enabled=\"%@\" visible=\"%@\" accessible=\"%@\" x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" index=\"%lu\" hittable=\"%@\" traits=\"%@\" nativeFrame=\"%@\" private_indexPath=\"top\"/>\n",
+                           element.wdType, element.wdType, @"йоло&lt;&gt;&amp;&quot;", element.wdName, @"a&#10;b", FBBoolToString(element.wdEnabled), FBBoolToString(element.wdVisible), FBBoolToString(element.wdAccessible), element.wdRect[@"x"], element.wdRect[@"y"], element.wdRect[@"width"], element.wdRect[@"height"], element.wdIndex, FBBoolToString(element.wdHittable), element.wdTraits, NSStringFromCGRect(element.wdNativeFrame)];
   XCTAssertEqualObjects(expectedXml, resultXml);
 }
 
@@ -98,7 +98,7 @@
 {
   XCElementSnapshotDouble *snapshot = [XCElementSnapshotDouble new];
   id<FBElement> element = (id<FBElement>)[FBXCElementSnapshotWrapper ensureWrapped:(id)snapshot];
-  NSString *resultXml = [self xmlStringWithElement:element
+  NSString *resultXml = [self xmlStringWithElement:(id<FBXCElementSnapshot>)element
                                         xpathQuery:[NSString stringWithFormat:@"//%@[@%@ and contains(@%@, 'blabla')]", element.wdType, @"value", @"name"]
                                excludingAttributes:nil];
   NSString *expectedXml = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<%@ value=\"%@\" name=\"%@\" private_indexPath=\"top\"/>\n",
@@ -117,7 +117,7 @@
   NSString *query = [NSString stringWithFormat:@"//%@", root.wdType];
   int rc = xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL);
   if (rc >= 0) {
-    rc = [FBXPath xmlRepresentationWithRootElement:root
+    rc = [FBXPath xmlRepresentationWithRootElement:(id<FBXCElementSnapshot>)root
                                             writer:writer
                                       elementStore:elementStore
                                              query:query
@@ -132,7 +132,7 @@
     XCTFail(@"Unable to create the source XML document");
   }
 
-  xmlXPathObjectPtr queryResult = [FBXPath evaluate:query document:doc];
+  xmlXPathObjectPtr queryResult = [FBXPath evaluate:query document:doc contextNode:NULL];
   if (NULL == queryResult) {
     xmlFreeTextWriter(writer);
     xmlFreeDoc(doc);

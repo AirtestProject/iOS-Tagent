@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import <Foundation/Foundation.h>
@@ -18,7 +17,6 @@
 @property (nonatomic, readwrite, assign) CGRect frame;
 @property (nonatomic, readwrite, nullable) id lastSnapshot;
 @property (nonatomic, assign) BOOL fb_isObstructedByAlert;
-@property (nonatomic, nullable) NSNumber *fb_isResolvedFromCache;
 @property (nonatomic, readwrite, copy, nonnull) NSDictionary *wdRect;
 @property (nonatomic, readwrite, assign) CGRect wdFrame;
 @property (nonatomic, readwrite, copy, nonnull) NSString *wdUID;
@@ -38,7 +36,8 @@
 @property (nonatomic, readwrite, getter=isWDAccessibilityContainer) BOOL wdAccessibilityContainer;
 
 - (void)resolve;
-- (id _Nonnull)fb_takeSnapshot;
+- (id _Nonnull)fb_standardSnapshot;
+- (id _Nonnull)fb_customSnapshot;
 
 // Checks
 @property (nonatomic, assign, readonly) BOOL didResolve;

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E0413382DF1E15100AF007C /* XCUIElement+FBMinMax.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0413372DF1E15100AF007C /* XCUIElement+FBMinMax.m */; };
+		0E0413392DF1E15100AF007C /* XCUIElement+FBMinMax.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0413372DF1E15100AF007C /* XCUIElement+FBMinMax.m */; };
+		0E04133B2DF1E15900AF007C /* XCUIElement+FBMinMax.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E04133A2DF1E15900AF007C /* XCUIElement+FBMinMax.h */; };
+		0E04133C2DF1E15900AF007C /* XCUIElement+FBMinMax.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E04133A2DF1E15900AF007C /* XCUIElement+FBMinMax.h */; };
 		1357E296233D05240054BDB8 /* XCUIHitPointResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 1357E295233D05240054BDB8 /* XCUIHitPointResult.h */; };
 		1357E297233D05240054BDB8 /* XCUIHitPointResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 1357E295233D05240054BDB8 /* XCUIHitPointResult.h */; };
 		13815F6F2328D20400CDAB61 /* FBActiveAppDetectionPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 13815F6D2328D20400CDAB61 /* FBActiveAppDetectionPoint.h */; };
@@ -21,12 +25,12 @@
 		13DE7A4A287C4005003243C6 /* FBXCDeviceEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 13DE7A47287C4005003243C6 /* FBXCDeviceEvent.h */; };
 		13DE7A4B287C4005003243C6 /* FBXCDeviceEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE7A48287C4005003243C6 /* FBXCDeviceEvent.m */; };
 		13DE7A4C287C4005003243C6 /* FBXCDeviceEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE7A48287C4005003243C6 /* FBXCDeviceEvent.m */; };
-		13DE7A4F287C46BB003243C6 /* FBXCElementSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = 13DE7A4D287C46BB003243C6 /* FBXCElementSnapshot.h */; };
-		13DE7A50287C46BB003243C6 /* FBXCElementSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = 13DE7A4D287C46BB003243C6 /* FBXCElementSnapshot.h */; };
+		13DE7A4F287C46BB003243C6 /* FBXCElementSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = 13DE7A4D287C46BB003243C6 /* FBXCElementSnapshot.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		13DE7A50287C46BB003243C6 /* FBXCElementSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = 13DE7A4D287C46BB003243C6 /* FBXCElementSnapshot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		13DE7A51287C46BB003243C6 /* FBXCElementSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE7A4E287C46BB003243C6 /* FBXCElementSnapshot.m */; };
 		13DE7A52287C46BB003243C6 /* FBXCElementSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE7A4E287C46BB003243C6 /* FBXCElementSnapshot.m */; };
-		13DE7A55287CA1EC003243C6 /* FBXCElementSnapshotWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 13DE7A53287CA1EC003243C6 /* FBXCElementSnapshotWrapper.h */; };
-		13DE7A56287CA1EC003243C6 /* FBXCElementSnapshotWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 13DE7A53287CA1EC003243C6 /* FBXCElementSnapshotWrapper.h */; };
+		13DE7A55287CA1EC003243C6 /* FBXCElementSnapshotWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 13DE7A53287CA1EC003243C6 /* FBXCElementSnapshotWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		13DE7A56287CA1EC003243C6 /* FBXCElementSnapshotWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 13DE7A53287CA1EC003243C6 /* FBXCElementSnapshotWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		13DE7A57287CA1EC003243C6 /* FBXCElementSnapshotWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE7A54287CA1EC003243C6 /* FBXCElementSnapshotWrapper.m */; };
 		13DE7A58287CA1EC003243C6 /* FBXCElementSnapshotWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE7A54287CA1EC003243C6 /* FBXCElementSnapshotWrapper.m */; };
 		13DE7A5B287CA444003243C6 /* FBXCElementSnapshotWrapper+Helpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 13DE7A59287CA444003243C6 /* FBXCElementSnapshotWrapper+Helpers.h */; };
@@ -374,6 +378,10 @@
 		7155D704211DCEF400166C20 /* FBMjpegServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7155D702211DCEF400166C20 /* FBMjpegServer.m */; };
 		7157B291221DADD2001C348C /* FBXCAXClientProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 7157B28F221DADD2001C348C /* FBXCAXClientProxy.h */; };
 		7157B292221DADD2001C348C /* FBXCAXClientProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7157B290221DADD2001C348C /* FBXCAXClientProxy.m */; };
+		715A84CF2DD92AD3007134CC /* FBElementHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 715A84CE2DD92AD3007134CC /* FBElementHelpers.m */; };
+		715A84D02DD92AD3007134CC /* FBElementHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 715A84CD2DD92AD3007134CC /* FBElementHelpers.h */; };
+		715A84D12DD92AD3007134CC /* FBElementHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 715A84CE2DD92AD3007134CC /* FBElementHelpers.m */; };
+		715A84D22DD92AD3007134CC /* FBElementHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 715A84CD2DD92AD3007134CC /* FBElementHelpers.h */; };
 		715AFAC11FFA29180053896D /* FBScreen.h in Headers */ = {isa = PBXBuildFile; fileRef = 715AFABF1FFA29180053896D /* FBScreen.h */; };
 		715AFAC21FFA29180053896D /* FBScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 715AFAC01FFA29180053896D /* FBScreen.m */; };
 		715AFAC41FFA2AAF0053896D /* FBScreenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 715AFAC31FFA2AAF0053896D /* FBScreenTests.m */; };
@@ -451,6 +459,10 @@
 		71A7EAFA1E224648001DA4F2 /* FBClassChainQueryParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A7EAF81E224648001DA4F2 /* FBClassChainQueryParser.m */; };
 		71A7EAFC1E229302001DA4F2 /* FBClassChainTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A7EAFB1E229302001DA4F2 /* FBClassChainTests.m */; };
 		71ACF5B8242F2FDC00F0AAD4 /* FBSafariAlertTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 71ACF5B7242F2FDC00F0AAD4 /* FBSafariAlertTests.m */; };
+		71AE3CF72D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 71AE3CF52D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.h */; };
+		71AE3CF82D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 71AE3CF62D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.m */; };
+		71AE3CF92D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 71AE3CF52D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.h */; };
+		71AE3CFA2D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 71AE3CF62D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.m */; };
 		71B155DA23070ECF00646AFB /* FBHTTPStatusCodes.h in Headers */ = {isa = PBXBuildFile; fileRef = 71B155D923070ECF00646AFB /* FBHTTPStatusCodes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		71B155DC230711E900646AFB /* FBCommandStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B155DB230711E900646AFB /* FBCommandStatus.m */; };
 		71B155DF23080CA600646AFB /* FBProtocolHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 71B155DD23080CA600646AFB /* FBProtocolHelpers.h */; };
@@ -531,6 +543,10 @@
 		ADBC39981D07842800327304 /* XCUIElementDouble.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBC39971D07842800327304 /* XCUIElementDouble.m */; };
 		ADDA07241D6BB2BF001700AC /* FBScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDA07231D6BB2BF001700AC /* FBScrollViewController.m */; };
 		ADEF63AF1D09DEBE0070A7E3 /* FBRuntimeUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = ADEF63AE1D09DEBE0070A7E3 /* FBRuntimeUtilsTests.m */; };
+		B316351C2DDF0CF5007D9317 /* FBAccessibilityTraits.m in Sources */ = {isa = PBXBuildFile; fileRef = B316351B2DDF0CF5007D9317 /* FBAccessibilityTraits.m */; };
+		B316351D2DDF0CF5007D9317 /* FBAccessibilityTraits.m in Sources */ = {isa = PBXBuildFile; fileRef = B316351B2DDF0CF5007D9317 /* FBAccessibilityTraits.m */; };
+		B316351F2DDF0D0B007D9317 /* FBAccessibilityTraits.h in Headers */ = {isa = PBXBuildFile; fileRef = B316351E2DDF0D0B007D9317 /* FBAccessibilityTraits.h */; };
+		B31635202DDF0D0B007D9317 /* FBAccessibilityTraits.h in Headers */ = {isa = PBXBuildFile; fileRef = B316351E2DDF0D0B007D9317 /* FBAccessibilityTraits.h */; };
 		C845206222D5E79400EA68CB /* FBUnattachedAppLauncher.h in Headers */ = {isa = PBXBuildFile; fileRef = C8FB547722D4C1FC00B69954 /* FBUnattachedAppLauncher.h */; };
 		C845206322D5E79700EA68CB /* FBUnattachedAppLauncher.m in Sources */ = {isa = PBXBuildFile; fileRef = C8FB547822D4C1FC00B69954 /* FBUnattachedAppLauncher.m */; };
 		C8FB547422D3949C00B69954 /* LSApplicationWorkspace.h in Headers */ = {isa = PBXBuildFile; fileRef = C8FB547322D3949C00B69954 /* LSApplicationWorkspace.h */; };
@@ -906,6 +922,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0E0413372DF1E15100AF007C /* XCUIElement+FBMinMax.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "XCUIElement+FBMinMax.m"; sourceTree = "<group>"; };
+		0E04133A2DF1E15900AF007C /* XCUIElement+FBMinMax.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCUIElement+FBMinMax.h"; sourceTree = "<group>"; };
 		1357E295233D05240054BDB8 /* XCUIHitPointResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XCUIHitPointResult.h; sourceTree = "<group>"; };
 		13815F6D2328D20400CDAB61 /* FBActiveAppDetectionPoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBActiveAppDetectionPoint.h; sourceTree = "<group>"; };
 		13815F6E2328D20400CDAB61 /* FBActiveAppDetectionPoint.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBActiveAppDetectionPoint.m; sourceTree = "<group>"; };
@@ -1002,6 +1020,8 @@
 		7155D702211DCEF400166C20 /* FBMjpegServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBMjpegServer.m; sourceTree = "<group>"; };
 		7157B28F221DADD2001C348C /* FBXCAXClientProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBXCAXClientProxy.h; sourceTree = "<group>"; };
 		7157B290221DADD2001C348C /* FBXCAXClientProxy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBXCAXClientProxy.m; sourceTree = "<group>"; };
+		715A84CD2DD92AD3007134CC /* FBElementHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBElementHelpers.h; sourceTree = "<group>"; };
+		715A84CE2DD92AD3007134CC /* FBElementHelpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBElementHelpers.m; sourceTree = "<group>"; };
 		715AFABF1FFA29180053896D /* FBScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBScreen.h; sourceTree = "<group>"; };
 		715AFAC01FFA29180053896D /* FBScreen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBScreen.m; sourceTree = "<group>"; };
 		715AFAC31FFA2AAF0053896D /* FBScreenTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBScreenTests.m; sourceTree = "<group>"; };
@@ -1050,6 +1070,8 @@
 		71A7EAF81E224648001DA4F2 /* FBClassChainQueryParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBClassChainQueryParser.m; sourceTree = "<group>"; };
 		71A7EAFB1E229302001DA4F2 /* FBClassChainTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBClassChainTests.m; sourceTree = "<group>"; };
 		71ACF5B7242F2FDC00F0AAD4 /* FBSafariAlertTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBSafariAlertTests.m; sourceTree = "<group>"; };
+		71AE3CF52D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCUIElement+FBVisibleFrame.h"; sourceTree = "<group>"; };
+		71AE3CF62D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "XCUIElement+FBVisibleFrame.m"; sourceTree = "<group>"; };
 		71B155D923070ECF00646AFB /* FBHTTPStatusCodes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBHTTPStatusCodes.h; sourceTree = "<group>"; };
 		71B155DB230711E900646AFB /* FBCommandStatus.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBCommandStatus.m; sourceTree = "<group>"; };
 		71B155DD23080CA600646AFB /* FBProtocolHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBProtocolHelpers.h; sourceTree = "<group>"; };
@@ -1103,6 +1125,8 @@
 		ADDA07221D6BB2BF001700AC /* FBScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBScrollViewController.h; sourceTree = "<group>"; };
 		ADDA07231D6BB2BF001700AC /* FBScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBScrollViewController.m; sourceTree = "<group>"; };
 		ADEF63AE1D09DEBE0070A7E3 /* FBRuntimeUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBRuntimeUtilsTests.m; sourceTree = "<group>"; };
+		B316351B2DDF0CF5007D9317 /* FBAccessibilityTraits.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBAccessibilityTraits.m; sourceTree = "<group>"; };
+		B316351E2DDF0D0B007D9317 /* FBAccessibilityTraits.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBAccessibilityTraits.h; sourceTree = "<group>"; };
 		C8FB547322D3949C00B69954 /* LSApplicationWorkspace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSApplicationWorkspace.h; sourceTree = "<group>"; };
 		C8FB547722D4C1FC00B69954 /* FBUnattachedAppLauncher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBUnattachedAppLauncher.h; sourceTree = "<group>"; };
 		C8FB547822D4C1FC00B69954 /* FBUnattachedAppLauncher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBUnattachedAppLauncher.m; sourceTree = "<group>"; };
@@ -1767,6 +1791,8 @@
 				EE8DDD7C20C5733B004D4925 /* XCUIElement+FBForceTouch.m */,
 				EE9AB7471CAEDF0C008C271F /* XCUIElement+FBIsVisible.h */,
 				EE9AB7481CAEDF0C008C271F /* XCUIElement+FBIsVisible.m */,
+				0E04133A2DF1E15900AF007C /* XCUIElement+FBMinMax.h */,
+				0E0413372DF1E15100AF007C /* XCUIElement+FBMinMax.m */,
 				7136A4771E8918E60024FC3D /* XCUIElement+FBPickerWheel.h */,
 				7136A4781E8918E60024FC3D /* XCUIElement+FBPickerWheel.m */,
 				71D3B3D3267FC7260076473D /* XCUIElement+FBResolve.h */,
@@ -1781,6 +1807,8 @@
 				71B49EC61ED1A58100D51AD6 /* XCUIElement+FBUID.m */,
 				EEE3763F1D59F81400ED88DD /* XCUIElement+FBUtilities.h */,
 				EEE376401D59F81400ED88DD /* XCUIElement+FBUtilities.m */,
+				71AE3CF52D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.h */,
+				71AE3CF62D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.m */,
 				EEE376471D59FAE900ED88DD /* XCUIElement+FBWebDriverAttributes.h */,
 				EEE376481D59FAE900ED88DD /* XCUIElement+FBWebDriverAttributes.m */,
 				641EE7042240CDCF00173FCB /* XCUIElement+FBTVFocuse.h */,
@@ -1904,6 +1932,8 @@
 				EE9B76A21CF7A43900275851 /* FBConfiguration.m */,
 				EE7E27181D06C69F001BEC7B /* FBDebugLogDelegateDecorator.h */,
 				EE7E27191D06C69F001BEC7B /* FBDebugLogDelegateDecorator.m */,
+				715A84CD2DD92AD3007134CC /* FBElementHelpers.h */,
+				715A84CE2DD92AD3007134CC /* FBElementHelpers.m */,
 				EE9AB78F1CAEDF0C008C271F /* FBElementTypeTransformer.h */,
 				EE9AB7901CAEDF0C008C271F /* FBElementTypeTransformer.m */,
 				EE3A18601CDE618F00DE4205 /* FBErrorBuilder.h */,
@@ -1963,6 +1993,8 @@
 				EE6B64FC1D0F86EF00E85F5D /* XCTestPrivateSymbols.m */,
 				633E904A220DEE7F007CADF9 /* XCUIApplicationProcessDelay.h */,
 				6385F4A5220A40760095BBDB /* XCUIApplicationProcessDelay.m */,
+				B316351B2DDF0CF5007D9317 /* FBAccessibilityTraits.m */,
+				B316351E2DDF0D0B007D9317 /* FBAccessibilityTraits.h */,
 			);
 			name = Utilities;
 			path = WebDriverAgentLib/Utilities;
@@ -2276,6 +2308,8 @@
 				641EE6392240C5CA00173FCB /* FBRouteRequest.h in Headers */,
 				648C10AC22AAAD9C00B81B9A /* UIKeyboardImpl.h in Headers */,
 				718226CD2587443700661B83 /* GCDAsyncSocket.h in Headers */,
+				13DE7A50287C46BB003243C6 /* FBXCElementSnapshot.h in Headers */,
+				13DE7A56287CA1EC003243C6 /* FBXCElementSnapshotWrapper.h in Headers */,
 				71F3E7D525417FF400E0C22B /* FBSettings.h in Headers */,
 				641EE63A2240C5CA00173FCB /* XCTest.h in Headers */,
 				641EE63B2240C5CA00173FCB /* FBAlertsMonitor.h in Headers */,
@@ -2324,7 +2358,6 @@
 				641EE6632240C5CA00173FCB /* FBUnknownCommands.h in Headers */,
 				641EE7062240CDCF00173FCB /* XCUIElement+FBTVFocuse.h in Headers */,
 				71822738258744B800661B83 /* HTTPConnection.h in Headers */,
-				13DE7A56287CA1EC003243C6 /* FBXCElementSnapshotWrapper.h in Headers */,
 				641EE6642240C5CA00173FCB /* NSPredicate+FBFormat.h in Headers */,
 				641EE6652240C5CA00173FCB /* UILongPressGestureRecognizer-RecordingAdditions.h in Headers */,
 				641EE6662240C5CA00173FCB /* XCTestCase.h in Headers */,
@@ -2346,11 +2379,13 @@
 				641EE6732240C5CA00173FCB /* FBDebugCommands.h in Headers */,
 				641EE6742240C5CA00173FCB /* XCTestSuite.h in Headers */,
 				641EE6752240C5CA00173FCB /* XCUICoordinate.h in Headers */,
+				715A84D22DD92AD3007134CC /* FBElementHelpers.h in Headers */,
 				641EE6762240C5CA00173FCB /* XCTNSPredicateExpectation.h in Headers */,
 				641EE6772240C5CA00173FCB /* XCTestObservationCenter.h in Headers */,
 				641EE6782240C5CA00173FCB /* XCTNSNotificationExpectation.h in Headers */,
 				641EE6792240C5CA00173FCB /* XCUIRecorderNodeFinder.h in Headers */,
 				641EE67A2240C5CA00173FCB /* XCUIElement+FBAccessibility.h in Headers */,
+				0E04133C2DF1E15900AF007C /* XCUIElement+FBMinMax.h in Headers */,
 				641EE67B2240C5CA00173FCB /* XCUIRecorderUtilities.h in Headers */,
 				6496A5DA230D6EB30087F8CB /* AXSettings.h in Headers */,
 				641EE67C2240C5CA00173FCB /* XCTestCaseRun.h in Headers */,
@@ -2399,9 +2434,11 @@
 				641EE6A42240C5CA00173FCB /* FBCommandHandler.h in Headers */,
 				641EE6A52240C5CA00173FCB /* FBSessionCommands.h in Headers */,
 				641EE70C2240CE2D00173FCB /* FBTVNavigationTracker.h in Headers */,
+				71AE3CF72D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.h in Headers */,
 				641EE6A62240C5CA00173FCB /* FBImageProcessor.h in Headers */,
 				641EE6A72240C5CA00173FCB /* FBSession-Private.h in Headers */,
 				641EE6A82240C5CA00173FCB /* NSString+FBXMLSafeString.h in Headers */,
+				B316351F2DDF0D0B007D9317 /* FBAccessibilityTraits.h in Headers */,
 				64E3502F2AC0B6FE005F3ACB /* NSDictionary+FBUtf8SafeDictionary.h in Headers */,
 				641EE6A92240C5CA00173FCB /* FBCommandStatus.h in Headers */,
 				71822702258744A400661B83 /* HTTPResponseProxy.h in Headers */,
@@ -2483,7 +2520,6 @@
 				641EE6E72240C5CA00173FCB /* XCUIElement+FBFind.h in Headers */,
 				641EE6E82240C5CA00173FCB /* XCTestManager_ManagerInterface-Protocol.h in Headers */,
 				641EE6E92240C5CA00173FCB /* FBFailureProofTestCase.h in Headers */,
-				13DE7A50287C46BB003243C6 /* FBXCElementSnapshot.h in Headers */,
 				641EE6EA2240C5CA00173FCB /* XCTTestRunSessionDelegate-Protocol.h in Headers */,
 				641EE6EB2240C5CA00173FCB /* XCTestCaseSuite.h in Headers */,
 				641EE6EC2240C5CA00173FCB /* _XCInternalTestRun.h in Headers */,
@@ -2554,6 +2590,7 @@
 				EE35AD721E3B77D600A02D78 /* XCUIElementHitPointCoordinate.h in Headers */,
 				EE35AD3F1E3B77D600A02D78 /* XCTDarwinNotificationExpectation.h in Headers */,
 				EE35AD5F1E3B77D600A02D78 /* XCTRunnerAutomationSession.h in Headers */,
+				13DE7A4F287C46BB003243C6 /* FBXCElementSnapshot.h in Headers */,
 				71C9EAAC25E8415A00470CD8 /* FBScreenshot.h in Headers */,
 				EE35AD371E3B77D600A02D78 /* XCSourceCodeTreeNodeEnumerator.h in Headers */,
 				EE158AB01CBD456F00A3E3F0 /* XCUIElement+FBIsVisible.h in Headers */,
@@ -2585,6 +2622,7 @@
 				714EAA0D2673FDFE005C5B47 /* FBCapabilities.h in Headers */,
 				EE35AD5C1E3B77D600A02D78 /* XCTNSPredicateExpectation.h in Headers */,
 				EE35AD521E3B77D600A02D78 /* XCTestObservationCenter.h in Headers */,
+				71AE3CF92D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.h in Headers */,
 				EE35AD5B1E3B77D600A02D78 /* XCTNSNotificationExpectation.h in Headers */,
 				E444DC97249131D40060D7EB /* HTTPServer.h in Headers */,
 				E444DCAE24913C220060D7EB /* HTTPResponseProxy.h in Headers */,
@@ -2595,6 +2633,7 @@
 				EE35AD781E3B77D600A02D78 /* XCUIRecorderUtilities.h in Headers */,
 				EE35AD421E3B77D600A02D78 /* XCTestCaseRun.h in Headers */,
 				EE35AD441E3B77D600A02D78 /* XCTestConfiguration.h in Headers */,
+				715A84D02DD92AD3007134CC /* FBElementHelpers.h in Headers */,
 				EE35AD0B1E3B77D600A02D78 /* _XCTDarwinNotificationExpectationImplementation.h in Headers */,
 				718226CA2587443700661B83 /* GCDAsyncUdpSocket.h in Headers */,
 				EE35AD491E3B77D600A02D78 /* XCTestExpectation.h in Headers */,
@@ -2649,7 +2688,6 @@
 				EE158AB81CBD456F00A3E3F0 /* FBAlertViewCommands.h in Headers */,
 				EE35AD651E3B77D600A02D78 /* XCTWaiter.h in Headers */,
 				EE35AD681E3B77D600A02D78 /* XCTWaiterManagement-Protocol.h in Headers */,
-				13DE7A4F287C46BB003243C6 /* FBXCElementSnapshot.h in Headers */,
 				EE35AD451E3B77D600A02D78 /* XCTestContext.h in Headers */,
 				EE35AD661E3B77D600A02D78 /* XCTWaiterDelegate-Protocol.h in Headers */,
 				EE35AD0E1E3B77D600A02D78 /* _XCTestExpectationImplementation.h in Headers */,
@@ -2672,6 +2710,7 @@
 				EEE9B4721CD02B88009D2030 /* FBRunLoopSpinner.h in Headers */,
 				EE3A18621CDE618F00DE4205 /* FBErrorBuilder.h in Headers */,
 				EE35AD261E3B77D600A02D78 /* XCApplicationMonitor_iOS.h in Headers */,
+				0E04133B2DF1E15900AF007C /* XCUIElement+FBMinMax.h in Headers */,
 				EE3A18661CDE734B00DE4205 /* FBKeyboard.h in Headers */,
 				AD6C269C1CF2494200F8B5FF /* XCUIApplication+FBHelpers.h in Headers */,
 				714D88CC2733FB970074A925 /* FBXMLGenerationOptions.h in Headers */,
@@ -2692,6 +2731,7 @@
 				EE35AD571E3B77D600A02D78 /* XCTestSuiteRun.h in Headers */,
 				EE35AD701E3B77D600A02D78 /* XCUIElementAsynchronousHandlerWrapper.h in Headers */,
 				EE35AD4C1E3B77D600A02D78 /* XCTestLog.h in Headers */,
+				B31635202DDF0D0B007D9317 /* FBAccessibilityTraits.h in Headers */,
 				71BB58E82B96328700CB9BFE /* FBScreenRecordingRequest.h in Headers */,
 				EE35AD231E3B77D600A02D78 /* UITapGestureRecognizer-RecordingAdditions.h in Headers */,
 				EE35AD2A1E3B77D600A02D78 /* XCDebugLogDelegate-Protocol.h in Headers */,
@@ -3153,6 +3193,7 @@
 				641EE6082240C5CA00173FCB /* FBRuntimeUtils.m in Sources */,
 				641EE6092240C5CA00173FCB /* XCUIElement+FBUtilities.m in Sources */,
 				641EE60A2240C5CA00173FCB /* FBLogger.m in Sources */,
+				B316351D2DDF0CF5007D9317 /* FBAccessibilityTraits.m in Sources */,
 				641EE60B2240C5CA00173FCB /* FBCustomCommands.m in Sources */,
 				71BB58E42B9631F100CB9BFE /* FBScreenRecordingPromise.m in Sources */,
 				641EE60C2240C5CA00173FCB /* XCUIDevice+FBHelpers.m in Sources */,
@@ -3160,6 +3201,8 @@
 				641EE60E2240C5CA00173FCB /* XCUIElement+FBTyping.m in Sources */,
 				641EE60F2240C5CA00173FCB /* XCUIElement+FBAccessibility.m in Sources */,
 				641EE6102240C5CA00173FCB /* FBImageUtils.m in Sources */,
+				71AE3CF82D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.m in Sources */,
+				715A84D12DD92AD3007134CC /* FBElementHelpers.m in Sources */,
 				641EE6112240C5CA00173FCB /* FBSession.m in Sources */,
 				641EE6122240C5CA00173FCB /* FBFindElementCommands.m in Sources */,
 				71A5C67629A4F39600421C37 /* XCTIssue+FBPatcher.m in Sources */,
@@ -3169,6 +3212,7 @@
 				71BB58F92B96531900CB9BFE /* FBScreenRecordingContainer.m in Sources */,
 				641EE6152240C5CA00173FCB /* XCUIElement+FBScrolling.m in Sources */,
 				641EE6162240C5CA00173FCB /* FBSessionCommands.m in Sources */,
+				0E0413392DF1E15100AF007C /* XCUIElement+FBMinMax.m in Sources */,
 				641EE6192240C5CA00173FCB /* FBConfiguration.m in Sources */,
 				641EE61A2240C5CA00173FCB /* FBElementCache.m in Sources */,
 				71F5BE26252E576C00EE9EBA /* XCUIElement+FBSwiping.m in Sources */,
@@ -3216,6 +3260,7 @@
 				13DE7A45287C2A8D003243C6 /* FBXCAccessibilityElement.m in Sources */,
 				641EE70E2240CE4800173FCB /* FBTVNavigationTracker.m in Sources */,
 				71BD20741F86116100B36EC2 /* XCUIApplication+FBTouchAction.m in Sources */,
+				0E0413382DF1E15100AF007C /* XCUIElement+FBMinMax.m in Sources */,
 				EE158AE71CBD456F00A3E3F0 /* FBWebServer.m in Sources */,
 				715557D4211DBCE700613B26 /* FBTCPSocket.m in Sources */,
 				EE3A18631CDE618F00DE4205 /* FBErrorBuilder.m in Sources */,
@@ -3232,8 +3277,10 @@
 				713AE576243A53BE0000D657 /* FBW3CActionsHelpers.m in Sources */,
 				71B155E123080CA600646AFB /* FBProtocolHelpers.m in Sources */,
 				EE158AB11CBD456F00A3E3F0 /* XCUIElement+FBIsVisible.m in Sources */,
+				71AE3CFA2D38EE8E0039FC36 /* XCUIElement+FBVisibleFrame.m in Sources */,
 				EEBBD48C1D47746D00656A81 /* XCUIElement+FBFind.m in Sources */,
 				EE158ADD1CBD456F00A3E3F0 /* FBResponsePayload.m in Sources */,
+				B316351C2DDF0CF5007D9317 /* FBAccessibilityTraits.m in Sources */,
 				E444DCB524913C220060D7EB /* RouteRequest.m in Sources */,
 				C8FB547A22D4C1FC00B69954 /* FBUnattachedAppLauncher.m in Sources */,
 				EE158ADF1CBD456F00A3E3F0 /* FBRoute.m in Sources */,
@@ -3302,6 +3349,7 @@
 				EE158AB31CBD456F00A3E3F0 /* XCUIElement+FBScrolling.m in Sources */,
 				718226CE2587443700661B83 /* GCDAsyncSocket.m in Sources */,
 				EE158AC91CBD456F00A3E3F0 /* FBSessionCommands.m in Sources */,
+				715A84CF2DD92AD3007134CC /* FBElementHelpers.m in Sources */,
 				EE9B76A71CF7A43900275851 /* FBConfiguration.m in Sources */,
 				E444DC9C249131D40060D7EB /* HTTPServer.m in Sources */,
 				71414ED82670A1EE003A8C5D /* LRUCache.m in Sources */,

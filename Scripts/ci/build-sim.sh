@@ -1,19 +1,15 @@
 #!/bin/bash
 
-# To run build script for CI
-
 xcodebuild clean build-for-testing \
   -project WebDriverAgent.xcodeproj \
-  -derivedDataPath wda_build \
+  -derivedDataPath $DERIVED_DATA_PATH \
   -scheme $SCHEME \
   -destination "$DESTINATION" \
   CODE_SIGNING_ALLOWED=NO ARCHS=$ARCHS
 
-# simulator needs to build entire build files
+pushd $WD
 
-pushd wda_build
-# to remove unnecessary space consuming files
-rm -rf Build/Intermediates.noindex
-zip -r $ZIP_PKG_NAME Build
+# Simulators might have an issue to lauch if we drop frameworks even we don't use them.
+zip -r $ZIP_PKG_NAME $SCHEME-Runner.app
 popd
-mv wda_build/$ZIP_PKG_NAME ./
+mv $WD/$ZIP_PKG_NAME ./

@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "FBSettings.h"
@@ -18,8 +17,6 @@ NSString* const FB_SETTING_MJPEG_FIX_ORIENTATION = @"mjpegFixOrientation";
 NSString* const FB_SETTING_SCREENSHOT_QUALITY = @"screenshotQuality";
 NSString* const FB_SETTING_KEYBOARD_AUTOCORRECTION = @"keyboardAutocorrection";
 NSString* const FB_SETTING_KEYBOARD_PREDICTION = @"keyboardPrediction";
-NSString* const FB_SETTING_SNAPSHOT_TIMEOUT = @"snapshotTimeout";
-NSString* const FB_SETTING_CUSTOM_SNAPSHOT_TIMEOUT = @"customSnapshotTimeout";
 NSString* const FB_SETTING_SNAPSHOT_MAX_DEPTH = @"snapshotMaxDepth";
 NSString* const FB_SETTING_USE_FIRST_MATCH = @"useFirstMatch";
 NSString* const FB_SETTING_BOUND_ELEMENTS_BY_INDEX = @"boundElementsByIndex";
@@ -33,3 +30,11 @@ NSString* const FB_SETTING_DISMISS_ALERT_BUTTON_SELECTOR = @"dismissAlertButtonS
 NSString* const FB_SETTING_SCREENSHOT_ORIENTATION = @"screenshotOrientation";
 NSString* const FB_SETTING_WAIT_FOR_IDLE_TIMEOUT = @"waitForIdleTimeout";
 NSString* const FB_SETTING_ANIMATION_COOL_OFF_TIMEOUT = @"animationCoolOffTimeout";
+NSString* const FB_SETTING_MAX_TYPING_FREQUENCY = @"maxTypingFrequency";
+NSString* const FB_SETTING_RESPECT_SYSTEM_ALERTS = @"respectSystemAlerts";
+NSString* const FB_SETTING_USE_CLEAR_TEXT_SHORTCUT = @"useClearTextShortcut";
+NSString* const FB_SETTING_LIMIT_XPATH_CONTEXT_SCOPE = @"limitXPathContextScope";
+NSString* const FB_SETTING_AUTO_CLICK_ALERT_SELECTOR = @"autoClickAlertSelector";
+NSString* const FB_SETTING_INCLUDE_HITTABLE_IN_PAGE_SOURCE = @"includeHittableInPageSource";
+NSString* const FB_SETTING_INCLUDE_NATIVE_FRAME_IN_PAGE_SOURCE = @"includeNativeFrameInPageSource";
+NSString* const FB_SETTING_INCLUDE_MIN_MAX_VALUE_IN_PAGE_SOURCE = @"includeMinMaxValueInPageSource";

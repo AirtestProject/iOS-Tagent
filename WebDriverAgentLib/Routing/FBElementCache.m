@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "FBElementCache.h"
@@ -26,7 +25,6 @@ const int ELEMENT_CACHE_SIZE = 1024;
 
 @interface FBElementCache ()
 @property (nonatomic, strong) LRUCache *elementCache;
-@property (nonatomic) BOOL elementsNeedReset;
 @end
 
 @implementation FBElementCache
@@ -38,7 +36,6 @@ const int ELEMENT_CACHE_SIZE = 1024;
     return nil;
   }
   _elementCache = [[LRUCache alloc] initWithCapacity:ELEMENT_CACHE_SIZE];
-  _elementsNeedReset = NO;
   return self;
 }
 
@@ -50,19 +47,16 @@ const int ELEMENT_CACHE_SIZE = 1024;
   }
   @synchronized (self.elementCache) {
     [self.elementCache setObject:element forKey:uuid];
-    self.elementsNeedReset = YES;
   }
   return uuid;
 }
 
 - (XCUIElement *)elementForUUID:(NSString *)uuid
 {
-  return [self elementForUUID:uuid resolveForAdditionalAttributes:nil andMaxDepth:nil];
+  return [self elementForUUID:uuid checkStaleness:NO];
 }
 
-- (XCUIElement *)elementForUUID:(NSString *)uuid
- resolveForAdditionalAttributes:(NSArray <NSString *> *)additionalAttributes
-                    andMaxDepth:(NSNumber *)maxDepth
+- (XCUIElement *)elementForUUID:(NSString *)uuid checkStaleness:(BOOL)checkStaleness
 {
   if (!uuid) {
     NSString *reason = [NSString stringWithFormat:@"Cannot extract cached element for UUID: %@", uuid];
@@ -71,23 +65,25 @@ const int ELEMENT_CACHE_SIZE = 1024;
 
   XCUIElement *element;
   @synchronized (self.elementCache) {
-    [self resetElements];
     element = [self.elementCache objectForKey:uuid];
   }
   if (nil == element) {
     NSString *reason = [NSString stringWithFormat:@"The element identified by \"%@\" is either not present or it has expired from the internal cache. Try to find it again", uuid];
     @throw [NSException exceptionWithName:FBStaleElementException reason:reason userInfo:@{}];
   }
-  // This will throw FBStaleElementException exception if the element is stale
-  // or resolve the element and set lastSnapshot property
-  if (nil == additionalAttributes) {
-    [element fb_takeSnapshot];
-  } else {
-    NSMutableArray *attributes = [NSMutableArray arrayWithArray:FBStandardAttributeNames()];
-    [attributes addObjectsFromArray:additionalAttributes];
-    [element fb_snapshotWithAttributes:attributes.copy maxDepth:maxDepth];
+  if (checkStaleness) {
+    @try {
+      [element fb_standardSnapshot];
+    } @catch (NSException *exception) {
+      //  if the snapshot method threw FBStaleElementException (implying the element is stale) we need to explicitly remove it from the cache, PR: https://github.com/appium/WebDriverAgent/pull/985
+      if ([exception.name isEqualToString:FBStaleElementException]) {
+        @synchronized (self.elementCache) {
+          [self.elementCache removeObjectForKey:uuid];
+        }
+      }
+      @throw exception;
+    }
   }
-  element.fb_isResolvedFromCache = @(YES);
   return element;
 }
 
@@ -99,22 +95,6 @@ const int ELEMENT_CACHE_SIZE = 1024;
   @synchronized (self.elementCache) {
     return nil != [self.elementCache objectForKey:(NSString *)uuid];
   }
-}
-
-- (void)resetElements
-{
-  if (!self.elementsNeedReset) {
-    return;
-  }
-
-  for (XCUIElement *element in self.elementCache.allObjects) {
-    element.lastSnapshot = nil;
-    if (nil != element.query) {
-      element.query.rootElementSnapshot = nil;
-    }
-    element.fb_isResolvedFromCache = @(NO);
-  }
-  self.elementsNeedReset = NO;
 }
 
 @end

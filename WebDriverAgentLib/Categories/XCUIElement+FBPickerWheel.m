@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "XCUIElement+FBPickerWheel.h"
@@ -12,6 +11,7 @@
 #import "FBRunLoopSpinner.h"
 #import "FBXCElementSnapshot.h"
 #import "FBXCodeCompatibility.h"
+#import "XCUIElement+FBUID.h"
 #import "XCUICoordinate.h"
 #import "XCUIElement+FBCaching.h"
 #import "XCUIElement+FBResolve.h"
@@ -23,9 +23,7 @@ static const NSTimeInterval VALUE_CHANGE_TIMEOUT = 2;
 
 - (BOOL)fb_scrollWithOffset:(CGFloat)relativeHeightOffset error:(NSError **)error
 {
-  id<FBXCElementSnapshot> snapshot = self.fb_isResolvedFromCache.boolValue
-    ? self.lastSnapshot
-    : self.fb_takeSnapshot;
+  id<FBXCElementSnapshot> snapshot = [self fb_standardSnapshot];
   NSString *previousValue = snapshot.value;
   XCUICoordinate *startCoord = [self coordinateWithNormalizedOffset:CGVectorMake(0.5, 0.5)];
   XCUICoordinate *endCoord = [startCoord coordinateWithOffset:CGVectorMake(0.0, relativeHeightOffset * snapshot.frame.size.height)];
@@ -35,7 +33,7 @@ static const NSTimeInterval VALUE_CHANGE_TIMEOUT = 2;
   // Fetching stable instance of an element allows it to be bounded to the
   // unique element identifier (UID), so it could be found next time even if its
   // id is different from the initial one. See https://github.com/appium/appium/issues/17569
-  XCUIElement *stableInstance = self.fb_stableInstance;
+  XCUIElement *stableInstance = [self fb_stableInstanceWithUid:[FBXCElementSnapshotWrapper wdUIDWithSnapshot:snapshot]];
   [endCoord tap];
   return [[[[FBRunLoopSpinner new]
      timeout:VALUE_CHANGE_TIMEOUT]

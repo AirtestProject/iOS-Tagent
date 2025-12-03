@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import <XCTest/XCTest.h>
@@ -43,10 +42,8 @@
   XCUIElement *element = (XCUIElement *)XCUIElementDouble.new;
   NSString *uuid = [self.cache storeElement:element];
   XCTAssertNotNil(uuid, @"Stored index should be higher than 0");
-  XCTAssertFalse(element.fb_isResolvedFromCache.boolValue);
   XCUIElement *cachedElement = [self.cache elementForUUID:uuid];
   XCTAssertEqual(element, cachedElement);
-  XCTAssertTrue(element.fb_isResolvedFromCache.boolValue);
 }
 
 - (void)testFetchingBadIndex

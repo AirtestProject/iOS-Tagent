@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import <XCTest/XCTest.h>
@@ -67,15 +66,6 @@
         @"type": @"pointer",
         @"id": @"finger1",
         @"parameters": @{@"pointerType": @"touch"},
-        },
-      ],
-    
-    // Chain element with empty 'actions'
-    @[@{
-        @"type": @"pointer",
-        @"id": @"finger1",
-        @"parameters": @{@"pointerType": @"touch"},
-        @"actions": @[],
         },
       ],
     
@@ -276,6 +266,21 @@
   }
 }
 
+- (void)testNothingDoesWithoutError
+{
+  NSArray<NSDictionary<NSString *, id> *> *gesture =
+  @[@{
+      @"type": @"pointer",
+      @"id": @"finger1",
+      @"parameters": @{@"pointerType": @"touch"},
+      @"actions": @[],
+      },
+    ];
+  NSError *error;
+  XCTAssertTrue([self.testedApplication fb_performW3CActions:gesture elementCache:nil error:&error]);
+  XCTAssertNil(error);
+}
+
 - (void)testTap
 {
   NSArray<NSDictionary<NSString *, id> *> *gesture =
@@ -418,7 +423,7 @@
                    timeout:2.0]
                   timeoutErrorMessage:@"Picker wheel value has not been changed after 2 seconds timeout"]
                  spinUntilTrue:^BOOL{
-                   return ![self.pickerWheel.fb_takeSnapshot.value isEqualToString:previousValue];
+    return ![[self.pickerWheel fb_standardSnapshot].value isEqualToString:previousValue];
                  }
                  error:&error]);
   XCTAssertNil(error);

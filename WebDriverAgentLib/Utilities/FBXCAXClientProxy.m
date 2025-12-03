@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "FBXCAXClientProxy.h"
@@ -14,8 +13,15 @@
 #import "FBMacros.h"
 #import "XCAXClient_iOS+FBSnapshotReqParams.h"
 #import "XCUIDevice.h"
+#import "XCUIApplication.h"
 
 static id FBAXClient = nil;
+
+@interface FBXCAXClientProxy ()
+
+@property (nonatomic) NSMutableDictionary<NSNumber *, XCUIApplication *> *appsCache;
+
+@end
 
 @implementation FBXCAXClientProxy
 
@@ -25,6 +31,7 @@ static id FBAXClient = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     instance = [[self alloc] init];
+    instance.appsCache = [NSMutableDictionary dictionary];
     FBAXClient = [XCUIDevice.sharedDevice accessibilityInterface];
   });
   return instance;
@@ -37,12 +44,12 @@ static id FBAXClient = nil;
 
 - (id<FBXCElementSnapshot>)snapshotForElement:(id<FBXCAccessibilityElement>)element
                                    attributes:(NSArray<NSString *> *)attributes
-                                     maxDepth:(nullable NSNumber *)maxDepth
+                                      inDepth:(BOOL)inDepth
                                         error:(NSError **)error
 {
   NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:self.defaultParameters];
-  if (nil != maxDepth) {
-    parameters[FBSnapshotMaxDepthKey] = maxDepth;
+  if (!inDepth) {
+    parameters[FBSnapshotMaxDepthKey] = @1;
   }
 
   id result = [FBAXClient requestSnapshotForElement:element
@@ -76,20 +83,37 @@ static id FBAXClient = nil;
 
 - (NSDictionary *)attributesForElement:(id<FBXCAccessibilityElement>)element
                             attributes:(NSArray *)attributes
+                                 error:(NSError**)error;
 {
-  NSError *error = nil;
-  NSDictionary* result = [FBAXClient attributesForElement:element
-                                               attributes:attributes
-                                                    error:&error];
-  if (error) {
-    [FBLogger logFmt:@"Cannot retrieve element attribute(s) %@. Original error: %@", attributes, error.description];
-  }
-  return result;
+  return [FBAXClient attributesForElement:element
+                               attributes:attributes
+                                    error:error];
 }
 
 - (XCUIApplication *)monitoredApplicationWithProcessIdentifier:(int)pid
 {
-  return [[FBAXClient applicationProcessTracker] monitoredApplicationWithProcessIdentifier:pid];
+  NSMutableSet *terminatedAppIds = [NSMutableSet set];
+  for (NSNumber *appPid in self.appsCache) {
+    if (![self.appsCache[appPid] running]) {
+      [terminatedAppIds addObject:appPid];
+    }
+  }
+  for (NSNumber *appPid in terminatedAppIds) {
+    [self.appsCache removeObjectForKey:appPid];
+  }
+
+  XCUIApplication *result = [self.appsCache objectForKey:@(pid)];
+  if (nil != result) {
+    return result;
+  }
+
+  XCUIApplication *app = [[FBAXClient applicationProcessTracker]
+                          monitoredApplicationWithProcessIdentifier:pid];
+  if (nil == app) {
+    return nil;
+  }
+  [self.appsCache setObject:app forKey:@(pid)];
+  return app;
 }
 
 @end

@@ -3,8 +3,7 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "XCUIApplication+FBAlert.h"
@@ -52,7 +51,7 @@ NSString *const FB_SAFARI_APP_NAME = @"Safari";
   // and conatins at least one text view
   __block NSUInteger buttonsCount = 0;
   __block NSUInteger textViewsCount = 0;
-  id<FBXCElementSnapshot> snapshot = candidate.fb_cachedSnapshot ?: candidate.fb_takeSnapshot;
+  id<FBXCElementSnapshot> snapshot = candidate.fb_cachedSnapshot ?: [candidate fb_customSnapshot];
   [snapshot enumerateDescendantsUsingBlock:^(id<FBXCElementSnapshot> descendant) {
     XCUIElementType curType = descendant.elementType;
     if (curType == XCUIElementTypeButton) {
@@ -73,7 +72,7 @@ NSString *const FB_SAFARI_APP_NAME = @"Safari";
   if (nil == alert) {
     return nil;
   }
-  id<FBXCElementSnapshot> alertSnapshot = alert.fb_cachedSnapshot ?: alert.fb_takeSnapshot;
+  id<FBXCElementSnapshot> alertSnapshot = alert.fb_cachedSnapshot ?: [alert fb_customSnapshot];
 
   if (alertSnapshot.elementType == XCUIElementTypeAlert) {
     return alert;

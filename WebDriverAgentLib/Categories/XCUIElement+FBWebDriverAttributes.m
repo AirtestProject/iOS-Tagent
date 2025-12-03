@@ -3,13 +3,13 @@
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "XCUIElement+FBWebDriverAttributes.h"
 
 #import "FBElementTypeTransformer.h"
+#import "FBElementHelpers.h"
 #import "FBLogger.h"
 #import "FBMacros.h"
 #import "FBXCElementSnapshotWrapper.h"
@@ -21,6 +21,8 @@
 #import "FBElementUtils.h"
 #import "XCTestPrivateSymbols.h"
 #import "XCUIHitPointResult.h"
+#import "FBAccessibilityTraits.h"
+#import "XCUIElement+FBMinMax.h"
 
 #define BROKEN_RECT CGRectMake(-1, -1, 0, 0)
 
@@ -28,24 +30,20 @@
 
 - (id<FBXCElementSnapshot>)fb_snapshotForAttributeName:(NSString *)name
 {
-  // These attributes are special, because we can only retrieve them from
-  // the snapshot if we explicitly ask XCTest to include them into the query while taking it.
-  // That is why fb_snapshotWithAllAttributes method must be used instead of the default snapshot
-  // call
-  if ([name isEqualToString:FBStringify(XCUIElement, isWDVisible)]) {
-    return [self fb_snapshotWithAttributes:@[FB_XCAXAIsVisibleAttributeName]
-                                  maxDepth:@1];
+  // https://github.com/appium/appium-xcuitest-driver/pull/2565
+  if ([name isEqualToString:FBStringify(XCUIElement, isWDHittable)]) {
+    return [self fb_nativeSnapshot];
   }
-  if ([name isEqualToString:FBStringify(XCUIElement, isWDAccessible)]) {
-    return [self fb_snapshotWithAttributes:@[FB_XCAXAIsElementAttributeName]
-                                  maxDepth:@1];
+  // https://github.com/appium/appium-xcuitest-driver/issues/2552
+  BOOL isValueRequest = [name isEqualToString:FBStringify(XCUIElement, wdValue)];
+  if ([self isKindOfClass:XCUIApplication.class] && !isValueRequest) {
+    return [self fb_standardSnapshot];
   }
-  if ([name isEqualToString:FBStringify(XCUIElement, isWDAccessibilityContainer)]) {
-    return [self fb_snapshotWithAttributes:@[FB_XCAXAIsElementAttributeName]
-                                  maxDepth:nil];
-  }
-  
-  return self.fb_takeSnapshot;
+  BOOL isCustomSnapshot = [name isEqualToString:FBStringify(XCUIElement, isWDAccessible)]
+    || [name isEqualToString:FBStringify(XCUIElement, isWDAccessibilityContainer)]
+    || [name isEqualToString:FBStringify(XCUIElement, wdIndex)]
+    || isValueRequest;
+  return isCustomSnapshot ? [self fb_customSnapshot] : [self fb_standardSnapshot];
 }
 
 - (id)fb_valueForWDAttributeName:(NSString *)name
@@ -78,6 +76,16 @@
   return [self valueForKey:[FBElementUtils wdAttributeNameForAttributeName:name]];
 }
 
+- (NSNumber *)wdMinValue
+{
+  return self.fb_minValue;
+}
+
+- (NSNumber *)wdMaxValue
+{
+  return self.fb_maxValue;
+}
+
 - (NSString *)wdValue
 {
   id value = self.value;
@@ -90,9 +98,7 @@
     value = FBFirstNonEmptyValue(value, isSelected);
   } else if (elementType == XCUIElementTypeSwitch) {
     value = @([value boolValue]);
-  } else if (elementType == XCUIElementTypeTextView ||
-             elementType == XCUIElementTypeTextField ||
-             elementType == XCUIElementTypeSecureTextField) {
+  } else if (FBDoesElementSupportInnerText(elementType)) {
     NSString *placeholderValue = self.placeholderValue;
     value = FBFirstNonEmptyValue(value, placeholderValue);
   }
@@ -120,12 +126,18 @@
 
 - (NSString *)wdLabel
 {
-  NSString *label = self.label;
   XCUIElementType elementType = self.elementType;
-  if (elementType == XCUIElementTypeTextField || elementType == XCUIElementTypeSecureTextField ) {
-    return label;
-  }
-  return FBTransferEmptyStringToNil(label);
+  return (elementType == XCUIElementTypeTextField
+          || elementType == XCUIElementTypeSecureTextField)
+    ? self.label
+    : FBTransferEmptyStringToNil(self.label);
+}
+
+- (NSString *)wdPlaceholderValue
+{
+  return FBDoesElementSupportInnerText(self.elementType)
+    ? self.placeholderValue
+    : FBTransferEmptyStringToNil(self.placeholderValue);
 }
 
 - (NSString *)wdType
@@ -148,6 +160,30 @@
           || isinf(frame.origin.x) || isinf(frame.origin.y))
     ? CGRectIntegral(BROKEN_RECT)
     : CGRectIntegral(frame);
+}
+
+- (CGRect)wdNativeFrame
+{
+  // To avoid confusion regarding the frame returned by `wdFrame`,
+  // the current property is provided to represent the element's
+  // actual rendered frame.
+  return self.frame;
+}
+
+/**
+ Returns a comma-separated string of accessibility traits for the element.
+ This method converts the element's accessibility traits bitmask into human-readable strings
+ using FBAccessibilityTraitsToStringsArray. The traits represent various accessibility
+ characteristics of the element such as Button, Link, Image, etc.
+ You can find the list of possible traits in the Apple documentation:
+ https://developer.apple.com/documentation/uikit/uiaccessibilitytraits?language=objc
+ 
+ @return A comma-separated string of accessibility traits, or an empty string if no traits are set
+ */
+- (NSString *)wdTraits
+{
+  NSArray<NSString *> *traits = FBAccessibilityTraitsToStringsArray(self.snapshot.traits);
+  return [traits componentsJoinedByString:@", "];
 }
 
 - (BOOL)isWDVisible
@@ -183,8 +219,8 @@
     // In the scenario when table provides Search results controller, table could be marked as accessible element, even though it isn't
     // As it is highly unlikely that table view should ever be an accessibility element itself,
     // for now we work around that by skipping Table View in container checks
-    if ([FBXCElementSnapshotWrapper ensureWrapped:parentSnapshot].fb_isAccessibilityElement
-        && parentSnapshot.elementType != XCUIElementTypeTable) {
+    if (parentSnapshot.elementType != XCUIElementTypeTable
+        && [FBXCElementSnapshotWrapper ensureWrapped:parentSnapshot].fb_isAccessibilityElement) {
       return NO;
     }
     parentSnapshot = parentSnapshot.parent;
